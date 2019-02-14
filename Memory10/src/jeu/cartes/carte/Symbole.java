@@ -7,6 +7,7 @@ public enum Symbole {
 
 	/*Retourne le symbole de la carte à l'indice i du tableau*/
 	public static Symbole getSymbole(int indice) { 	return TABLEAU[indice]; }
+	public static int getOrdinal(Symbole symb) { 	return symb.ordinal(); }
 	
 	@Override
 	public String toString() {

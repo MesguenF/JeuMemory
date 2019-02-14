@@ -113,13 +113,13 @@ public class ControleurMemory {
 				if(testSauvegarde == 2) {
 					
 					//-------------------------Partie Partie BD-------------------------------
-					vueMemory.donnerNomPartie();
+					
+					//Création partie dans table Partie BD FONCTIONNE
+					/*vueMemory.donnerNomPartie();
 					nomPartie = vueMemory.recupString();
-										
-					//Création partie
 					Partie nouvPartie = new Partie(nomPartie);
 					PartieDAO.getInstance().create(nouvPartie);
-					System.out.println(nouvPartie.getNomPartie());
+					System.out.println(nouvPartie.getNomPartie());*/
 					
 					
 					
@@ -290,11 +290,11 @@ public class ControleurMemory {
 		}
 	}
 
-	public int getNumPartie() { return numPartie; }
+	/*public int getNumPartie() { return numPartie; }
 	public void setNumPartie(int numPartie) { this.numPartie = numPartie; }
 	public String getNomPartie() { return nomPartie; }
 	public void setNomPartie(String nomPartie) { this.nomPartie = nomPartie; }
 	public java.sql.Date getDatePartie() { return (java.sql.Date) datePartie; }
-	public void setDatePartie(Date datePartie) { this.datePartie = datePartie; }
+	public void setDatePartie(Date datePartie) { this.datePartie = datePartie; }*/
 
 }

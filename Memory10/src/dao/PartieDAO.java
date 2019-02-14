@@ -27,6 +27,7 @@ public class PartieDAO extends DAO<Partie>{
 			try {
 				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
+				System.out.println("la partie = " + partie);
 				pst.setString(1, partie.getNomPartie());
 				pst.executeUpdate();
 				ResultSet rs = pst.getGeneratedKeys();

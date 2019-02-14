@@ -25,15 +25,13 @@ public class PartieDAO extends DAO<Partie>{
 		public boolean create(Partie partie) {
 			boolean succes = true;
 			try {
-				/*Calendar cal = null; //Calendar????? */
-				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		/*,datePartie*/
+				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, partie.getNomPartie());
-				/*pst.setDate(2, partie.getDatePartie(), cal);*/ //TODO GREGORIAN CALENDAR
 				pst.executeUpdate();
 				ResultSet rs = pst.getGeneratedKeys();
 					if (rs.next()) {
-						partie.setNumPartie(rs.getInt(1));   /*Le 1 de getInt(1) indique la colonne de la table Joueur*/
+						partie.setNumPartie(rs.getInt(1));   /*Le 1 de getInt(1) indique la colonne de la table Partie*/
 					}
 				} catch (SQLException e) {
 					succes=false;

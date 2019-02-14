@@ -1,13 +1,10 @@
 package jeu.cartes;
 
-import sun.util.calendar.BaseCalendar.Date;
-
 public class Partie {
 	
 	public int numPartie; //Pour BD
 	public String nomPartie;
-	public Date datePartie;
-	
+		
 	/**
 	 * @param numPartie
 	 * @param nomPartie
@@ -16,8 +13,7 @@ public class Partie {
 	public Partie(String nomPartie) {
 		super();
 		this.nomPartie = nomPartie;
-		/*this.datePartie = datePartie;*/
-	}
+		}
 
 	/**
 	 * @return the numPartie
@@ -45,20 +41,6 @@ public class Partie {
 	 */
 	public void setNomPartie(String nomPartie) {
 		this.nomPartie = nomPartie;
-	}
-
-	/**
-	 * @return the datePartie
-	 */
-	public Date getDatePartie() {
-		return datePartie;
-	}
-
-	/**
-	 * @param datePartie the datePartie to set
-	 */
-	public void setDatePartie(Date datePartie) {
-		this.datePartie = datePartie;
 	}
 
 }

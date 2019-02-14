@@ -119,7 +119,7 @@ public class ControleurMemory {
 					//Création partie
 					Partie nouvPartie = new Partie(nomPartie);
 					PartieDAO.getInstance().create(nouvPartie);
-					System.out.println(nouvPartie);
+					System.out.println(nouvPartie.getNomPartie());
 					
 					
 					

@@ -25,7 +25,7 @@ public class CarteDAO extends DAO<Carte>{
 		try {
 			String requete = "INSERT INTO "+ TABLE +" (symbole) VALUES (?)";
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-			pst.setString(1, carte.getSymbole().toString());
+			pst.setInt(1, carte.getOrdinal(carte.getSymbole()));
 			pst.executeUpdate();
 			ResultSet rs = pst.getGeneratedKeys();
 				if (rs.next()) {

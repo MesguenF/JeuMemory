@@ -25,6 +25,7 @@ public class Carte /*implements ICarte*/ {
 	public boolean isVisible() { return visibleBool; }
 	public int getNumCarte() { return numCarte; }
 	public void setNumCarte(int numCarte) { this.numCarte = numCarte; }
+	public int getOrdinal(Symbole symb) { 	return symb.ordinal(); }
 
 	public String afficherCarteAvecNumero(int i) {
 		String rep = null;

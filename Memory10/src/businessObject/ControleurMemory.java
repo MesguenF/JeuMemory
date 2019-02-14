@@ -114,12 +114,21 @@ public class ControleurMemory {
 					
 					//-------------------------Partie Partie BD-------------------------------
 					
-					//Création partie dans table Partie BD FONCTIONNE
+					//Création partie dans TABLE Partie BD FONCTIONNE
 					/*vueMemory.donnerNomPartie();
 					nomPartie = vueMemory.recupString();
 					Partie nouvPartie = new Partie(nomPartie);
 					PartieDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getNomPartie());*/
+					
+					//Stockage des cartes dans TABLE Carte BD FONCTIONNE
+					for(int i = 0; i < paquet.size(); i++) {
+						Carte nouvCarte = new Carte(nomPartie);
+						PartieDAO.getInstance().create(nouvPartie);
+						
+					}
+					
+					
 					
 					
 					
@@ -132,7 +141,7 @@ public class ControleurMemory {
 						System.out.println(nouvJoueur);
 					}*/
 					
-					//Suppression d'un joueur dans table Joueur BD FONCTIONNE
+					//Suppression d'un joueur dans TABLE Joueur BD FONCTIONNE
 					/*Joueur nouvJoueur = new Joueur("","","");
 					nouvJoueur.setNumJoueur(13);
 					JoueurDAO.getInstance().delete(nouvJoueur);

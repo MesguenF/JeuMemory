@@ -1,15 +1,14 @@
 package businessObject;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import dao.Connexion;
-import dao.JoueurDAO;
-import dao.PiloteDAO;
+import dao.PartieDAO;
 import jeu.cartes.Joueur;
 import jeu.cartes.PaquetCartes;
+import jeu.cartes.Partie;
 
 
 public class ControleurMemory {
@@ -29,10 +28,10 @@ public class ControleurMemory {
 				
 		/*----------------------------SI NOUVELLE PARTIE-------------------------------------*/
 		if (choix == 1) {
-			/*Gestion des joueurs*/
+			/*GESTION DES JOUEURS*/
 			saisieDesJoueurs();
 					
-			/*Gestion des cartes*/							
+			/*GESTION DES CARTES*/							
 			int decomptePairesDeCartes = PaquetCartes.NBR_CARTES / 2;				/*Pour decompte paires de cartes*/
 			do {	
 				int comptageJoueurs = 0;
@@ -108,23 +107,36 @@ public class ControleurMemory {
 				}while(comptageJoueurs != 0);
 				
 				
-				/*partie sauvegarde*/
+				/*SAUVEGARDE PARTIE*/
 				vueMemory.afficherMenuContinuerOuSauvegarder();	
 				int testSauvegarde = vueMemory.recupIntChoix(2);
 				if(testSauvegarde == 2) {
 					
-					//-------------------------PartieJoueur BD-------------------------------
-					//Ajout joueur BD
+					//-------------------------Partie Partie BD-------------------------------
+					vueMemory.donnerNomPartie();
+					nomPartie = vueMemory.recupString();
+										
+					//Création partie
+					Partie nouvPartie = new Partie(nomPartie);
+					PartieDAO.getInstance().create(nouvPartie);
+					System.out.println(nouvPartie);
+					
+					
+					
+					//-------------------------Partie Joueur BD-------------------------------
+					
+					//Ajout des joueurs dans TABLE Joueur BD FONCTIONNE
 					/*for(int i  = 0; i < joueurs.size(); i++) {
 						Joueur nouvJoueur = new Joueur(joueurs.get(i).nomJoueur,joueurs.get(i).prenomJoueur,joueurs.get(i).pseudoJoueur);
 						JoueurDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 					}*/
-					//Suppression 
-					Joueur nouvJoueur = new Joueur("","","");
+					
+					//Suppression d'un joueur dans table Joueur BD FONCTIONNE
+					/*Joueur nouvJoueur = new Joueur("","","");
 					nouvJoueur.setNumJoueur(13);
 					JoueurDAO.getInstance().delete(nouvJoueur);
-					System.out.println(nouvJoueur);
+					System.out.println(nouvJoueur);*/
 									
 					Connexion.fermer();								
 				}

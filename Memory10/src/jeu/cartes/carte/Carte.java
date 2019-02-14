@@ -12,13 +12,13 @@ public class Carte /*implements ICarte*/ {
 	/*Constructeur d'une carte vide*/
 	public Carte(){ }
 	
-	/*Constructeur d'une carte avec Symbole et visiblité*/
+	/*Constructeur d'une carte avec Symbole et visiblitï¿½*/
 	public Carte(Symbole symbole,boolean visible){
 		this.symboleCarte = symbole; 
 		this.visibleBool = visible;
 	}
 	
-	/*Méthodes*/
+	/*MÃ©thodes*/
 	public Symbole getSymbole() { return symboleCarte; }
 	public Symbole setSymbole(Symbole symbole) { return symbole; }
 	public void setVisible(boolean visible) { this.visibleBool = visible; }

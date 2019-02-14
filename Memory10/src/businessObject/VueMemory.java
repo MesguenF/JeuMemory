@@ -18,7 +18,7 @@ public class VueMemory {
 		for (String string : plateau) { System.out.println(string); }
 	}
 
-	/*Méthodes pour affichage de textes*/
+	/*Mï¿½thodes pour affichage de textes*/
 	public void afficherTitreMemory() {
 		System.out.println("*********************************************");
 		System.out.println("*                 JEU MEMORY                *");
@@ -70,20 +70,21 @@ public class VueMemory {
 	public void demanderPseudoJoueur() { System.out.println(" Entrer le pseudo du joueur : "); }
 	public void enregistrerJoueur() { System.out.println(" Enregistrer le joueur ? / OUI = 1 : NON = 2 ");}
 	public void demanderAjoutJoueur() { System.out.println(" Voulez-vous rentrer un nouveau joueur ?  OUI = 1 / NON = 2 "); }
-	public void afficheJoueurEnregistre() { System.out.println(" Joueur enregistré ! "); }
-	public void afficheJoueurNonEnregistre() { System.out.println("Joueur non enregistré !"); }
+	public void afficheJoueurEnregistre() { System.out.println(" Joueur enregistrï¿½ ! "); }
+	public void afficheJoueurNonEnregistre() { System.out.println("Joueur non enregistrï¿½ !"); }
 	public void afficheJoueurMaxAtteint() { System.out.println(" Nombre de joueurs maximal atteint ! "); }
 	public void afficherErreurSaisie() { System.out.println(" Erreur de saisie , recommencez ! "); }
 	public void demanderCarte() { System.out.println("Carte : "); }
-	public void afficherDesole() { System.out.println("Désolé, vous n'avez pas trouvé de paire de cartes !"); }
-	public void affiherFelicitations() { System.out.println("Félicitations, vous avez trouvé une paire de cartes !"); }
-	public void afficherCarteDejaChoisie() { System.out.println("Carte déjà choisie. Recommencez! "); }
+	public void afficherDesole() { System.out.println("Dï¿½solï¿½, vous n'avez pas trouvï¿½ de paire de cartes !"); }
+	public void affiherFelicitations() { System.out.println("Fï¿½licitations, vous avez trouvï¿½ une paire de cartes !"); }
+	public void afficherCarteDejaChoisie() { System.out.println("Carte dï¿½jï¿½ choisie. Recommencez! "); }
 	public void afficherFinDePartie() { System.out.println("FIN DE PARTIE !"); }
 	public void demanderCoupJoueur(int indiceJoueur, String pseudoJoueur, int pointsJoueur) { 
-		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes à retourner (de 1 à 40) :");
+		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes ï¿½ retourner (de 1 ï¿½ 40) :");
 	}
+	public void donnerNomPartie() { System.out.println(" Donner un nom Ã  votre partie : "); }
 	
-	/*Méthode pour récupérer INT choix en spécifiant l'écart souhaité ( 1 à 2 / 1 à 3 / 1 à 40) pour le INT attendu*/
+	/*Mï¿½thode pour rï¿½cupï¿½rer INT choix en spï¿½cifiant l'ï¿½cart souhaitï¿½ ( 1 ï¿½ 2 / 1 ï¿½ 3 / 1 ï¿½ 40) pour le INT attendu*/
 	public int recupIntChoix(int ecart) {
 		int valRetour = 0;
 		boolean valide = false;
@@ -108,14 +109,15 @@ public class VueMemory {
 		return valRetour;
 	}
 	
-	/*Méthode pour récupérer un STRING*/
+	/*Mï¿½thode pour rï¿½cupï¿½rer un STRING*/
 	public String recupString() {
 		String texte;
 		texte = sc.next();
 		return texte;
+		
 	}
 
-	/*Méthode pour afficher la liste des joueurs*/
+	/*Mï¿½thode pour afficher la liste des joueurs*/
 	public String afficheListeJoueurs(List<Joueur> j) {
 		String texte = null;
 		for(int i = 0 ; i < j.size(); i++) {

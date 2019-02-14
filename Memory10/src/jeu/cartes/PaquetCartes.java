@@ -8,18 +8,19 @@ import jeu.cartes.carte.Symbole;
 
 public class PaquetCartes {
 	public final static int NBR_CARTES = 40;							/*CONSTANTE nombre de 30 cartes du jeu*/
-	public static List<Carte> cartes = new ArrayList <Carte>();			/*Création d'une liste de Cartes*/
+	public static List<Carte> cartes = new ArrayList <Carte>();			/*Crï¿½ation d'une liste de Cartes*/
 	//TODO modifier paquet cartes
+	
 	/*Constructeur d'un PaquetCartes*/
 	public PaquetCartes() {
 		super();
 		for(int i = 0; i < NBR_CARTES/4; i++) { 
-			nouvelleSerieCarte(i);			/*On crée une paire de cartes avec même symbole et on l'ajoute dans la liste*/
+			nouvelleSerieCarte(i);			/*On crï¿½e une paire de cartes avec mï¿½me symbole et on l'ajoute dans la liste*/
 			}
-		Collections.shuffle(cartes);		/*On mélange le paquet de cartes*/
+		Collections.shuffle(cartes);		/*On mï¿½lange le paquet de cartes*/
 	}
 	
-	/*Création d'une paire de cartes et rajout dans le PaquetCartes*/
+	/*Crï¿½ation d'une paire de cartes et rajout dans le PaquetCartes*/
 	public void nouvelleSerieCarte(int i) {
 		Carte c;
 		for(int j = 0 ; j<4 ; j++) {
@@ -29,13 +30,13 @@ public class PaquetCartes {
 	}
 	
 	//TODO A SUPPRIMER
-	/*Méthode retournant la carte en indice i de la liste*/
+	/*Mï¿½thode retournant la carte en indice i de la liste*/
 	/*public Carte get(int i) { return PaquetCartes.cartes.get(i); }*/
 	
-	/*Méthode pour modifier la visibilité d'une carte*/     
+	/*Mï¿½thode pour modifier la visibilitï¿½ d'une carte*/     
 	public void modifierVisibiliteCarte(int carteJouee, boolean boolVisible){ PaquetCartes.cartes.get(carteJouee).setVisible(boolVisible); }
 			
-	/*Méthode retournant la taille du paquet*/
+	/*Mï¿½thode retournant la taille du paquet*/
 	public int size() { return PaquetCartes.cartes.size(); }
 	
 }

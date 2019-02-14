@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
 import businessObject.ControleurMemory;
+import jeu.cartes.Partie;
 
 public class PartieDAO extends DAO<ControleurMemory>{
 			
@@ -20,15 +21,15 @@ public class PartieDAO extends DAO<ControleurMemory>{
 			return instance;
 		}
 		
-		/*Méthode pour créer une partie*/
-		public boolean create(ControleurMemory partie) {
+		/*Mï¿½thode pour crï¿½er une partie*/
+		public boolean create(Partie partie) {
 			boolean succes = true;
 			try {
 				Calendar cal = null; //Calendar?????
-				String requete = "INSERT INTO "+ TABLE +" (nomPartie,datePartie) VALUES (?,?)";
+				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		/*,datePartie*/
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, partie.getNomPartie());
-				pst.setDate(2, partie.getDatePartie(), cal); //TODO GREGORIAN CALENDAR
+				/*pst.setDate(2, partie.getDatePartie(), cal);*/ //TODO GREGORIAN CALENDAR
 				pst.executeUpdate();
 				ResultSet rs = pst.getGeneratedKeys();
 					if (rs.next()) {
@@ -41,8 +42,8 @@ public class PartieDAO extends DAO<ControleurMemory>{
 				return succes;
 		}
 
-		/*Méthode pour effacer une partie*/
-		public boolean delete(ControleurMemory partie) {
+		/*Mï¿½thode pour effacer une partie*/
+		public boolean delete(Partie partie) {
 			boolean succes = true;
 		try {
 			String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
@@ -57,16 +58,16 @@ public class PartieDAO extends DAO<ControleurMemory>{
 		return succes;
 		}
 		
-		/*Méthode pour mettre à jour une partie*/
-		public boolean update(ControleurMemory partie) {
+		/*Mï¿½thode pour mettre ï¿½ jour une partie*/
+		public boolean update(Partie partie) {
 				boolean succes = true;
 				Calendar cal = null; //Calendar?????
 				try {
-					String requete = "UPDATE "+TABLE+" SET nomPartie = ?, datePartie = ?, WHERE "+CLE_PRIMAIRE+" = ?";
+					String requete = "UPDATE "+TABLE+" SET nomPartie = ?,  WHERE "+CLE_PRIMAIRE+" = ?";			/*datePartie = ?,*/
 					//String requete = "UPDATE "+TABLE+" SET nomav = ?, loc = ?, capacite = ? WHERE "+CLE_PRIMAIRE+" = 9";
 					PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 					pst.setString(1, partie.getNomPartie());
-					pst.setDate(2, partie.getDatePartie(), cal);	//TODO GREGORIAN CALENDAR
+					/*pst.setDate(2, partie.getDatePartie(), cal);*/	//TODO GREGORIAN CALENDAR
 					pst.executeUpdate();
 				} catch (SQLException e) {
 					succes=false;
@@ -75,9 +76,9 @@ public class PartieDAO extends DAO<ControleurMemory>{
 				return succes;
 			}
 		
-		/*Méthode pour lire une partie présente dans BD*/
-		public ControleurMemory read(int id) {
-			ControleurMemory partieDAO = null;
+		/*Mï¿½thode pour lire une partie prï¿½sente dans BD*/
+		public Partie read(int id) {
+			Partie partieDAO = null;
 			try {
 				String requeteRead = "SELECT FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
 				//String requete = "DELETE FROM "+ TABLE +" VALUES (?) numav== 08)";
@@ -85,7 +86,7 @@ public class PartieDAO extends DAO<ControleurMemory>{
 				pst.setInt(1,id);	/*pst.setInt(4,id);???*/
 				ResultSet rs = pst.executeQuery();
 				if(rs.next()) {
-					partieDAO = new ControleurMemory();   /* rs.getString("nomPartie")+rs.getDate("datePartie"); */
+					partieDAO = new Partie(rs.getString("nomPartie"));   /* rs.getString("nomPartie")+rs.getDate("datePartie"); */
 					}
 			} catch (SQLException e) {
 				//succes=false;

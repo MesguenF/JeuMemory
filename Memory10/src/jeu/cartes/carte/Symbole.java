@@ -5,7 +5,7 @@ public enum Symbole {
 	
 	private static final Symbole[] TABLEAU = Symbole.values(); 					/*Les motifs sont mis dans un tableau*/
 
-	/*Retourne le symbole de la carte à l'indice i du tableau*/
+	/*Retourne le symbole de la carte Ã  l'indice i du tableau*/
 	public static Symbole getSymbole(int indice) { 	return TABLEAU[indice]; }
 	
 	@Override

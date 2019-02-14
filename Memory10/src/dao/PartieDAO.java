@@ -8,7 +8,7 @@ import java.util.Calendar;
 import businessObject.ControleurMemory;
 import jeu.cartes.Partie;
 
-public class PartieDAO extends DAO<ControleurMemory>{
+public class PartieDAO extends DAO<Partie>{
 			
 		private static final String TABLE  = "PARTIE";
 		private static final String CLE_PRIMAIRE = "idPartie";
@@ -25,7 +25,7 @@ public class PartieDAO extends DAO<ControleurMemory>{
 		public boolean create(Partie partie) {
 			boolean succes = true;
 			try {
-				Calendar cal = null; //Calendar?????
+				/*Calendar cal = null; //Calendar????? */
 				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		/*,datePartie*/
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, partie.getNomPartie());
@@ -94,6 +94,7 @@ public class PartieDAO extends DAO<ControleurMemory>{
 			}
 			return partieDAO;
 		}
+
 	}
 
 	

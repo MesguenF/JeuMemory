@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
+import dao.CarteDAO;
 import dao.Connexion;
 import dao.PartieDAO;
 import jeu.cartes.Joueur;
 import jeu.cartes.PaquetCartes;
 import jeu.cartes.Partie;
+import jeu.cartes.carte.Carte;
+import jeu.cartes.carte.Symbole;
 
 
 public class ControleurMemory {
@@ -121,15 +125,17 @@ public class ControleurMemory {
 					PartieDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getNomPartie());*/
 					
-					//Stockage des cartes dans TABLE Carte BD FONCTIONNE
-					for(int i = 0; i < paquet.size(); i++) {
-						Carte nouvCarte = new Carte(nomPartie);
-						PartieDAO.getInstance().create(nouvPartie);
-						
+					//Stockage des cartes dans TABLE Carte BD FONCTIONNE (40 cartes)
+					for(int i = 0; i < 10; i++) {
+						for(int j = 0; j < 4; j++) {
+						Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
+						CarteDAO.getInstance().create(nouvCarte);
+						}
 					}
 					
-					
-					
+					/*Carte nouvCarte = new Carte(Symbole.ours,false);
+					CarteDAO.getInstance().create(nouvCarte);
+					*/
 					
 					
 					//-------------------------Partie Joueur BD-------------------------------
@@ -254,6 +260,7 @@ public class ControleurMemory {
 	/*M�thode pour initialiser la partie*/
 	public void initialiserPartie() {
 		paquet = new PaquetCartes();								/*Cr�ation d'un paquet de cartes*/
+		
 		/*System.out.println(PaquetCartes.cartes);*/
 		vueMemory.afficherTitreMemory();							/*Appel titre console*/
 		String[] lesLignesDuPaquet = this.genererStringPaquet();

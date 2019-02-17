@@ -23,7 +23,7 @@ public class CarteDAO extends DAO<Carte>{
 	public boolean create(Carte carte) {
 		boolean succes = true;
 		try {
-			String requete = "INSERT INTO "+ TABLE +" (symbole) VALUES (?)";
+			String requete = "INSERT INTO "+ TABLE +" (symboleCarte) VALUES (?)";
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 			pst.setInt(1, carte.getOrdinal(carte.getSymbole()));
 			pst.executeUpdate();

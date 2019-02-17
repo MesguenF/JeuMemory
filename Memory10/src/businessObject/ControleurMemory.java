@@ -125,19 +125,15 @@ public class ControleurMemory {
 					PartieDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getNomPartie());*/
 					
-					//Stockage des cartes dans TABLE Carte BD FONCTIONNE (40 cartes)
+					//-------------------------Partie Carte BD-------------------------------
+					/*//Stockage des cartes dans TABLE Carte BD FONCTIONNE (40 cartes)
 					for(int i = 0; i < 10; i++) {
 						for(int j = 0; j < 4; j++) {
 						Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
 						CarteDAO.getInstance().create(nouvCarte);
 						}
-					}
-					
-					/*Carte nouvCarte = new Carte(Symbole.ours,false);
-					CarteDAO.getInstance().create(nouvCarte);
-					*/
-					
-					
+					}*/
+									
 					//-------------------------Partie Joueur BD-------------------------------
 					
 					//Ajout des joueurs dans TABLE Joueur BD FONCTIONNE

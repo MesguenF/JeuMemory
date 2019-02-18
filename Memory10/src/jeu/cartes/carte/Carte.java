@@ -38,5 +38,4 @@ public class Carte /*implements ICarte*/ {
 	public String toString() {
 		return "Carte [symboleCarte=" + symboleCarte + ", visibleBool=" + visibleBool + "]" + "\n";
 	}
-	
 }

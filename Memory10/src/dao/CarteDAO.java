@@ -4,13 +4,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 import jeu.cartes.Joueur;
+import jeu.cartes.PaquetCartes;
 import jeu.cartes.carte.Carte;
 
 public class CarteDAO extends DAO<Carte>{
 	private static final String TABLE  = "CARTE";
 	private static final String CLE_PRIMAIRE = "idCarte";
 	private static CarteDAO instance = null;
+	private static ArrayList<Integer> listeIdCartes = new ArrayList<Integer>();	/*Pour stocker indices des crates pour la distribution BD*/
 	
 	public static 	CarteDAO getInstance() {
 		if(instance == null) {
@@ -29,7 +35,9 @@ public class CarteDAO extends DAO<Carte>{
 			pst.executeUpdate();
 			ResultSet rs = pst.getGeneratedKeys();
 				if (rs.next()) {
-					carte.setNumCarte(rs.getInt(1));   /*Le 1 de getInt(1) indique la colonne de la table Carte*/
+					carte.setNumCarte(rs.getInt(1)); 
+					listeIdCartes.add(carte.getNumCarte());   /*Le 1 de getInt(1) indique la colonne de la table Carte*/
+					System.out.println(listeIdCartes);
 				}
 			} catch (SQLException e) {
 				succes=false;

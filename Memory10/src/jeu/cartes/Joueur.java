@@ -6,7 +6,7 @@ public class Joueur {
 	public String prenomJoueur;
 	public String pseudoJoueur;
 	public int indiceJoueur;
-	public int nbPointsJoueur; //??
+	public int nbPointsJoueur; 
 	
 	/*Constructeurs*/
 	public Joueur(String nomJoueur) {
@@ -30,7 +30,7 @@ public class Joueur {
 		this.nbPointsJoueur = nbPointsJoueur;
 	}
 
-	/*Méthodes*/
+	/*Mï¿½thodes*/
 	public int getNumJoueur() { return numJoueur; }
 	public void setNumJoueur(int numJoueur) { this.numJoueur = numJoueur; }
 	public String getNomJoueur() { return nomJoueur; }

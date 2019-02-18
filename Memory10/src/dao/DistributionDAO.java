@@ -10,15 +10,15 @@ import jeu.cartes.Partie;
 public class DistributionDAO{
 	private static final String TABLE  = "DISTRIBUTION";
 
-	public boolean createDistribution(int idPartie) {
+	public static boolean createDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
 			boolean succes = true;
 			try {
-				String requete = "INSERT INTO "+ TABLE +" (idCarte,positionCarte,visibleCarte) VALUES (?,?,?)";		
+				String requete = "INSERT INTO "+ TABLE +" (idPartie,idCarte,positionCarte,visibleCarte) VALUES (?,?,?,?)";		
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-				pst.setInt(1, idPartie);
+				pst.setInt(1,idPartie);
 				pst.setInt(2, idCarte);
 				pst.setInt(3, positionCarte);
-				pst.setByte(0, x);(4, visibleCarte);
+				pst.setBoolean(4, visibleCarte);
 				pst.executeUpdate();
 				/*ResultSet rs = pst.getGeneratedKeys();
 					if (rs.next()) {
@@ -30,7 +30,6 @@ public class DistributionDAO{
 				}
 				return succes;
 		}
-
 }		
 		
 		

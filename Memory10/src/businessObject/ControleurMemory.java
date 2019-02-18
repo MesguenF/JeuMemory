@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import dao.CarteDAO;
 import dao.Connexion;
+import dao.DistributionDAO;
+import dao.JoueurDAO;
+import dao.ParticipationDAO;
 import dao.PartieDAO;
 import jeu.cartes.Joueur;
 import jeu.cartes.PaquetCartes;
@@ -24,13 +27,13 @@ public class ControleurMemory {
 	public int choix;
 	public int numPartie;	//Pour BD
 	public String nomPartie;
-	public Date datePartie;		//A VOIR????
+	/*public Date datePartie;	*/	//A VOIR????
 			
 	public ControleurMemory(){
 		super();
-		initialiserPartie();			/*Initialisation du paquet de cartes + Menu principal choix*/
+		initialiserPartie();			/*Initialisation du paquet de cartes + Menu principal avec choix*/
 				
-		/*----------------------------SI NOUVELLE PARTIE-------------------------------------*/
+		/*----------------------------------------SI NOUVELLE PARTIE-------------------------------------*/
 		if (choix == 1) {
 			/*GESTION DES JOUEURS*/
 			saisieDesJoueurs();
@@ -116,38 +119,38 @@ public class ControleurMemory {
 				int testSauvegarde = vueMemory.recupIntChoix(2);
 				if(testSauvegarde == 2) {
 					
-					//-------------------------Partie Partie BD-------------------------------
-					
-					//Création partie dans TABLE Partie BD FONCTIONNE
-					/*vueMemory.donnerNomPartie();
+					//Création partie dans TABLE PARTIE BD FONCTIONNE
+					vueMemory.donnerNomPartie();
 					nomPartie = vueMemory.recupString();
 					Partie nouvPartie = new Partie(nomPartie);
 					PartieDAO.getInstance().create(nouvPartie);
-					System.out.println(nouvPartie.getNomPartie());*/
-					
-					//-------------------------Partie Carte BD-------------------------------
-					/*//Stockage des cartes dans TABLE Carte BD FONCTIONNE (40 cartes)
-					for(int i = 0; i < 10; i++) {
-						for(int j = 0; j < 4; j++) {
-						Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
-						CarteDAO.getInstance().create(nouvCarte);
-						}
-					}*/
-									
-					//-------------------------Partie Joueur BD-------------------------------
+					System.out.println(nouvPartie.getNomPartie());
 					
 					//Ajout des joueurs dans TABLE Joueur BD FONCTIONNE
-					/*for(int i  = 0; i < joueurs.size(); i++) {
+					for(int i  = 0; i < joueurs.size(); i++) {
 						Joueur nouvJoueur = new Joueur(joueurs.get(i).nomJoueur,joueurs.get(i).prenomJoueur,joueurs.get(i).pseudoJoueur);
 						JoueurDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
-					}*/
+						//Remplissage TABLE PARTICIPATION BD NE FONCTIONNE PAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						ParticipationDAO.createParticipation(nouvJoueur.getIndiceJoueur(), nouvPartie.getNumPartie(), 0 , nouvJoueur.getNbPointsJoueur(), i + 1);
+					}
 					
-					//Suppression d'un joueur dans TABLE Joueur BD FONCTIONNE
-					/*Joueur nouvJoueur = new Joueur("","","");
-					nouvJoueur.setNumJoueur(13);
-					JoueurDAO.getInstance().delete(nouvJoueur);
-					System.out.println(nouvJoueur);*/
+					
+					
+					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
+					for(int i = 0; i < 10; i++) {
+						Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
+						CarteDAO.getInstance().create(nouvCarte);
+						for(int j = 0; j < PaquetCartes.NBR_CARTES; j++){
+							if(nouvCarte.getOrdinal(nouvCarte.getSymbole()) == paquet.get(j).getOrdinal(paquet.get(j).getSymbole())){
+								//Remplissage TABLE DISTRIBUTION BD FONCTIONNE
+								DistributionDAO.createDistribution(nouvPartie.getNumPartie(),nouvCarte.getNumCarte(), j ,nouvCarte.visibleBool);
+							}
+						}
+					}	
+					
+					
+										
 									
 					Connexion.fermer();								
 				}

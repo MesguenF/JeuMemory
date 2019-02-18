@@ -9,7 +9,6 @@ import jeu.cartes.carte.Symbole;
 public class PaquetCartes {
 	public final static int NBR_CARTES = 40;							/*CONSTANTE nombre de 30 cartes du jeu*/
 	public static List<Carte> cartes = new ArrayList <Carte>();			/*Cr�ation d'une liste de Cartes*/
-	//TODO modifier paquet cartes
 	
 	/*Constructeur d'un PaquetCartes*/
 	public PaquetCartes() {
@@ -29,9 +28,8 @@ public class PaquetCartes {
 		}
 	}
 	
-	//TODO A SUPPRIMER
 	/*M�thode retournant la carte en indice i de la liste*/
-	/*public Carte get(int i) { return PaquetCartes.cartes.get(i); }*/
+	public Carte get(int i) { return PaquetCartes.cartes.get(i); }
 	
 	/*M�thode pour modifier la visibilit� d'une carte*/     
 	public void modifierVisibiliteCarte(int carteJouee, boolean boolVisible){ PaquetCartes.cartes.get(carteJouee).setVisible(boolVisible); }

@@ -59,30 +59,30 @@ public class VueMemory {
 	
 	public void afficherMenuContinuerOuSauvegarder() {
 		System.out.println("-----------------------------------------------------------------------");
-		System.out.println(" CONTINUER : Appuyer sur touche 1 / SAUVEGARDER : Appuyer sur touche 2 ");
+		System.out.println("       TOUCHE 1 : CONTINUER / TOUCHE 2 : SAUVEGARDER ET QUITTER        ");
 		System.out.println("-----------------------------------------------------------------------");
 		System.out.println(" Choix : ? ");
 	}
 	
 	public void afficheTrait() { System.out.println("---------------------------------------------");}
-	public void demanderNomJoueur() { System.out.println(" Entrez le nom du joueur : "); }
-	public void demanderPrenomJoueur() { System.out.println(" Entrer le prenom du joueur : "); }
-	public void demanderPseudoJoueur() { System.out.println(" Entrer le pseudo du joueur : "); }
-	public void enregistrerJoueur() { System.out.println(" Enregistrer le joueur ? / OUI = 1 : NON = 2 ");}
-	public void demanderAjoutJoueur() { System.out.println(" Voulez-vous rentrer un nouveau joueur ?  OUI = 1 / NON = 2 "); }
-	public void afficheJoueurEnregistre() { System.out.println(" Joueur enregistr� ! "); }
+	public void demanderNomJoueur() { System.out.println("Entrez le nom du joueur : "); }
+	public void demanderPrenomJoueur() { System.out.println("Entrer le prenom du joueur : "); }
+	public void demanderPseudoJoueur() { System.out.println("Entrer le pseudo du joueur : "); }
+	public void enregistrerJoueur() { System.out.println("Enregistrer le joueur ? / OUI = 1 : NON = 2 ");}
+	public void demanderAjoutJoueur() { System.out.println("Voulez-vous rentrer un nouveau joueur ?  OUI = 1 / NON = 2 "); }
+	public void afficheJoueurEnregistre() { System.out.println("Joueur enregistr� ! "); }
 	public void afficheJoueurNonEnregistre() { System.out.println("Joueur non enregistr� !"); }
-	public void afficheJoueurMaxAtteint() { System.out.println(" Nombre de joueurs maximal atteint ! "); }
-	public void afficherErreurSaisie() { System.out.println(" Erreur de saisie , recommencez ! "); }
+	public void afficheJoueurMaxAtteint() { System.out.println("Nombre de joueurs maximal atteint ! "); }
+	public void afficherErreurSaisie() { System.out.println("Erreur de saisie , recommencez ! "); }
 	public void demanderCarte() { System.out.println("Carte : "); }
-	public void afficherDesole() { System.out.println("D�sol�, vous n'avez pas trouv� de paire de cartes !"); }
-	public void affiherFelicitations() { System.out.println("F�licitations, vous avez trouv� une paire de cartes !"); }
-	public void afficherCarteDejaChoisie() { System.out.println("Carte d�j� choisie. Recommencez! "); }
-	public void afficherFinDePartie() { System.out.println("FIN DE PARTIE !"); }
+	public void afficherDesole() { System.out.println("Vous n'avez pas trouvé de paire de cartes !"); }
+	public void affiherFelicitations() { System.out.println("Bravo, vous avez trouvé une paire de cartes !"); }
+	public void afficherCarteDejaChoisie() { System.out.println("Carte déjà choisie. Recommencez! "); }
+	public void afficherPlusDeCartes() { System.out.println("Plus de cartes à retourner!"); }
 	public void demanderCoupJoueur(int indiceJoueur, String pseudoJoueur, int pointsJoueur) { 
-		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes � retourner (de 1 � 40) :");
+		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes à retourner (de 1 à 40) :");
 	}
-	public void donnerNomPartie() { System.out.println(" Donner un nom à votre partie : "); }
+	public void donnerNomPartie() { System.out.println("Donner un nom à votre partie : "); }
 	
 	/*M�thode pour r�cup�rer INT choix en sp�cifiant l'�cart souhait� ( 1 � 2 / 1 � 3 / 1 � 40) pour le INT attendu*/
 	public int recupIntChoix(int ecart) {

@@ -6,12 +6,20 @@ public class Partie {
 	public String nomPartie;
 		
 	/**
-	 * @param numPartie
 	 * @param nomPartie
-	 * @param datePartie
 	 */
 	public Partie(String nomPartie) {
 		super();
+		this.nomPartie = nomPartie;
+	}
+
+	/**
+	 * @param numPartie
+	 * @param nomPartie
+	 */
+	public Partie(int numPartie,String nomPartie) {
+		super();
+		this.numPartie = numPartie;
 		this.nomPartie = nomPartie;
 		}
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-
 import dao.CarteDAO;
 import dao.Connexion;
 import dao.DistributionDAO;
@@ -27,17 +26,19 @@ public class ControleurMemory {
 	public int choix;
 	public int numPartie;	//Pour BD
 	public String nomPartie;
-	/*public Date datePartie;	*/	//A VOIR????
-			
+	public boolean saveGame = false;
+				
 	public ControleurMemory(){
 		super();
+		
 		initialiserPartie();			/*Initialisation du paquet de cartes + Menu principal avec choix*/
 				
 		/*----------------------------------------SI NOUVELLE PARTIE-------------------------------------*/
 		if (choix == 1) {
+			
 			/*GESTION DES JOUEURS*/
 			saisieDesJoueurs();
-					
+			
 			/*GESTION DES CARTES*/							
 			int decomptePairesDeCartes = PaquetCartes.NBR_CARTES / 2;				/*Pour decompte paires de cartes*/
 			do {	
@@ -118,7 +119,7 @@ public class ControleurMemory {
 				vueMemory.afficherMenuContinuerOuSauvegarder();	
 				int testSauvegarde = vueMemory.recupIntChoix(2);
 				if(testSauvegarde == 2) {
-					
+					saveGame = true;
 					//Création partie dans TABLE PARTIE BD FONCTIONNE
 					vueMemory.donnerNomPartie();
 					nomPartie = vueMemory.recupString();
@@ -131,11 +132,9 @@ public class ControleurMemory {
 						Joueur nouvJoueur = new Joueur(joueurs.get(i).nomJoueur,joueurs.get(i).prenomJoueur,joueurs.get(i).pseudoJoueur);
 						JoueurDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
-						//Remplissage TABLE PARTICIPATION BD NE FONCTIONNE PAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-						ParticipationDAO.createParticipation(nouvJoueur.getIndiceJoueur(), nouvPartie.getNumPartie(), 0 , nouvJoueur.getNbPointsJoueur(), i + 1);
+						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
+						ParticipationDAO.createParticipation(nouvJoueur.getNumJoueur(), nouvPartie.getNumPartie(), 0 , nouvJoueur.getNbPointsJoueur(), i + 1);
 					}
-					
-					
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
 					for(int i = 0; i < 10; i++) {
@@ -148,39 +147,37 @@ public class ControleurMemory {
 							}
 						}
 					}	
-					
-					
-										
-									
-					Connexion.fermer();								
+					Connexion.fermer();
+					vueMemory.afficherSauvegardeOK();
+					//TODO TEMPO
+					//TODO FERMER CONSOLE
 				}
-			}while(decomptePairesDeCartes != 0); 	//Fin de partie quand plus de paires de cartes			
-			vueMemory.afficherFinDePartie();
+			}while(decomptePairesDeCartes != 0 && saveGame != true); 	//Fin de partie quand plus de paires de cartes 			
+			if(decomptePairesDeCartes == 0) {
+				vueMemory.afficherPlusDeCartes();
+				//TODO CLASSEMENT
+			}
+			vueMemory.afficherFinDeParte();
+			//TODO TEMPO
+			//TODO FERMER CONSOLE
 			
 			//TODO AFFICHAGE CLASSEMENT tri
-			int MaxPoints = 0;
+			/*int MaxPoints = 0;
 			int indiceJoueurGagnant = 0;
 			for(int i = 0 ; i < joueurs.size(); i++) {
 				if(MaxPoints < joueurs.get(i).getNbPointsJoueur()) { 
 					MaxPoints = joueurs.get(i).getNbPointsJoueur();
 					indiceJoueurGagnant = joueurs.get(i).getIndiceJoueur();
 				}
-			}
-			
-			
-			
-			/*int testSauvegarde = vueMemory.afficherMenuContinuerOuSauvegarder();
-				if(testSauvegarde == 2) {
-					vueMemory.afficherSauvegardeOK(); 
-			} while (decomptePairesDeCartes != 0);
-			
-			sc.close();*/
+			}*/
 		}
 
 	
 		/*---------------------------------SI CHARGEE PARTIE-------------------------------------*/
-		/*M�thode pour determiner si Nouvelle Partie avec Noms des joueurs ou Charger Partie*/
 		else if(choix == 2) {
+			PartieDAO.getInstance().read(9);			
+			
+			
 			System.out.println("CHARGEE PARTIE");
 			//ihmConsole.afficherChargerPartie();
 			//TODO restauration de partie
@@ -191,7 +188,7 @@ public class ControleurMemory {
 			System.out.println("SORTIE PROGRAMME");
 			/*System.exit(1);*/
 			System.exit(1);
-			
+			//TODO FERMER CONSOLE
 			
 			
 		}

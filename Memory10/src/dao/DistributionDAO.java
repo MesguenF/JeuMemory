@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import jeu.cartes.PaquetCartes;
 import jeu.cartes.Partie;
+import jeu.cartes.carte.Carte;
+import jeu.cartes.carte.Symbole;
 
 public class DistributionDAO{
 	private static final String TABLE  = "DISTRIBUTION";
@@ -31,7 +34,7 @@ public class DistributionDAO{
 				return succes;
 		}
 	
-	public static boolean getDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
+	/*public static boolean getDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
 		boolean succes = true;
 		try {
 			String requete = "INSERT INTO "+ TABLE +" (idPartie,idCarte,positionCarte,visibleCarte) VALUES (?,?,?,?)";		
@@ -41,34 +44,37 @@ public class DistributionDAO{
 			pst.setInt(3, positionCarte);
 			pst.setBoolean(4, visibleCarte);
 			pst.executeUpdate();
-			/*ResultSet rs = pst.getGeneratedKeys();
+			ResultSet rs = pst.getGeneratedKeys();
 				if (rs.next()) {
 					partie.setNumPartie(rs.getInt(1));   Le 1 de getInt(1) indique la colonne de la table Partie
-				}*/
+				}
 			} catch (SQLException e) {
 				succes=false;
 				e.printStackTrace();
 			}
 			return succes;
-	}
+	}*/
 	
 	/*M�thode pour lire une partie pr�sente dans BD*/
-	public DistributionDAO read(int id) {
-		DistributionDAO distributionDAO = null;
+	public static PaquetCartes getDistribution(Partie partie) {
+		PaquetCartes paquet = new PaquetCartes();
 		try {
-			String requeteRead = "SELECT * FROM DISTRIBUTION WHERE idPartie = " +id;
+			for(int i = 0; i < PaquetCartes.NBR_CARTES; i++) {
+			String requeteRead = "SELECT idCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getNumPartie();
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
-			/*pst.setInt(1,id);
-			pst.executeUpdate();*/
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
-				distributionDAO = new Partie(id,rs.getInt("nomPartie"));
+				Carte carte = new Carte(Symbole.getSymbole(rs.getInt("symboleCarte")),rs.getBoolean("visibleCarte"));
+				carte.setNumCarte(rs.getInt("idCarte"));
 				}
+			}
 			} catch (SQLException e) {
 			//succes=false;
 			e.printStackTrace();
-			}
-			return distributionDAO;
+			
+		}
+			System.out.println(paquet);
+			return paquet;
 		}
 	
 	

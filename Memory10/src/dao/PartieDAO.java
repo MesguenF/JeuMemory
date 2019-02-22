@@ -5,11 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
-import businessObject.ControleurMemory;
 import jeu.cartes.Partie;
 
 public class PartieDAO extends DAO<Partie>{
@@ -26,7 +21,7 @@ public class PartieDAO extends DAO<Partie>{
 			return instance;
 		}
 		
-		/*M�thode pour créer une partie*/
+		/*Méthode pour créer une partie*/
 		public boolean create(Partie partie) {
 			boolean succes = true;
 			try {
@@ -46,19 +41,19 @@ public class PartieDAO extends DAO<Partie>{
 				return succes;
 		}
 
-		/*M�thode pour effacer une partie*/
+		/*Méthode pour effacer une partie*/
 		public boolean delete(Partie partie) {
 			boolean succes = true;
-		try {
-			String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
-			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteDelete, Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1, partie.getNumPartie());
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			succes=false;
-			e.printStackTrace();
-		}
-		return succes;
+			try {
+				String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
+				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteDelete, Statement.RETURN_GENERATED_KEYS);
+				pst.setInt(1, partie.getNumPartie());
+				pst.executeUpdate();
+			} catch (SQLException e) {
+				succes=false;
+				e.printStackTrace();
+			}
+			return succes;
 		}
 		
 		/*M�thode pour mettre � jour une partie*/
@@ -76,12 +71,11 @@ public class PartieDAO extends DAO<Partie>{
 				return succes;
 			}
 		
-		/*Méthode pour lire une partie présente dans BD*/
+		/*Méthode pour retourner une partie présente dans BD*/
 		public Partie read(int id) {
-			
 			Partie partieDAO = null;
 			try {
-				String requeteRead = "SELECT * FROM PARTIE WHERE idPartie = " +id;
+				String requeteRead = "SELECT * FROM PARTIE WHERE idPartie = " + id;
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 				/*pst.setInt(1,id);
 				pst.executeUpdate();*/
@@ -97,7 +91,7 @@ public class PartieDAO extends DAO<Partie>{
 			}
 		
 		/*Méthode pour lire toutes les parties dans la BD*/
-		public ArrayList<Partie> read() {
+		public ArrayList<Partie> readAll() {
 			listePartieBD = new ArrayList<Partie>();
 			Partie partieDAO = null;
 			try {
@@ -107,9 +101,11 @@ public class PartieDAO extends DAO<Partie>{
 				pst.executeUpdate();*/
 				ResultSet rs = pst.executeQuery();
 				if(rs.next()) {
-					partieDAO = new Partie(rs.getInt("idPartie"),rs.getString("nomPartie"));
-					listePartieBD.add(partieDAO);
-					}
+					do{
+						partieDAO = new Partie(rs.getInt("idPartie"),rs.getString("nomPartie"));
+						listePartieBD.add(partieDAO);
+					}while(rs.next() != false);
+				}
 				} catch (SQLException e) {
 				//succes=false;
 				e.printStackTrace();
@@ -117,7 +113,6 @@ public class PartieDAO extends DAO<Partie>{
 				System.out.println(listePartieBD);
 				return listePartieBD;
 			}
-		
 		}
 
 	

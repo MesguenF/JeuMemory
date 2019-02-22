@@ -56,7 +56,7 @@ public class Partie {
 	 */
 	@Override
 	public String toString() {
-		return "Partie [numPartie=" + numPartie + ", nomPartie=" + nomPartie + "]";
+		return "Partie n°: " + numPartie +" - "+"Nom de la partie: " + nomPartie + "\n";
 	}
 	
 	

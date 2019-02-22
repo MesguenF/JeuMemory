@@ -68,7 +68,7 @@ public class ControleurMemory {
 								do{
 									if(carte2 == carte1) { vueMemory.afficherCarteDejaChoisie();}
 									vueMemory.demanderCarte();
-									carte2 = vueMemory.recupIntChoix(PaquetCartes.NBR_CARTES);
+									carte2 = vueMemory.recupIntChoix(1,PaquetCartes.NBR_CARTES);
 								}while(carte2 == carte1);
 								//-----------
 								cptCartes+= 1;
@@ -79,7 +79,7 @@ public class ControleurMemory {
 							/*Pour carte 1*/
 							if(cptCartes == 0) {
 								vueMemory.demanderCarte();
-								carte1 = vueMemory.recupIntChoix(PaquetCartes.NBR_CARTES);
+								carte1 = vueMemory.recupIntChoix(1,PaquetCartes.NBR_CARTES);
 								cptCartes+= 1;
 								paquet.modifierVisibiliteCarte(carte1 - 1, true);
 								lesLignesDuPaquet = this.genererStringPaquet();	
@@ -117,7 +117,7 @@ public class ControleurMemory {
 				
 				/*SAUVEGARDE PARTIE*/
 				vueMemory.afficherMenuContinuerOuSauvegarder();	
-				int testSauvegarde = vueMemory.recupIntChoix(2);
+				int testSauvegarde = vueMemory.recupIntChoix(1,2);
 				if(testSauvegarde == 2) {
 					saveGame = true;
 					//Création partie dans TABLE PARTIE BD FONCTIONNE
@@ -153,6 +153,8 @@ public class ControleurMemory {
 					//TODO FERMER CONSOLE
 				}
 			}while(decomptePairesDeCartes != 0 && saveGame != true); 	//Fin de partie quand plus de paires de cartes 			
+			
+			
 			if(decomptePairesDeCartes == 0) {
 				vueMemory.afficherPlusDeCartes();
 				//TODO CLASSEMENT
@@ -161,7 +163,7 @@ public class ControleurMemory {
 			//TODO TEMPO
 			//TODO FERMER CONSOLE
 			
-			//TODO AFFICHAGE CLASSEMENT tri
+			//TODO AFFICHAGE CLASSEMENT AVEC TRI
 			/*int MaxPoints = 0;
 			int indiceJoueurGagnant = 0;
 			for(int i = 0 ; i < joueurs.size(); i++) {
@@ -176,11 +178,20 @@ public class ControleurMemory {
 		/*---------------------------------SI CHARGEE PARTIE-------------------------------------*/
 		else if(choix == 2) {
 			
-			PartieDAO.getInstance().read();
+			/*Lecture des parties de la table*/
+			vueMemory.afficherListeParties();
+			ArrayList<Partie> listeDesParties = PartieDAO.getInstance().readAll();
+			int tailleListe = listeDesParties.size();
 			
+			/*Choix partie*/
+			vueMemory.afficherChoixPartie();
+			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getNumPartie()),(listeDesParties.get(tailleListe - 1).getNumPartie()));
 			
-			/*Partie newPartie = PartieDAO.getInstance().read();
-			System.out.println(newPartie);*/
+			/*Chargement de la partie*/
+			Partie newPartie = PartieDAO.getInstance().read(choixPartie);
+			System.out.println(newPartie);
+			DistributionDAO.getDistribution(newPartie);
+			
 			
 			
 			System.out.println("CHARGEE PARTIE");
@@ -200,19 +211,7 @@ public class ControleurMemory {
 		sc.close();
 	}
 
-
-
-
-
-
-
 	
-
-
-
-	
-			
-		
 	
 	/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
 
@@ -230,7 +229,7 @@ public class ControleurMemory {
 			String pseudo = vueMemory.recupString();
 			/*Enregistrement joueur*/
 			vueMemory.enregistrerJoueur();
-			test = vueMemory.recupIntChoix(2);
+			test = vueMemory.recupIntChoix(1,2);
 					/*Si oui*/
 			if(test == 1) {
 				compteurJoueur+= 1;
@@ -244,7 +243,7 @@ public class ControleurMemory {
 			/*Autre joueur ?*/
 			if(joueurs.size() < NBR_JOUEURS ) {
 				vueMemory.demanderAjoutJoueur();
-				test = vueMemory.recupIntChoix(2);
+				test = vueMemory.recupIntChoix(1,2);
 			}else {
 				vueMemory.afficheJoueurMaxAtteint();
 				fairePause();
@@ -261,13 +260,12 @@ public class ControleurMemory {
 	/*M�thode pour initialiser la partie*/
 	public void initialiserPartie() {
 		paquet = new PaquetCartes();								/*Cr�ation d'un paquet de cartes*/
-		
 		/*System.out.println(PaquetCartes.cartes);*/
 		vueMemory.afficherTitreMemory();							/*Appel titre console*/
 		String[] lesLignesDuPaquet = this.genererStringPaquet();
 		vueMemory.afficherPaquet(lesLignesDuPaquet);				/*Affichage Plateau de cartes*/
 		vueMemory.afficherMenuChoix();								/*Affichage menu principal*/
-		choix = vueMemory.recupIntChoix(3);							/*R�ception du choix du menu principal*/
+		choix = vueMemory.recupIntChoix(1,3);							/*R�ception du choix du menu principal*/
 	}
 	
 	/*M�thode pour afficher le paquet de cartes*/ 

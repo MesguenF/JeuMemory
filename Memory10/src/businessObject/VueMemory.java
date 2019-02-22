@@ -83,9 +83,11 @@ public class VueMemory {
 		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes à retourner (de 1 à 40) :");
 	}
 	public void donnerNomPartie() { System.out.println("Donner un nom à votre partie : "); }
+	public void afficherListeParties() { System.out.println("Liste des parties disponibles: "); }
+	public void afficherChoixPartie() { System.out.println("Choisir une partie: "); }
 	
 	/*M�thode pour r�cup�rer INT choix en sp�cifiant l'�cart souhait� ( 1 � 2 / 1 � 3 / 1 � 40) pour le INT attendu*/
-	public int recupIntChoix(int ecart) {
+	/*public int recupIntChoix(int ecart) {
 		int valRetour = 0;
 		boolean valide = false;
 		do {
@@ -107,7 +109,32 @@ public class VueMemory {
 		}
 		while (!valide);
 		return valRetour;
+	}*/
+	
+	public int recupIntChoix(int ecartBas,int ecartHaut) {
+		int valRetour = 0;
+		boolean valide = false;
+		do {
+			try {	
+				int choix = 0;
+				choix = sc.nextInt();
+				if(choix < ecartBas || choix > ecartHaut) {
+					System.out.println("Saisie incorrecte, recommencez!");
+					sc.nextLine();
+				}else {
+					System.out.println("Saisie correcte!");
+					valide = true;
+					valRetour = choix;
+				}	
+			}catch(InputMismatchException e) { 
+				System.out.println("Saisie invalide, recommencez!");
+				sc.nextLine();
+			}
+		}
+		while (!valide);
+		return valRetour;
 	}
+	
 	
 	/*M�thode pour r�cup�rer un STRING*/
 	public String recupString() {

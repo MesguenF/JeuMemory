@@ -175,7 +175,12 @@ public class ControleurMemory {
 	
 		/*---------------------------------SI CHARGEE PARTIE-------------------------------------*/
 		else if(choix == 2) {
-			PartieDAO.getInstance().read(9);			
+			
+			PartieDAO.getInstance().read();
+			
+			
+			/*Partie newPartie = PartieDAO.getInstance().read();
+			System.out.println(newPartie);*/
 			
 			
 			System.out.println("CHARGEE PARTIE");

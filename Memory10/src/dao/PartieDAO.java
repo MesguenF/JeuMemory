@@ -4,7 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 import businessObject.ControleurMemory;
 import jeu.cartes.Partie;
 
@@ -12,6 +16,7 @@ public class PartieDAO extends DAO<Partie>{
 			
 		private static final String TABLE  = "PARTIE";
 		private static final String CLE_PRIMAIRE = "idPartie";
+		private static ArrayList<Partie> listePartieBD;
 		private static PartieDAO instance = null;
 		
 		public static 	PartieDAO getInstance() {
@@ -21,7 +26,7 @@ public class PartieDAO extends DAO<Partie>{
 			return instance;
 		}
 		
-		/*M�thode pour cr�er une partie*/
+		/*M�thode pour créer une partie*/
 		public boolean create(Partie partie) {
 			boolean succes = true;
 			try {
@@ -71,23 +76,46 @@ public class PartieDAO extends DAO<Partie>{
 				return succes;
 			}
 		
-		/*M�thode pour lire une partie pr�sente dans BD*/
+		/*Méthode pour lire une partie présente dans BD*/
 		public Partie read(int id) {
+			
 			Partie partieDAO = null;
 			try {
-				String requeteRead = " SELECT FROM " + TABLE + " WHERE" +CLE_PRIMAIRE + " = ?";
+				String requeteRead = "SELECT * FROM PARTIE WHERE idPartie = " +id;
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
-				pst.setInt(1,id);
-				/*pst.executeUpdate();*/
+				/*pst.setInt(1,id);
+				pst.executeUpdate();*/
 				ResultSet rs = pst.executeQuery();
 				if(rs.next()) {
-					partieDAO = new Partie(rs.getInt("idPartie") + rs.getString("nomPartie")); 
+					partieDAO = new Partie(id,rs.getString("nomPartie"));
 					}
 				} catch (SQLException e) {
 				//succes=false;
 				e.printStackTrace();
 				}
 				return partieDAO;
+			}
+		
+		/*Méthode pour lire toutes les parties dans la BD*/
+		public ArrayList<Partie> read() {
+			listePartieBD = new ArrayList<Partie>();
+			Partie partieDAO = null;
+			try {
+				String requeteRead = "SELECT * FROM PARTIE";
+				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
+				/*pst.setInt(1,id);
+				pst.executeUpdate();*/
+				ResultSet rs = pst.executeQuery();
+				if(rs.next()) {
+					partieDAO = new Partie(rs.getInt("idPartie"),rs.getString("nomPartie"));
+					listePartieBD.add(partieDAO);
+					}
+				} catch (SQLException e) {
+				//succes=false;
+				e.printStackTrace();
+				}
+				System.out.println(listePartieBD);
+				return listePartieBD;
 			}
 		
 		}

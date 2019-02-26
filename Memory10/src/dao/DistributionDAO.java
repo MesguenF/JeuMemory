@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.plaf.synth.SynthStyle;
+import javax.swing.plaf.synth.SynthStyleFactory;
+
 import jeu.cartes.PaquetCartes;
 import jeu.cartes.Partie;
 import jeu.cartes.carte.Carte;
@@ -59,21 +62,26 @@ public class DistributionDAO{
 	public static PaquetCartes getDistribution(Partie partie) {
 		PaquetCartes paquet = new PaquetCartes();
 		try {
-			for(int i = 0; i < PaquetCartes.NBR_CARTES; i++) {
+			
 			String requeteRead = "SELECT idCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getNumPartie();
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
-				Carte carte = new Carte(Symbole.getSymbole(rs.getInt("symboleCarte")),rs.getBoolean("visibleCarte"));
+				
+				System.out.println(rs.next());
+				Carte carte = new Carte();
 				carte.setNumCarte(rs.getInt("idCarte"));
+				System.out.println(carte.numCarte);
 				}
-			}
+			
+			
+			
 			} catch (SQLException e) {
 			//succes=false;
 			e.printStackTrace();
 			
 		}
-			System.out.println(paquet);
+			/*System.out.println(paquet);*/
 			return paquet;
 		}
 	

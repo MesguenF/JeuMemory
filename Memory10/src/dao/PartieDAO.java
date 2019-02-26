@@ -75,7 +75,7 @@ public class PartieDAO extends DAO<Partie>{
 		public Partie read(int id) {
 			Partie partieDAO = null;
 			try {
-				String requeteRead = "SELECT * FROM PARTIE WHERE idPartie = " + id;
+				String requeteRead = "SELECT nomPartie FROM PARTIE WHERE idPartie = " + id;
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 				/*pst.setInt(1,id);
 				pst.executeUpdate();*/

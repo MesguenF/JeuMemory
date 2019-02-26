@@ -32,6 +32,14 @@ public class ControleurMemory {
 		super();
 		
 		initialiserPartie();			/*Initialisation du paquet de cartes + Menu principal avec choix*/
+		
+		/*//Si TABLE CRATE VIDE : Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
+		//TODO TEST SI TABLE VIDE
+		for(int i = 0; i < 10; i++) {
+			Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
+			CarteDAO.getInstance().create(nouvCarte);
+			}	
+		Connexion.fermer();*/
 				
 		/*----------------------------------------SI NOUVELLE PARTIE-------------------------------------*/
 		if (choix == 1) {
@@ -120,6 +128,7 @@ public class ControleurMemory {
 				int testSauvegarde = vueMemory.recupIntChoix(1,2);
 				if(testSauvegarde == 2) {
 					saveGame = true;
+					
 					//Création partie dans TABLE PARTIE BD FONCTIONNE
 					vueMemory.donnerNomPartie();
 					nomPartie = vueMemory.recupString();
@@ -127,7 +136,7 @@ public class ControleurMemory {
 					PartieDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getNomPartie());
 					
-					//Ajout des joueurs dans TABLE Joueur BD FONCTIONNE
+					//Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE
 					for(int i  = 0; i < joueurs.size(); i++) {
 						Joueur nouvJoueur = new Joueur(joueurs.get(i).nomJoueur,joueurs.get(i).prenomJoueur,joueurs.get(i).pseudoJoueur);
 						JoueurDAO.getInstance().create(nouvJoueur);
@@ -184,9 +193,10 @@ public class ControleurMemory {
 			int tailleListe = listeDesParties.size();
 			
 			/*Choix partie*/
+			//TODO TEST SI PAS DE PARTIE DANS BD
 			vueMemory.afficherChoixPartie();
 			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getNumPartie()),(listeDesParties.get(tailleListe - 1).getNumPartie()));
-			
+			System.out.println(choixPartie);
 			/*Chargement de la partie*/
 			Partie newPartie = PartieDAO.getInstance().read(choixPartie);
 			System.out.println(newPartie);

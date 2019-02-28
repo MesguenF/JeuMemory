@@ -12,7 +12,7 @@ import dao.ParticipationDAO;
 import dao.PartieDAO;
 import jeu.cartes.Player;
 import jeu.cartes.PaquetCartes;
-import jeu.cartes.Partie;
+import jeu.cartes.Game;
 import jeu.cartes.carte.Carte;
 import jeu.cartes.carte.Symbole;
 
@@ -133,9 +133,9 @@ public class ControleurMemory {
 					//Création partie dans TABLE PARTIE BD FONCTIONNE
 					vueMemory.donnerNomPartie();
 					nomPartie = vueMemory.recupString();
-					Partie nouvPartie = new Partie(nomPartie);
+					Game nouvPartie = new Game(nomPartie);
 					PartieDAO.getInstance().create(nouvPartie);
-					System.out.println(nouvPartie.getNomPartie());
+					System.out.println(nouvPartie.getGameName());
 					
 					//Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE
 					for(int i  = 0; i < joueurs.size(); i++) {
@@ -143,7 +143,7 @@ public class ControleurMemory {
 						JoueurDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
-						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getNumPartie(), 0 , nouvJoueur.getPlayerScore(), i + 1);
+						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), 0 , nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
@@ -153,7 +153,7 @@ public class ControleurMemory {
 						for(int j = 0; j < PaquetCartes.NBR_CARTES; j++){
 							if(nouvCarte.getOrdinal(nouvCarte.getSymbole()) == paquet.get(j).getOrdinal(paquet.get(j).getSymbole())){
 								//Remplissage TABLE DISTRIBUTION BD FONCTIONNE
-								DistributionDAO.createDistribution(nouvPartie.getNumPartie(),nouvCarte.getNumCarte(), j ,nouvCarte.visibleBool);
+								DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getNumCarte(), j ,nouvCarte.visibleBool);
 							}
 						}
 					}	
@@ -190,16 +190,16 @@ public class ControleurMemory {
 			
 			/*Lecture des parties de la table*/
 			vueMemory.afficherListeParties();
-			ArrayList<Partie> listeDesParties = PartieDAO.getInstance().readAll();
+			ArrayList<Game> listeDesParties = PartieDAO.getInstance().readAll();
 			int tailleListe = listeDesParties.size();
 			
 			/*Choix partie*/
 			//TODO TEST SI PAS DE PARTIE DANS BD
 			vueMemory.afficherChoixPartie();
-			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getNumPartie()),(listeDesParties.get(tailleListe - 1).getNumPartie()));
+			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getGameNumber()),(listeDesParties.get(tailleListe - 1).getGameNumber()));
 			System.out.println(choixPartie);
 			/*Chargement de la partie*/
-			Partie newPartie = PartieDAO.getInstance().read(choixPartie);
+			Game newPartie = PartieDAO.getInstance().read(choixPartie);
 			System.out.println(newPartie);
 			/*Création de la distribution*/
 			PaquetCartes newpaquet = DistributionDAO.readDistribution(newPartie);

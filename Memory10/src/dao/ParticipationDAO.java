@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import jeu.cartes.Partie;
+import jeu.cartes.Game;
 
 public class ParticipationDAO {
 	private static final String TABLE  = "PARTICIPATION";
@@ -44,10 +44,10 @@ public class ParticipationDAO {
 		return succes;
 	}
 	
-	public boolean deleteParticipation(Partie partie) {
+	public boolean deleteParticipation(Game partie) {
 		boolean succes = true;
 		try {
-			String requete = "DELETE "+TABLE+" WHERE idPartie = "+ partie.getNumPartie();			
+			String requete = "DELETE "+TABLE+" WHERE idPartie = "+ partie.getGameNumber();			
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 			pst.executeUpdate();
 			//TODO executeQuery ??
@@ -58,10 +58,10 @@ public class ParticipationDAO {
 		return succes;
 	}
 	
-	public static int [] readParticipation(Partie partie) {
+	public static int [] readParticipation(Game partie) {
 		int [] tab = new int[4];
 		try {
-			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + partie.getNumPartie();
+			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + partie.getGameNumber();
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {

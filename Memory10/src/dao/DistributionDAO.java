@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import jeu.cartes.PaquetCartes;
-import jeu.cartes.Partie;
+import jeu.cartes.Game;
 import jeu.cartes.carte.Carte;
 import jeu.cartes.carte.Symbole;
 
@@ -44,10 +44,10 @@ public class DistributionDAO{
 		}
 	
 		
-	public boolean deleteDistribution(Partie partie) {
+	public boolean deleteDistribution(Game partie) {
 		boolean succes = true;
 		try {
-			String requete = "DELETE FROM "+TABLE+" WHERE idPartie = " + partie.getNumPartie();	
+			String requete = "DELETE FROM "+TABLE+" WHERE idPartie = " + partie.getGameNumber();	
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 			pst.executeUpdate();
 		} catch (SQLException e) {
@@ -57,10 +57,10 @@ public class DistributionDAO{
 		return succes;
 	}
 	
-	public static PaquetCartes readDistribution(Partie partie) {
+	public static PaquetCartes readDistribution(Game partie) {
 		PaquetCartes paquet = new PaquetCartes();
 		try {
-			String requeteRead1 = "SELECT idCarte, positionCarte, visibleCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getNumPartie();
+			String requeteRead1 = "SELECT idCarte, positionCarte, visibleCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getGameNumber();
 			PreparedStatement pst1 = Connexion.getInstance().prepareStatement(requeteRead1, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs1 = pst1.executeQuery();
 			if(rs1.next()) {

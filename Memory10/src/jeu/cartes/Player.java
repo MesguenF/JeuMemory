@@ -1,11 +1,25 @@
 package jeu.cartes;
-
+/**
+ * @author admin
+ *
+ */
 public class Player {
 	public int playerNumber; //For Data Base
 	public String playerLastName, playerFirstName, playerHandle;
 	public int playerPosition,playerScore; 
 	
-	/*Constructeurs*/
+	/**
+	 * @param pln
+	 */
+	public Player(String pln) {
+		super();
+	}
+	
+	/**
+	 * @param pln
+	 * @param pfn
+	 * @param ph
+	 */
 	public Player(String pln, String pfn, String ph) {
 		super();
 		this.playerLastName = pln;
@@ -13,6 +27,13 @@ public class Player {
 		this.playerHandle = ph;
 	}
 
+	/**
+	 * @param pln
+	 * @param pfn
+	 * @param ph
+	 * @param pp
+	 * @param ps
+	 */
 	public Player(String pln, String pfn, String ph, int pp, int ps) {
 		super();
 		this.playerLastName = pln;
@@ -35,7 +56,9 @@ public class Player {
 	public int getPlayerScore() { return playerScore; }
 	public void setPlayerScore(int ps) { this.playerScore = ps; }
 
-	@Override
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return "[Last Name=" + playerLastName + ", First Name=" + playerFirstName + ", Player Handle=" + playerHandle
 				+ ", Player Position=" + playerPosition  + ", Player Score=" + playerScore + "]" + "\n";

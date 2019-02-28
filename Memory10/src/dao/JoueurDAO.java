@@ -85,7 +85,7 @@ public class JoueurDAO extends DAO<Player>{
 			pst.setInt(1,id);	/*pst.setInt(4,id);???*/
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
-				joueurDAO = new Player(rs.getString("nomJoueur")+rs.getString("prenomJoueur")+rs.getString("pseudoJoueur")); /*+rs.getInt("indiceJoueur")+rs.getInt("nbPointsJoueur")*/ /*PAS BESOIN ???*/
+				joueurDAO = new Player(rs.getString("nomJoueur")+rs.getString("prenomJoueur")+rs.getString("pseudoJoueur")); 
 				}
 		} catch (SQLException e) {
 			//succes=false;

@@ -16,7 +16,6 @@ import jeu.cartes.Game;
 import jeu.cartes.carte.Carte;
 import jeu.cartes.carte.Symbole;
 
-
 public class ControleurMemory {
 	private static final int NBR_JOUEURS = 4;		/*Nombre de joueurs max*/
 	public static PaquetCartes paquet; 				// mod�le
@@ -52,10 +51,10 @@ public class ControleurMemory {
 			int decomptePairesDeCartes = PaquetCartes.NBR_CARTES / 2;				/*Pour decompte paires de cartes*/
 			do {	
 				int comptageJoueurs = 0;
+				main = comptageJoueurs + 1;
 				do {
 					int carte1 = 0;
 					int carte2 = 0;
-					/*int cptCartes = 0;*/
 					boolean bool = false;	
 					
 					/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
@@ -64,7 +63,7 @@ public class ControleurMemory {
 					/*Pour affichage du paquet*/
 					String[] lesLignesDuPaquet = this.genererStringPaquet();			
 					vueMemory.afficherPaquet(lesLignesDuPaquet);
-
+					System.out.println("Tour Joueur: " + main);
 					/*Pour le choix des cartes*/
 					//------------
 					do {
@@ -102,7 +101,7 @@ public class ControleurMemory {
 							bool = true;
 							decomptePairesDeCartes-= 1;
 							vueMemory.affiherFelicitations();
-							joueurs.get(comptageJoueurs).setPlayerScore(1);
+							joueurs.get(comptageJoueurs).setPlayerScore();
 							
 						}else{
 							/*Si non*/
@@ -118,8 +117,10 @@ public class ControleurMemory {
 					/*Pour roulement des joueurs*/
 					if(comptageJoueurs == joueurs.size()-1) {
 						comptageJoueurs = 0;
+						main = comptageJoueurs + 1;
 					}else{
 						comptageJoueurs+= 1;
+						main = comptageJoueurs + 1;
 					}
 				}while(comptageJoueurs != 0);
 				
@@ -143,7 +144,7 @@ public class ControleurMemory {
 						JoueurDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
-						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), 0 , nouvJoueur.getPlayerScore(), i + 1);
+						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), main , nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)

@@ -54,13 +54,13 @@ public class Player {
 	public int getPlayerPosition() { return playerPosition; }
 	public void setPlayerPosition(int pp) { this.playerPosition = pp; }
 	public int getPlayerScore() { return playerScore; }
-	public void setPlayerScore(int ps) { this.playerScore = ps; }
+	public void setPlayerScore() { this.playerScore += 1; }
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "[Last Name=" + playerLastName + ", First Name=" + playerFirstName + ", Player Handle=" + playerHandle
-				+ ", Player Position=" + playerPosition  + ", Player Score=" + playerScore + "]" + "\n";
+		return "[Nom=" + playerLastName + ", Prenom=" + playerFirstName + ", Pseudo=" + playerHandle
+				+ ", Position=" + playerPosition  + ", Score=" + playerScore + "]" + "\n";
 	}
 }

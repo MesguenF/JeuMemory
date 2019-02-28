@@ -27,7 +27,7 @@ public class ParticipationDAO {
 			}
 			return succes;
 	}
-	
+	//TODO TEST
 	public boolean updateParticipation(int idJoueur,int idPartie, int main, int scoreJoueur, int positionTour) {
 		boolean succes = true;
 		try {
@@ -43,7 +43,7 @@ public class ParticipationDAO {
 		}
 		return succes;
 	}
-	
+	//TODO TEST
 	public boolean deleteParticipation(Game partie) {
 		boolean succes = true;
 		try {
@@ -57,7 +57,7 @@ public class ParticipationDAO {
 		}
 		return succes;
 	}
-	
+	//TODO TEST
 	public static int [] readParticipation(Game partie) {
 		int [] tab = new int[4];
 		try {

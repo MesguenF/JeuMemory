@@ -29,6 +29,7 @@ public class DistributionDAO{
 			return succes;
 		}
 	
+	//TODO TEST
 	public boolean updateDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
 			boolean succes = true;
 			try {
@@ -42,8 +43,7 @@ public class DistributionDAO{
 			}
 			return succes;
 		}
-	
-		
+	//TODO TEST
 	public boolean deleteDistribution(Game partie) {
 		boolean succes = true;
 		try {

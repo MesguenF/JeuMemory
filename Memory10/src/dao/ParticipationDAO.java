@@ -4,11 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import jeu.cartes.PaquetCartes;
 import jeu.cartes.Partie;
-import jeu.cartes.carte.Carte;
-import jeu.cartes.carte.Symbole;
 
 public class ParticipationDAO {
 	private static final String TABLE  = "PARTICIPATION";
@@ -24,10 +20,7 @@ public class ParticipationDAO {
 			pst.setInt(4, scoreJoueur);
 			pst.setInt(5, positionTour);
 			pst.executeUpdate();
-			/*ResultSet rs = pst.getGeneratedKeys();
-				if (rs.next()) {
-					partie.setNumPartie(rs.getInt(1));   Le 1 de getInt(1) indique la colonne de la table Partie
-				}*/
+			//TODO executeQuery ??
 			} catch (SQLException e) {
 				succes=false;
 				e.printStackTrace();
@@ -35,38 +28,58 @@ public class ParticipationDAO {
 			return succes;
 	}
 	
-	/*M�thode pour lire une partie pr�sente dans BD*///TODO
-	public static int [] getParticipation(Partie partie) {
+	public boolean updateParticipation(int idJoueur,int idPartie, int main, int scoreJoueur, int positionTour) {
+		boolean succes = true;
+		try {
+			String requete = "UPDATE "+TABLE+" SET main = ? SET scoreJoueur = ?,  WHERE idJoueur = "+ idJoueur + "AND idPartie = " + idPartie;			
+			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
+			pst.setInt(1,main);
+			pst.setInt(2,scoreJoueur);
+			pst.executeUpdate();
+			//TODO executeQuery ??
+		} catch (SQLException e) {
+			succes=false;
+			e.printStackTrace();
+		}
+		return succes;
+	}
+	
+	public boolean deleteParticipation(Partie partie) {
+		boolean succes = true;
+		try {
+			String requete = "DELETE "+TABLE+" WHERE idPartie = "+ partie.getNumPartie();			
+			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
+			pst.executeUpdate();
+			//TODO executeQuery ??
+		} catch (SQLException e) {
+			succes=false;
+			e.printStackTrace();
+		}
+		return succes;
+	}
+	
+	public static int [] readParticipation(Partie partie) {
 		int [] tab = new int[4];
 		try {
-			String requeteRead1 = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + partie.getNumPartie();
-			PreparedStatement pst1 = Connexion.getInstance().prepareStatement(requeteRead1, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs1 = pst1.executeQuery();
-			if(rs1.next()) {
+			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + partie.getNumPartie();
+			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = pst.executeQuery();
+			if(rs.next()) {
 				do {
-					tab[0] = rs1.getInt("idJoueur");
-					tab[1] = rs1.getInt("main");
-					tab[2] = rs1.getInt("scoreJoueur");
-					tab[3] = rs1.getInt("positionTour");
-					System.out.println("num carte : " + carte.getNumCarte());
-					System.out.println("position carte : " + positionCarte);
-										
-					String requeteRead2 = " SELECT symboleCarte FROM  CARTE  WHERE idCarte = " +  (rs1.getInt("idCarte"));
-					PreparedStatement pst2 = Connexion.getInstance().prepareStatement(requeteRead2, Statement.RETURN_GENERATED_KEYS);
-					ResultSet rs2 = pst2.executeQuery();
-					if(rs2.next()) {
-						//TODO VERIF SYMBOLE INT
-						System.out.println("symbole INT:" + rs2.getInt("symboleCarte"));
-						carte.setSymbole(Symbole.getSymbole(rs2.getInt("symboleCarte")));
-						System.out.println(carte);
-					}
-					
-				}while(rs1.next()!= false);
+					tab[0] = rs.getInt("idJoueur");
+					tab[1] = rs.getInt("main");
+					tab[2] = rs.getInt("scoreJoueur");
+					tab[3] = rs.getInt("positionTour");
+					//A SUPPRIMER
+					System.out.println(tab[0]);
+					System.out.println(tab[1]);
+					System.out.println(tab[2]);
+					System.out.println(tab[3]);
+				}while(rs.next()!= false);
 			}
 			} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return tab;
 	}
 }

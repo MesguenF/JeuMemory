@@ -3,7 +3,7 @@ package businessObject;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import jeu.cartes.Joueur;
+import jeu.cartes.Player;
 
 public class VueMemory {
 	private Scanner sc = new Scanner(System.in);
@@ -145,7 +145,7 @@ public class VueMemory {
 	}
 
 	/*M�thode pour afficher la liste des joueurs*/
-	public String afficheListeJoueurs(List<Joueur> j) {
+	public String afficheListeJoueurs(List<Player> j) {
 		String texte = null;
 		for(int i = 0 ; i < j.size(); i++) {
 			texte+=j.get(i).toString();

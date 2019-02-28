@@ -29,8 +29,35 @@ public class DistributionDAO{
 			return succes;
 		}
 	
-	/*M�thode pour lire une partie pr�sente dans BD*/
-	public static PaquetCartes getDistribution(Partie partie) {
+	public boolean updateDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
+			boolean succes = true;
+			try {
+				String requete = "UPDATE "+TABLE+" SET visibleCarte = ?,  WHERE idPartie = "+ idPartie + "AND idCarte = " + idCarte + " AND positionCarte = " + positionCarte;			
+				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
+				pst.setBoolean(1,visibleCarte);
+				pst.executeUpdate();
+			} catch (SQLException e) {
+				succes=false;
+				e.printStackTrace();
+			}
+			return succes;
+		}
+	
+		
+	public boolean deleteDistribution(Partie partie) {
+		boolean succes = true;
+		try {
+			String requete = "DELETE FROM "+TABLE+" WHERE idPartie = " + partie.getNumPartie();	
+			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			succes=false;
+			e.printStackTrace();
+		}
+		return succes;
+	}
+	
+	public static PaquetCartes readDistribution(Partie partie) {
 		PaquetCartes paquet = new PaquetCartes();
 		try {
 			String requeteRead1 = "SELECT idCarte, positionCarte, visibleCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getNumPartie();
@@ -64,7 +91,3 @@ public class DistributionDAO{
 		return paquet;
 	}
 }		
-		
-		
-	
-

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
-import jeu.cartes.Joueur;
+import jeu.cartes.Player;
 import jeu.cartes.PaquetCartes;
 import jeu.cartes.carte.Carte;
 

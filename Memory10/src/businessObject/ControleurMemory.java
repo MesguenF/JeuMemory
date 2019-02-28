@@ -10,7 +10,7 @@ import dao.DistributionDAO;
 import dao.JoueurDAO;
 import dao.ParticipationDAO;
 import dao.PartieDAO;
-import jeu.cartes.Joueur;
+import jeu.cartes.Player;
 import jeu.cartes.PaquetCartes;
 import jeu.cartes.Partie;
 import jeu.cartes.carte.Carte;
@@ -22,7 +22,7 @@ public class ControleurMemory {
 	public static PaquetCartes paquet; 				// mod�le
 	public Scanner sc = new Scanner(System.in);
 	public VueMemory vueMemory = new VueMemory(); 	// vu
-	public static List<Joueur> joueurs = new ArrayList <Joueur>();	//Liste des joueurs
+	public static List<Player> joueurs = new ArrayList <Player>();	//Liste des joueurs
 	public int choix;
 	public int numPartie;	//Pour BD
 	public String nomPartie;
@@ -59,7 +59,7 @@ public class ControleurMemory {
 					boolean bool = false;	
 					
 					/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
-					vueMemory.demanderCoupJoueur(joueurs.get(comptageJoueurs).indiceJoueur, joueurs.get(comptageJoueurs).pseudoJoueur, joueurs.get(comptageJoueurs).nbPointsJoueur);
+					vueMemory.demanderCoupJoueur(joueurs.get(comptageJoueurs).playerPosition, joueurs.get(comptageJoueurs).playerHandle, joueurs.get(comptageJoueurs).playerScore);
 
 					/*Pour affichage du paquet*/
 					String[] lesLignesDuPaquet = this.genererStringPaquet();			
@@ -102,7 +102,7 @@ public class ControleurMemory {
 							bool = true;
 							decomptePairesDeCartes-= 1;
 							vueMemory.affiherFelicitations();
-							joueurs.get(comptageJoueurs).setNbPointsJoueur(1);
+							joueurs.get(comptageJoueurs).setPlayerScore(1);
 							
 						}else{
 							/*Si non*/
@@ -139,11 +139,11 @@ public class ControleurMemory {
 					
 					//Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE
 					for(int i  = 0; i < joueurs.size(); i++) {
-						Joueur nouvJoueur = new Joueur(joueurs.get(i).nomJoueur,joueurs.get(i).prenomJoueur,joueurs.get(i).pseudoJoueur);
+						Player nouvJoueur = new Player(joueurs.get(i).playerLastName,joueurs.get(i).playerFirstName,joueurs.get(i).playerHandle);
 						JoueurDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
-						ParticipationDAO.createParticipation(nouvJoueur.getNumJoueur(), nouvPartie.getNumPartie(), 0 , nouvJoueur.getNbPointsJoueur(), i + 1);
+						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getNumPartie(), 0 , nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
@@ -202,11 +202,11 @@ public class ControleurMemory {
 			Partie newPartie = PartieDAO.getInstance().read(choixPartie);
 			System.out.println(newPartie);
 			/*Création de la distribution*/
-			PaquetCartes newpaquet = DistributionDAO.getDistribution(newPartie);
+			PaquetCartes newpaquet = DistributionDAO.readDistribution(newPartie);
 			
 			/*Création de la participation*/
-			
-			
+			ParticipationDAO.readParticipation(newPartie);
+						
 			
 			System.out.println("CHARGEE PARTIE");
 			//ihmConsole.afficherChargerPartie();
@@ -219,8 +219,6 @@ public class ControleurMemory {
 			/*System.exit(1);*/
 			System.exit(1);
 			//TODO FERMER CONSOLE
-			
-			
 		}
 		sc.close();
 	}
@@ -247,7 +245,7 @@ public class ControleurMemory {
 					/*Si oui*/
 			if(test == 1) {
 				compteurJoueur+= 1;
-				Joueur j = new Joueur(nom, prenom, pseudo, compteurJoueur,0);
+				Player j = new Player(nom, prenom, pseudo, compteurJoueur,0);
 				joueurs.add(j);
 				vueMemory.afficheJoueurEnregistre();
 				vueMemory.afficheListeJoueurs(joueurs);

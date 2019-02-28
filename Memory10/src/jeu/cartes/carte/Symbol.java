@@ -1,14 +1,19 @@
 package jeu.cartes.carte;
 
-public enum Symbole {
-	ours, lion, girafe, zebre, cheval, gnou, singe, chevre, chien, chat;		/*10 Motifs pour les cartes*/
+public enum Symbol {
+	ours, lion, girafe, zebre, cheval, gnou, singe, chevre, chien, chat;		
 	
-	private static final Symbole[] TABLEAU = Symbole.values(); 					/*Les motifs sont mis dans un tableau*/
-
-	/*Retourne le symbole de la carte à l'indice i du tableau*/
-	public static Symbole getSymbole(int indice) { 	return TABLEAU[indice]; }
-	/*public static int getOrdinal(Symbole symb) { 	return symb.ordinal(); }*/
+	private static final Symbol[] board = Symbol.values();
 	
+	/**
+	 * @param i
+	 * @return
+	 */
+	public static Symbol getSymbol(int i) {	return board[i]; }
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Enum#toString()
+	 */
 	@Override
 	public String toString() {
 		String rep="";
@@ -49,5 +54,4 @@ public enum Symbole {
 		}
 		return rep;
 	}
-		
 }

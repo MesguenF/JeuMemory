@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import jeu.cartes.Player;
-import jeu.cartes.PaquetCartes;
-import jeu.cartes.carte.Carte;
+import jeu.cartes.CardPack;
+import jeu.cartes.carte.Card;
 
-public class CarteDAO extends DAO<Carte>{
+public class CarteDAO extends DAO<Card>{
 	private static final String TABLE  = "CARTE";
 	private static final String CLE_PRIMAIRE = "idCarte";
 	private static CarteDAO instance = null;
@@ -27,18 +27,18 @@ public class CarteDAO extends DAO<Carte>{
 	}
 	
 	/*M�thode pour cr�er une carte*/
-	public boolean create(Carte carte) {
+	public boolean create(Card carte) {
 		boolean succes = true;
 		try {
 			String requete = "INSERT INTO "+ TABLE +" (symboleCarte) VALUES (?)";
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1, carte.getOrdinal(carte.getSymbole()));
+			pst.setInt(1, carte.getOrdinal(carte.getSymbol()));
 			pst.executeUpdate();
 			ResultSet rs = pst.getGeneratedKeys();
 				if (rs.next()) {
-					carte.setNumCarte(rs.getInt(1)); 
+					carte.setCardNumber(rs.getInt(1)); 
 					//TODO A SUPPRIMER
-					listeIdCartes.add(carte.getNumCarte());   /*Le 1 de getInt(1) indique la colonne de la table Carte*/
+					listeIdCartes.add(carte.getCardNumber());   /*Le 1 de getInt(1) indique la colonne de la table Carte*/
 					System.out.println(listeIdCartes);
 				}
 			} catch (SQLException e) {
@@ -49,13 +49,13 @@ public class CarteDAO extends DAO<Carte>{
 	}
 	
 	/*M�thode pour effacer une carte*/
-	public boolean delete(Carte carte) {
+	public boolean delete(Card carte) {
 		boolean succes = true;
 	try {
 		String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
 		//String requete = "DELETE FROM "+ TABLE +" VALUES (?) numav== 14)";
 		PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteDelete, Statement.RETURN_GENERATED_KEYS);
-		pst.setInt(1, carte.getNumCarte());
+		pst.setInt(1, carte.getCardNumber());
 		pst.executeUpdate();
 	} catch (SQLException e) {
 		succes=false;
@@ -65,14 +65,14 @@ public class CarteDAO extends DAO<Carte>{
 	}
 	
 	/*M�thode pour mettre � jour une carte*/
-	public boolean update(Carte carte) {
+	public boolean update(Card carte) {
 			boolean succes = true;
 			try {
 				String requete = "UPDATE "+TABLE+" SET symboleCarte = ?, WHERE "+CLE_PRIMAIRE+" = ?";
 				//String requete = "UPDATE "+TABLE+" SET nomav = ?, loc = ?, capacite = ? WHERE "+CLE_PRIMAIRE+" = 9";
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, carte.getSymbole().toString());
-				pst.setInt(4, carte.getNumCarte());
+				pst.setString(1, carte.getSymbol().toString());
+				pst.setInt(4, carte.getCardNumber());
 				pst.executeUpdate();
 			} catch (SQLException e) {
 				succes=false;
@@ -82,8 +82,8 @@ public class CarteDAO extends DAO<Carte>{
 		}
 
 	/*M�thode pour lire une carte pr�sente dans BD*/
-	public Carte read(int id) {
-		Carte carteDAO = null;
+	public Card read(int id) {
+		Card carteDAO = null;
 		try {
 			String requeteRead = "SELECT FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
 			//String requete = "DELETE FROM "+ TABLE +" VALUES (?) numav== 08)";
@@ -91,7 +91,7 @@ public class CarteDAO extends DAO<Carte>{
 			pst.setInt(1,id);	/*pst.setInt(4,id);???*/
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
-				carteDAO = new Carte();		/*rs.getString("symboleCarte")+rs.getString("visibleBool"));*/
+				carteDAO = new Card();		/*rs.getString("symboleCarte")+rs.getString("visibleBool"));*/
 				}
 		} catch (SQLException e) {
 			//succes=false;

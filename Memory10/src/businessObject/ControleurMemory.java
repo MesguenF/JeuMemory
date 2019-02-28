@@ -11,14 +11,14 @@ import dao.JoueurDAO;
 import dao.ParticipationDAO;
 import dao.PartieDAO;
 import jeu.cartes.Player;
-import jeu.cartes.PaquetCartes;
+import jeu.cartes.CardPack;
 import jeu.cartes.Game;
-import jeu.cartes.carte.Carte;
-import jeu.cartes.carte.Symbole;
+import jeu.cartes.carte.Card;
+import jeu.cartes.carte.Symbol;
 
 public class ControleurMemory {
 	private static final int NBR_JOUEURS = 4;		/*Nombre de joueurs max*/
-	public static PaquetCartes paquet; 				// mod�le
+	public static CardPack paquet; 				// mod�le
 	public Scanner sc = new Scanner(System.in);
 	public VueMemory vueMemory = new VueMemory(); 	// vu
 	public static List<Player> joueurs = new ArrayList <Player>();	//Liste des joueurs
@@ -41,14 +41,42 @@ public class ControleurMemory {
 			}	
 		Connexion.fermer();*/
 				
-		/*----------------------------------------SI NOUVELLE PARTIE-------------------------------------*/
-		if (choix == 1) {
+		/*----------------------------------------SI CHARGER PARTIE-------------------------------------*/
+		if (choix == 2) {
 			
+			/*Lecture des parties de la table*/
+			vueMemory.afficherListeParties();
+			ArrayList<Game> listeDesParties = PartieDAO.getInstance().readAll();
+			int tailleListe = listeDesParties.size();
+			
+			/*Choix partie*/
+			//TODO TEST SI PAS DE PARTIE DANS BD
+			vueMemory.afficherChoixPartie();
+			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getGameNumber()),(listeDesParties.get(tailleListe - 1).getGameNumber()));
+			System.out.println(choixPartie);
+			/*Chargement de la partie*/
+			Game newPartie = PartieDAO.getInstance().read(choixPartie);
+			System.out.println(newPartie);
+			/*Création de la distribution*/
+			CardPack newpaquet = DistributionDAO.readDistribution(newPartie);
+			
+			/*Création de la participation*/
+			ParticipationDAO.readParticipation(newPartie);
+						
+			
+			System.out.println("CHARGEE PARTIE");
+			//ihmConsole.afficherChargerPartie();
+			//TODO restauration de partie
+			//ResultSet res = Connexion.executeQuery("SELECT *FROM JOUEUR");
+			//Connexion.fermer();
+		}
+		/*---------------------------------SI NOUVELLE PARTIE-------------------------------------*/
+		else if(choix == 1) {
 			/*GESTION DES JOUEURS*/
 			saisieDesJoueurs();
 			
 			/*GESTION DES CARTES*/							
-			int decomptePairesDeCartes = PaquetCartes.NBR_CARTES / 2;				/*Pour decompte paires de cartes*/
+			int decomptePairesDeCartes = CardPack.NBR_CARDS / 2;				/*Pour decompte paires de cartes*/
 			do {	
 				int comptageJoueurs = 0;
 				main = comptageJoueurs + 1;
@@ -76,27 +104,27 @@ public class ControleurMemory {
 								do{
 									if(carte2 == carte1) { vueMemory.afficherCarteDejaChoisie();}
 									vueMemory.demanderCarte();
-									carte2 = vueMemory.recupIntChoix(1,PaquetCartes.NBR_CARTES);
+									carte2 = vueMemory.recupIntChoix(1,CardPack.NBR_CARDS);
 								}while(carte2 == carte1);
 								//-----------
 								cptCartes+= 1;
-								paquet.modifierVisibiliteCarte(carte2 - 1, true);
+								paquet.modifyCardVisibility(carte2 - 1, true);
 								lesLignesDuPaquet = this.genererStringPaquet();	
 								vueMemory.afficherPaquet(lesLignesDuPaquet);
 							}
 							/*Pour carte 1*/
 							if(cptCartes == 0) {
 								vueMemory.demanderCarte();
-								carte1 = vueMemory.recupIntChoix(1,PaquetCartes.NBR_CARTES);
+								carte1 = vueMemory.recupIntChoix(1,CardPack.NBR_CARDS);
 								cptCartes+= 1;
-								paquet.modifierVisibiliteCarte(carte1 - 1, true);
+								paquet.modifyCardVisibility(carte1 - 1, true);
 								lesLignesDuPaquet = this.genererStringPaquet();	
 								vueMemory.afficherPaquet(lesLignesDuPaquet);
 							}
 						}
 						/*Pour tester si paire de cartes identiques*/
-						System.out.println((PaquetCartes.cartes.get(carte1-1).getSymbole()).equals((PaquetCartes.cartes.get(carte2-1)).getSymbole()));
-						if((PaquetCartes.cartes.get(carte1-1).getSymbole()).equals((PaquetCartes.cartes.get(carte2-1)).getSymbole())) {
+						System.out.println((CardPack.theCards.get(carte1-1).getSymbol()).equals((CardPack.theCards.get(carte2-1)).getSymbol()));
+						if((CardPack.theCards.get(carte1-1).getSymbol()).equals((CardPack.theCards.get(carte2-1)).getSymbol())) {
 							/*Si oui*/
 							bool = true;
 							decomptePairesDeCartes-= 1;
@@ -107,8 +135,8 @@ public class ControleurMemory {
 							/*Si non*/
 							bool = false;
 							vueMemory.afficherDesole();
-							paquet.modifierVisibiliteCarte(carte1 - 1, false);
-							paquet.modifierVisibiliteCarte(carte2 - 1, false);
+							paquet.modifyCardVisibility(carte1 - 1, false);
+							paquet.modifyCardVisibility(carte2 - 1, false);
 							long start=System.nanoTime();
 							while((System.nanoTime()-start)<1000000000);
 						}
@@ -149,12 +177,12 @@ public class ControleurMemory {
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
 					for(int i = 0; i < 10; i++) {
-						Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
+						Card nouvCarte = new Card(Symbol.getSymbol(i),false);
 						CarteDAO.getInstance().create(nouvCarte);
-						for(int j = 0; j < PaquetCartes.NBR_CARTES; j++){
-							if(nouvCarte.getOrdinal(nouvCarte.getSymbole()) == paquet.get(j).getOrdinal(paquet.get(j).getSymbole())){
+						for(int j = 0; j < CardPack.NBR_CARDS; j++){
+							if(nouvCarte.getOrdinal(nouvCarte.getSymbol()) == paquet.getCard(j).getOrdinal(paquet.getCard(j).getSymbol())){
 								//Remplissage TABLE DISTRIBUTION BD FONCTIONNE
-								DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getNumCarte(), j ,nouvCarte.visibleBool);
+								DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getCardNumber(), j ,nouvCarte.visibleBool);
 							}
 						}
 					}	
@@ -183,37 +211,6 @@ public class ControleurMemory {
 					indiceJoueurGagnant = joueurs.get(i).getIndiceJoueur();
 				}
 			}*/
-		}
-
-	
-		/*---------------------------------SI CHARGEE PARTIE-------------------------------------*/
-		else if(choix == 2) {
-			
-			/*Lecture des parties de la table*/
-			vueMemory.afficherListeParties();
-			ArrayList<Game> listeDesParties = PartieDAO.getInstance().readAll();
-			int tailleListe = listeDesParties.size();
-			
-			/*Choix partie*/
-			//TODO TEST SI PAS DE PARTIE DANS BD
-			vueMemory.afficherChoixPartie();
-			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getGameNumber()),(listeDesParties.get(tailleListe - 1).getGameNumber()));
-			System.out.println(choixPartie);
-			/*Chargement de la partie*/
-			Game newPartie = PartieDAO.getInstance().read(choixPartie);
-			System.out.println(newPartie);
-			/*Création de la distribution*/
-			PaquetCartes newpaquet = DistributionDAO.readDistribution(newPartie);
-			
-			/*Création de la participation*/
-			ParticipationDAO.readParticipation(newPartie);
-						
-			
-			System.out.println("CHARGEE PARTIE");
-			//ihmConsole.afficherChargerPartie();
-			//TODO restauration de partie
-			//ResultSet res = Connexion.executeQuery("SELECT *FROM JOUEUR");
-			//Connexion.fermer();
 			
 		}else {
 			System.out.println("SORTIE PROGRAMME");
@@ -224,8 +221,6 @@ public class ControleurMemory {
 		sc.close();
 	}
 
-	
-	
 	/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
 
 	public void saisieDesJoueurs() {
@@ -272,7 +267,7 @@ public class ControleurMemory {
 
 	/*M�thode pour initialiser la partie*/
 	public void initialiserPartie() {
-		paquet = new PaquetCartes();								/*Cr�ation d'un paquet de cartes*/
+		paquet = new CardPack();								/*Cr�ation d'un paquet de cartes*/
 		/*System.out.println(PaquetCartes.cartes);*/
 		vueMemory.afficherTitreMemory();							/*Appel titre console*/
 		String[] lesLignesDuPaquet = this.genererStringPaquet();
@@ -283,18 +278,18 @@ public class ControleurMemory {
 	
 	/*M�thode pour afficher le paquet de cartes*/ 
 	private String[] genererStringPaquet () {
-		final int NBR_LIGNES = PaquetCartes.NBR_CARTES/5;
+		final int NBR_LIGNES = CardPack.NBR_CARDS/5;
 		String[] retour = new String[NBR_LIGNES];
 		int compteur = 0;
 		
 		for(int i = 0 ; i < NBR_LIGNES ; i++){
 			String ligne ="";
-			for(int j = 0; j < PaquetCartes.NBR_CARTES/8 ; j++) {
+			for(int j = 0; j < CardPack.NBR_CARDS/8 ; j++) {
 				compteur+= 1;
-				if(PaquetCartes.cartes.get(compteur-1).isVisible()) {
-					ligne+= (PaquetCartes.cartes.get(compteur-1)).getSymbole();
+				if(CardPack.theCards.get(compteur-1).isVisible()) {
+					ligne+= (CardPack.theCards.get(compteur-1)).getSymbol();
 				}else{
-					ligne+= (PaquetCartes.cartes.get(i).afficherCarteAvecNumero(compteur));
+					ligne+= (CardPack.theCards.get(i).cardWithNumber(compteur));
 				}
 			}
 			retour[i]=ligne;

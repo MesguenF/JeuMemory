@@ -4,10 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import jeu.cartes.PaquetCartes;
+import jeu.cartes.CardPack;
 import jeu.cartes.Game;
-import jeu.cartes.carte.Carte;
-import jeu.cartes.carte.Symbole;
+import jeu.cartes.carte.Card;
+import jeu.cartes.carte.Symbol;
 
 public class DistributionDAO{
 	private static final String TABLE  = "DISTRIBUTION";
@@ -57,19 +57,19 @@ public class DistributionDAO{
 		return succes;
 	}
 	
-	public static PaquetCartes readDistribution(Game partie) {
-		PaquetCartes paquet = new PaquetCartes();
+	public static CardPack readDistribution(Game partie) {
+		CardPack paquet = new CardPack();
 		try {
 			String requeteRead1 = "SELECT idCarte, positionCarte, visibleCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getGameNumber();
 			PreparedStatement pst1 = Connexion.getInstance().prepareStatement(requeteRead1, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs1 = pst1.executeQuery();
 			if(rs1.next()) {
 				do {
-					Carte carte = new Carte();
-					carte.setNumCarte(rs1.getInt("idCarte"));
+					Card carte = new Card();
+					carte.setCardNumber(rs1.getInt("idCarte"));
 					int positionCarte = (rs1.getInt("positionCarte"));
 					carte.setVisible(rs1.getBoolean("visibleCarte"));
-					System.out.println("num carte : " + carte.getNumCarte());
+					System.out.println("num carte : " + carte.getCardNumber());
 					System.out.println("position carte : " + positionCarte);
 										
 					String requeteRead2 = " SELECT symboleCarte FROM  CARTE  WHERE idCarte = " +  (rs1.getInt("idCarte"));
@@ -78,10 +78,10 @@ public class DistributionDAO{
 					if(rs2.next()) {
 						//TODO VERIF SYMBOLE INT
 						System.out.println("symbole INT:" + rs2.getInt("symboleCarte"));
-						carte.setSymbole(Symbole.getSymbole(rs2.getInt("symboleCarte")));
+						carte.setSymbol(Symbol.getSymbol(rs2.getInt("symboleCarte")));
 						System.out.println(carte);
 					}
-					paquet.set(positionCarte, carte);
+					paquet.setCard(positionCarte, carte);
 				}while(rs1.next()!= false);
 			}
 			} catch (SQLException e) {

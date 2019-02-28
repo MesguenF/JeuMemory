@@ -31,11 +31,18 @@ public class PaquetCartes {
 	/*M�thode retournant la carte en indice i de la liste*/
 	public Carte get(int i) { return PaquetCartes.cartes.get(i); }
 	
+	public Carte set(int i, Carte c) { return PaquetCartes.cartes.set(i,c); }
+	
+	
+	
 	/*M�thode pour modifier la visibilit� d'une carte*/     
 	public void modifierVisibiliteCarte(int carteJouee, boolean boolVisible){ PaquetCartes.cartes.get(carteJouee).setVisible(boolVisible); }
 			
 	/*M�thode retournant la taille du paquet*/
 	public int size() { return PaquetCartes.cartes.size(); }
+
+	
+	
 	
 }
 

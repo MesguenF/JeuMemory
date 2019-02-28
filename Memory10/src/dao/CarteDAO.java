@@ -16,6 +16,7 @@ public class CarteDAO extends DAO<Carte>{
 	private static final String TABLE  = "CARTE";
 	private static final String CLE_PRIMAIRE = "idCarte";
 	private static CarteDAO instance = null;
+	//TODO A SUPPRIMER
 	private static ArrayList<Integer> listeIdCartes = new ArrayList<Integer>();	/*Pour stocker indices des crates pour la distribution BD*/
 	
 	public static 	CarteDAO getInstance() {
@@ -36,6 +37,7 @@ public class CarteDAO extends DAO<Carte>{
 			ResultSet rs = pst.getGeneratedKeys();
 				if (rs.next()) {
 					carte.setNumCarte(rs.getInt(1)); 
+					//TODO A SUPPRIMER
 					listeIdCartes.add(carte.getNumCarte());   /*Le 1 de getInt(1) indique la colonne de la table Carte*/
 					System.out.println(listeIdCartes);
 				}

@@ -27,6 +27,7 @@ public class ControleurMemory {
 	public int numPartie;	//Pour BD
 	public String nomPartie;
 	public boolean saveGame = false;
+	public int main;
 				
 	public ControleurMemory(){
 		super();
@@ -200,7 +201,10 @@ public class ControleurMemory {
 			/*Chargement de la partie*/
 			Partie newPartie = PartieDAO.getInstance().read(choixPartie);
 			System.out.println(newPartie);
-			DistributionDAO.getDistribution(newPartie);
+			/*Création de la distribution*/
+			PaquetCartes newpaquet = DistributionDAO.getDistribution(newPartie);
+			
+			/*Création de la participation*/
 			
 			
 			

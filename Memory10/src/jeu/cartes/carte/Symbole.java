@@ -49,4 +49,5 @@ public enum Symbole {
 		}
 		return rep;
 	}
+		
 }

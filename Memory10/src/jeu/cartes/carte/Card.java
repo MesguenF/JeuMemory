@@ -42,7 +42,7 @@ public class Card {
 		if (i < 10) { rep = LEFT_FACE +i+ RIGHT_FACE1;
 		}else {
 			rep = LEFT_FACE +i+ RIGHT_FACE2;
-		}
+	}
 		return rep;
 	}
 	

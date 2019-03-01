@@ -7,32 +7,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import jeu.cartes.Game;
 
-public class PartieDAO extends DAO<Game>{
+public class GameDAO extends DAO<Game>{
 			
 		private static final String TABLE  = "PARTIE";
-		private static final String CLE_PRIMAIRE = "idPartie";
-		private static ArrayList<Game> listePartieBD;
-		private static PartieDAO instance = null;
+		private static final String PRIMARY_KEY = "idPartie";
+		private static ArrayList<Game> listOfSavedGames;
+		private static GameDAO instance = null;
 		
-		public static 	PartieDAO getInstance() {
+		public static 	GameDAO getInstance() {
 			if(instance == null) {
-				instance =new PartieDAO();
+				instance =new GameDAO();
 				}
 			return instance;
 		}
 		
-		/*Méthode pour créer une partie*/
-		public boolean create(Game partie) {
+		public boolean create(Game game) {
 			boolean succes = true;
 			try {
 				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-				System.out.println("la partie = " + partie);
-				pst.setString(1, (partie).getGameName());
+				System.out.println("la partie = " + game);
+				pst.setString(1, (game).getGameName());
 				pst.executeUpdate();
 				ResultSet rs = pst.getGeneratedKeys();
 					if (rs.next()) {
-						partie.setGameNumber(rs.getInt(1));   /*Le 1 de getInt(1) indique la colonne de la table Partie*/
+						game.setGameNumber(rs.getInt(1));   /*Le 1 de getInt(1) indique la colonne de la table Partie*/
 					}
 				} catch (SQLException e) {
 					succes=false;
@@ -41,13 +40,12 @@ public class PartieDAO extends DAO<Game>{
 				return succes;
 		}
 
-		/*Méthode pour effacer une partie*/
-		public boolean delete(Game partie) {
+		public boolean delete(Game game) {
 			boolean succes = true;
 			try {
-				String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+CLE_PRIMAIRE+" = ?";
+				String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+PRIMARY_KEY+" = ?";
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteDelete, Statement.RETURN_GENERATED_KEYS);
-				pst.setInt(1, partie.getGameNumber());
+				pst.setInt(1, game.getGameNumber());
 				pst.executeUpdate();
 			} catch (SQLException e) {
 				succes=false;
@@ -56,65 +54,52 @@ public class PartieDAO extends DAO<Game>{
 			return succes;
 		}
 		
-		/*M�thode pour mettre � jour une partie*/
-		public boolean update(Game partie) {
+		public boolean update(Game game) {
 				boolean succes = true;
 				try {
-					String requete = "UPDATE "+TABLE+" SET nomPartie = ?,  WHERE "+CLE_PRIMAIRE+" = ?";			
+					String requete = "UPDATE "+TABLE+" SET nomPartie = ?,  WHERE "+PRIMARY_KEY+" = ?";			
 					PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-					pst.setString(1, partie.getGameName());
+					pst.setString(1, game.getGameName());
 					pst.executeUpdate();
 				} catch (SQLException e) {
 					succes=false;
 					e.printStackTrace();
 				}
-				return succes;
-			}
+			return succes;
+		}
 		
-		/*Méthode pour retourner une partie présente dans BD*/
 		public Game read(int id) {
-			Game partieDAO = null;
+			Game gameBD = null;
 			try {
 				String requeteRead = "SELECT nomPartie FROM PARTIE WHERE idPartie = " + id;
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
-				/*pst.setInt(1,id);
-				pst.executeUpdate();*/
 				ResultSet rs = pst.executeQuery();
 				if(rs.next()) {
-					partieDAO = new Game(id,rs.getString("nomPartie"));
+					gameBD = new Game(id,rs.getString("nomPartie"));
 					}
 				} catch (SQLException e) {
-				//succes=false;
 				e.printStackTrace();
 				}
-				return partieDAO;
-			}
+			return gameBD;
+		}
 		
-		/*Méthode pour lire toutes les parties dans la BD*/
 		public ArrayList<Game> readAll() {
-			listePartieBD = new ArrayList<Game>();
-			Game partieDAO = null;
+			listOfSavedGames = new ArrayList<Game>();
+			Game gamesBD = null;
 			try {
 				String requeteRead = "SELECT * FROM PARTIE";
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
-				/*pst.setInt(1,id);
-				pst.executeUpdate();*/
 				ResultSet rs = pst.executeQuery();
 				if(rs.next()) {
 					do{
-						partieDAO = new Game(rs.getInt("idPartie"),rs.getString("nomPartie"));
-						listePartieBD.add(partieDAO);
+						gamesBD = new Game(rs.getInt("idPartie"),rs.getString("nomPartie"));
+						listOfSavedGames.add(gamesBD);
 					}while(rs.next() != false);
 				}
 				} catch (SQLException e) {
-				//succes=false;
 				e.printStackTrace();
 				}
-				System.out.println(listePartieBD);
-				return listePartieBD;
+				System.out.println(listOfSavedGames);
+			return listOfSavedGames;
 			}
 		}
-
-	
-	
-

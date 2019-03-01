@@ -19,20 +19,10 @@ public class CardPack {
 				c = new Card(Symbol.getSymbol(i),false);
 				CardPack.theCards.add((Card) c);
 			}
-			/*nouvelleSerieCarte(i);*/			/*On cr�e une paire de cartes avec m�me symbole et on l'ajoute dans la liste*/
 		}
-		Collections.shuffle(theCards);		/*On m�lange le paquet de cartes*/
+		Collections.shuffle(theCards);		
 	}
-	
-	/*Cr�ation d'une paire de cartes et rajout dans le PaquetCartes
-	public void nouvelleSerieCarte(int i) {
-		Card c;
-		for(int j = 0 ; j<4 ; j++) {
-			c = new Card(Symbol.getSymbol(i),false);
-			CardPack.theCards.add((Card) c);
-		}
-	}*/
-	
+			
 	public Card getCard(int i) { return CardPack.theCards.get(i); }
 	
 	public Card setCard(int i, Card c) { return CardPack.theCards.set(i,c); }

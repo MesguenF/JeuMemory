@@ -9,59 +9,57 @@ import jeu.cartes.Game;
 public class ParticipationDAO {
 	private static final String TABLE  = "PARTICIPATION";
 		
-	public static boolean createParticipation(int idJoueur,int idPartie,int main,int scoreJoueur, int positionTour) {
+	public static boolean createParticipation(int idPlayer,int idGame,int hand,int playerScore, int playerPosition) {
 		boolean succes = true;
 		try {
 			String requete = "INSERT INTO "+ TABLE +" (idJoueur,idPartie,main,scoreJoueur,positionTour) VALUES (?,?,?,?,?)";		
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1, idJoueur);
-			pst.setInt(2, idPartie);
-			pst.setInt(3, main);
-			pst.setInt(4, scoreJoueur);
-			pst.setInt(5, positionTour);
+			pst.setInt(1, idPlayer);
+			pst.setInt(2, idGame);
+			pst.setInt(3, hand);
+			pst.setInt(4, playerScore);
+			pst.setInt(5, playerPosition);
 			pst.executeUpdate();
-			//TODO executeQuery ??
 			} catch (SQLException e) {
 				succes=false;
 				e.printStackTrace();
 			}
+		
 			return succes;
 	}
 	//TODO TEST
-	public boolean updateParticipation(int idJoueur,int idPartie, int main, int scoreJoueur, int positionTour) {
+	public boolean updateParticipation(int idPlayer,int idGame, int hand, int playerScore, int playerPosition) {
 		boolean succes = true;
 		try {
-			String requete = "UPDATE "+TABLE+" SET main = ? SET scoreJoueur = ?,  WHERE idJoueur = "+ idJoueur + "AND idPartie = " + idPartie;			
+			String requete = "UPDATE "+TABLE+" SET main = ? SET scoreJoueur = ?,  WHERE idJoueur = "+ idPlayer + "AND idPartie = " + idGame;			
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1,main);
-			pst.setInt(2,scoreJoueur);
+			pst.setInt(1,hand);
+			pst.setInt(2,playerScore);
 			pst.executeUpdate();
-			//TODO executeQuery ??
-		} catch (SQLException e) {
+			} catch (SQLException e) {
 			succes=false;
 			e.printStackTrace();
 		}
 		return succes;
 	}
 	//TODO TEST
-	public boolean deleteParticipation(Game partie) {
+	public boolean deleteParticipation(Game game) {
 		boolean succes = true;
 		try {
-			String requete = "DELETE "+TABLE+" WHERE idPartie = "+ partie.getGameNumber();			
+			String requete = "DELETE "+TABLE+" WHERE idPartie = "+ game.getGameNumber();			
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 			pst.executeUpdate();
-			//TODO executeQuery ??
-		} catch (SQLException e) {
+			} catch (SQLException e) {
 			succes=false;
 			e.printStackTrace();
 		}
 		return succes;
 	}
 	//TODO TEST
-	public static int [] readParticipation(Game partie) {
+	public static int [] readParticipation(Game game) {
 		int [] tab = new int[4];
 		try {
-			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + partie.getGameNumber();
+			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + game.getGameNumber();
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {

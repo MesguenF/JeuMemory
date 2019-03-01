@@ -12,15 +12,15 @@ import jeu.cartes.carte.Symbol;
 public class DistributionDAO{
 	private static final String TABLE  = "DISTRIBUTION";
 
-	public static boolean createDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
+	public static boolean createDistribution(int idGame,int idCard,int cardPosition, boolean cardVisibility) {
 			boolean succes = true;
 			try {
 				String requete = "INSERT INTO "+ TABLE +" (idPartie,idCarte,positionCarte,visibleCarte) VALUES (?,?,?,?)";		
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-				pst.setInt(1,idPartie);
-				pst.setInt(2, idCarte);
-				pst.setInt(3, positionCarte);
-				pst.setBoolean(4, visibleCarte);
+				pst.setInt(1,idGame);
+				pst.setInt(2, idCard);
+				pst.setInt(3, cardPosition);
+				pst.setBoolean(4, cardVisibility);
 				pst.executeUpdate();
 				} catch (SQLException e) {
 					succes=false;
@@ -30,12 +30,12 @@ public class DistributionDAO{
 		}
 	
 	//TODO TEST
-	public boolean updateDistribution(int idPartie,int idCarte,int positionCarte, boolean visibleCarte) {
+	public boolean updateDistribution(int idGame,int idCard,int cardPosition, boolean cardVisibility) {
 			boolean succes = true;
 			try {
-				String requete = "UPDATE "+TABLE+" SET visibleCarte = ?,  WHERE idPartie = "+ idPartie + "AND idCarte = " + idCarte + " AND positionCarte = " + positionCarte;			
+				String requete = "UPDATE "+TABLE+" SET visibleCarte = ?,  WHERE idPartie = "+ idGame + "AND idCarte = " + idCard + " AND positionCarte = " + cardPosition;			
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-				pst.setBoolean(1,visibleCarte);
+				pst.setBoolean(1,cardVisibility);
 				pst.executeUpdate();
 			} catch (SQLException e) {
 				succes=false;
@@ -44,10 +44,10 @@ public class DistributionDAO{
 			return succes;
 		}
 	//TODO TEST
-	public boolean deleteDistribution(Game partie) {
+	public boolean deleteDistribution(Game game) {
 		boolean succes = true;
 		try {
-			String requete = "DELETE FROM "+TABLE+" WHERE idPartie = " + partie.getGameNumber();	
+			String requete = "DELETE FROM "+TABLE+" WHERE idPartie = " + game.getGameNumber();	
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
 			pst.executeUpdate();
 		} catch (SQLException e) {
@@ -57,20 +57,20 @@ public class DistributionDAO{
 		return succes;
 	}
 	
-	public static CardPack readDistribution(Game partie) {
+	public static CardPack readDistribution(Game game) {
 		CardPack paquet = new CardPack();
 		try {
-			String requeteRead1 = "SELECT idCarte, positionCarte, visibleCarte FROM DISTRIBUTION WHERE idPartie = " + partie.getGameNumber();
+			String requeteRead1 = "SELECT idCarte, positionCarte, visibleCarte FROM DISTRIBUTION WHERE idPartie = " + game.getGameNumber();
 			PreparedStatement pst1 = Connexion.getInstance().prepareStatement(requeteRead1, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs1 = pst1.executeQuery();
 			if(rs1.next()) {
 				do {
-					Card carte = new Card();
-					carte.setCardNumber(rs1.getInt("idCarte"));
-					int positionCarte = (rs1.getInt("positionCarte"));
-					carte.setVisible(rs1.getBoolean("visibleCarte"));
-					System.out.println("num carte : " + carte.getCardNumber());
-					System.out.println("position carte : " + positionCarte);
+					Card card = new Card();
+					card.setCardNumber(rs1.getInt("idCarte"));
+					int cardPosition = (rs1.getInt("positionCarte"));
+					card.setVisible(rs1.getBoolean("visibleCarte"));
+					System.out.println("num carte : " + card.getCardNumber());
+					System.out.println("position carte : " + cardPosition);
 										
 					String requeteRead2 = " SELECT symboleCarte FROM  CARTE  WHERE idCarte = " +  (rs1.getInt("idCarte"));
 					PreparedStatement pst2 = Connexion.getInstance().prepareStatement(requeteRead2, Statement.RETURN_GENERATED_KEYS);
@@ -78,10 +78,10 @@ public class DistributionDAO{
 					if(rs2.next()) {
 						//TODO VERIF SYMBOLE INT
 						System.out.println("symbole INT:" + rs2.getInt("symboleCarte"));
-						carte.setSymbol(Symbol.getSymbol(rs2.getInt("symboleCarte")));
-						System.out.println(carte);
+						card.setSymbol(Symbol.getSymbol(rs2.getInt("symboleCarte")));
+						System.out.println(card);
 					}
-					paquet.setCard(positionCarte, carte);
+					paquet.setCard(cardPosition, card);
 				}while(rs1.next()!= false);
 			}
 			} catch (SQLException e) {

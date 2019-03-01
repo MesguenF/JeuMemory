@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import javax.smartcardio.Card;
-import com.sun.java_cup.internal.runtime.Symbol;
 import dao.CardDAO;
 import dao.Connexion;
 import dao.DistributionDAO;
@@ -15,6 +13,8 @@ import dao.PlayerDAO;
 import model.cartes.CardPack;
 import model.cartes.Game;
 import model.cartes.Player;
+import model.cartes.carte.Card;
+import model.cartes.carte.Symbol;
 import view.MemoryConsoleView;
 
 public class MemoryController {

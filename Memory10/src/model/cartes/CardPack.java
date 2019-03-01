@@ -32,4 +32,3 @@ public class CardPack {
 	public int size() { return CardPack.theCards.size(); }
 
 }
-

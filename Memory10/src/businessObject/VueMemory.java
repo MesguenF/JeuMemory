@@ -12,7 +12,7 @@ public class VueMemory {
 		super();
 	}
 
-	public void afficherPaquet(String[] board) {
+	public void packDisplay(String[] board) {
 		for (String string : board) { System.out.println(string); }
 	}
 
@@ -114,7 +114,7 @@ public class VueMemory {
 		
 	}
 
-	public String getPlayersList(List<Player> j) {
+	public String playersListDisplay(List<Player> j) {
 		String text = null;
 		for(int i = 0 ; i < j.size(); i++) {
 			text+=j.get(i).toString();

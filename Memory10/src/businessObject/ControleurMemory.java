@@ -90,7 +90,7 @@ public class ControleurMemory {
 
 					/*Pour affichage du paquet*/
 					String[] lesLignesDuPaquet = this.genererStringPaquet();			
-					vueMemory.afficherPaquet(lesLignesDuPaquet);
+					vueMemory.packDisplay(lesLignesDuPaquet);
 					System.out.println("Tour Joueur: " + main);
 					/*Pour le choix des cartes*/
 					//------------
@@ -110,7 +110,7 @@ public class ControleurMemory {
 								cptCartes+= 1;
 								paquet.modifyCardVisibility(carte2 - 1, true);
 								lesLignesDuPaquet = this.genererStringPaquet();	
-								vueMemory.afficherPaquet(lesLignesDuPaquet);
+								vueMemory.packDisplay(lesLignesDuPaquet);
 							}
 							/*Pour carte 1*/
 							if(cptCartes == 0) {
@@ -119,7 +119,7 @@ public class ControleurMemory {
 								cptCartes+= 1;
 								paquet.modifyCardVisibility(carte1 - 1, true);
 								lesLignesDuPaquet = this.genererStringPaquet();	
-								vueMemory.afficherPaquet(lesLignesDuPaquet);
+								vueMemory.packDisplay(lesLignesDuPaquet);
 							}
 						}
 						/*Pour tester si paire de cartes identiques*/
@@ -244,7 +244,7 @@ public class ControleurMemory {
 				Player j = new Player(nom, prenom, pseudo, compteurJoueur,0);
 				joueurs.add(j);
 				vueMemory.playerSaveTitle();
-				vueMemory.getPlayersList(joueurs);
+				vueMemory.playersListDisplay(joueurs);
 			}else{	/*Si non*/
 				vueMemory.playerNotSaveTitle();
 			}
@@ -271,7 +271,7 @@ public class ControleurMemory {
 		/*System.out.println(PaquetCartes.cartes);*/
 		vueMemory.memoryTitle();							/*Appel titre console*/
 		String[] lesLignesDuPaquet = this.genererStringPaquet();
-		vueMemory.afficherPaquet(lesLignesDuPaquet);				/*Affichage Plateau de cartes*/
+		vueMemory.packDisplay(lesLignesDuPaquet);				/*Affichage Plateau de cartes*/
 		vueMemory.choiceTitle();								/*Affichage menu principal*/
 		choix = vueMemory.getChoice(1,3);							/*R�ception du choix du menu principal*/
 	}

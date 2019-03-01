@@ -1,4 +1,4 @@
-package jeu.cartes;
+package model.cartes;
 /**
  * @author admin
  *

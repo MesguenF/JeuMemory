@@ -1,4 +1,4 @@
-package jeu.cartes.carte;
+package model.cartes.carte;
 
 public class Card {
 	

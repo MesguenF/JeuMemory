@@ -4,10 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import jeu.cartes.CardPack;
-import jeu.cartes.Game;
-import jeu.cartes.carte.Card;
-import jeu.cartes.carte.Symbol;
+import model.cartes.CardPack;
+import model.cartes.Game;
+import model.cartes.carte.Card;
+import model.cartes.carte.Symbol;
+
 
 public class DistributionDAO{
 	private static final String TABLE  = "DISTRIBUTION";

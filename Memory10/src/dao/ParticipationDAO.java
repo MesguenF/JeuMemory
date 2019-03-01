@@ -4,7 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import jeu.cartes.Game;
+
+import model.cartes.Game;
 
 public class ParticipationDAO {
 	private static final String TABLE  = "PARTICIPATION";

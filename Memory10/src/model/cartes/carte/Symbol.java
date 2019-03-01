@@ -1,4 +1,4 @@
-package jeu.cartes.carte;
+package model.cartes.carte;
 
 public enum Symbol {
 	ours, lion, girafe, zebre, cheval, gnou, singe, chevre, chien, chat;		

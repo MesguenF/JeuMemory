@@ -1,10 +1,10 @@
-package jeu.cartes;
+package model.cartes;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import jeu.cartes.carte.Card;
-import jeu.cartes.carte.Symbol;
+import model.cartes.carte.Card;
+import model.cartes.carte.Symbol;
 
 public class CardPack {
 	

@@ -5,12 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
-import jeu.cartes.Player;
-import jeu.cartes.CardPack;
-import jeu.cartes.carte.Card;
+import model.cartes.carte.Card;
 
 public class CardDAO extends DAO<Card>{
 	private static final String TABLE  = "CARTE";

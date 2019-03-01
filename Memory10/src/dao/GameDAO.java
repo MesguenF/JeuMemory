@@ -5,7 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import jeu.cartes.Game;
+
+import model.cartes.Game;
 
 public class GameDAO extends DAO<Game>{
 			

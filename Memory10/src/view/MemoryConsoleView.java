@@ -1,14 +1,15 @@
-package businessObject;
+package view;
 
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import jeu.cartes.Player;
 
-public class VueMemory {
+import model.cartes.Player;
+
+public class MemoryConsoleView {
 	private Scanner sc = new Scanner(System.in);
 		
-	public VueMemory() { 
+	public MemoryConsoleView() { 
 		super();
 	}
 
@@ -79,9 +80,9 @@ public class VueMemory {
 	public void askPlayerTitle(int indiceJoueur, String pseudoJoueur, int pointsJoueur) { 
 		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes à retourner (de 1 à 40) :");
 	}
-	public void nameForGameTitle() { System.out.println("Donner un nom à votre partie : "); }
+	public void askNameForGameTitle() { System.out.println("Donner un nom à votre partie : "); }
 	public void listOfGamesTitle() { System.out.println("Liste des parties disponibles: "); }
-	public void gameToChooseTitle() { System.out.println("Choisir une partie: "); }
+	public void askGameToChooseTitle() { System.out.println("Choisir une partie: "); }
 	
 	public int getChoice(int lowGap,int highGap) {
 		int returnValue = 0;

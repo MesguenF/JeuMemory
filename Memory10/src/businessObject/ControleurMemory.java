@@ -45,14 +45,14 @@ public class ControleurMemory {
 		if (choix == 2) {
 			
 			/*Lecture des parties de la table*/
-			vueMemory.afficherListeParties();
+			vueMemory.listOfGamesTitle();
 			ArrayList<Game> listeDesParties = GameDAO.getInstance().readAll();
 			int tailleListe = listeDesParties.size();
 			
 			/*Choix partie*/
 			//TODO TEST SI PAS DE PARTIE DANS BD
-			vueMemory.afficherChoixPartie();
-			int choixPartie = vueMemory.recupIntChoix((listeDesParties.get(0).getGameNumber()),(listeDesParties.get(tailleListe - 1).getGameNumber()));
+			vueMemory.gameToChooseTitle();
+			int choixPartie = vueMemory.getChoice((listeDesParties.get(0).getGameNumber()),(listeDesParties.get(tailleListe - 1).getGameNumber()));
 			System.out.println(choixPartie);
 			/*Chargement de la partie*/
 			Game newPartie = GameDAO.getInstance().read(choixPartie);
@@ -86,7 +86,7 @@ public class ControleurMemory {
 					boolean bool = false;	
 					
 					/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
-					vueMemory.demanderCoupJoueur(joueurs.get(comptageJoueurs).playerPosition, joueurs.get(comptageJoueurs).playerHandle, joueurs.get(comptageJoueurs).playerScore);
+					vueMemory.askPlayerTitle(joueurs.get(comptageJoueurs).playerPosition, joueurs.get(comptageJoueurs).playerHandle, joueurs.get(comptageJoueurs).playerScore);
 
 					/*Pour affichage du paquet*/
 					String[] lesLignesDuPaquet = this.genererStringPaquet();			
@@ -102,9 +102,9 @@ public class ControleurMemory {
 							if(cptCartes == 1) {
 								//------------
 								do{
-									if(carte2 == carte1) { vueMemory.afficherCarteDejaChoisie();}
-									vueMemory.demanderCarte();
-									carte2 = vueMemory.recupIntChoix(1,CardPack.NBR_CARDS);
+									if(carte2 == carte1) { vueMemory.cardAlreadyChooseTitle();}
+									vueMemory.askCardTitle();
+									carte2 = vueMemory.getChoice(1,CardPack.NBR_CARDS);
 								}while(carte2 == carte1);
 								//-----------
 								cptCartes+= 1;
@@ -114,8 +114,8 @@ public class ControleurMemory {
 							}
 							/*Pour carte 1*/
 							if(cptCartes == 0) {
-								vueMemory.demanderCarte();
-								carte1 = vueMemory.recupIntChoix(1,CardPack.NBR_CARDS);
+								vueMemory.askCardTitle();
+								carte1 = vueMemory.getChoice(1,CardPack.NBR_CARDS);
 								cptCartes+= 1;
 								paquet.modifyCardVisibility(carte1 - 1, true);
 								lesLignesDuPaquet = this.genererStringPaquet();	
@@ -128,13 +128,13 @@ public class ControleurMemory {
 							/*Si oui*/
 							bool = true;
 							decomptePairesDeCartes-= 1;
-							vueMemory.affiherFelicitations();
+							vueMemory.pairOfCardsTitle();
 							joueurs.get(comptageJoueurs).setPlayerScore();
 							
 						}else{
 							/*Si non*/
 							bool = false;
-							vueMemory.afficherDesole();
+							vueMemory.noPairOfCardsTitle();
 							paquet.modifyCardVisibility(carte1 - 1, false);
 							paquet.modifyCardVisibility(carte2 - 1, false);
 							long start=System.nanoTime();
@@ -154,14 +154,14 @@ public class ControleurMemory {
 				
 				
 				/*SAUVEGARDE PARTIE*/
-				vueMemory.afficherMenuContinuerOuSauvegarder();	
-				int testSauvegarde = vueMemory.recupIntChoix(1,2);
+				vueMemory.nextOrSaveTitle();	
+				int testSauvegarde = vueMemory.getChoice(1,2);
 				if(testSauvegarde == 2) {
 					saveGame = true;
 					
 					//Création partie dans TABLE PARTIE BD FONCTIONNE
-					vueMemory.donnerNomPartie();
-					nomPartie = vueMemory.recupString();
+					vueMemory.nameForGameTitle();
+					nomPartie = vueMemory.getStringText();
 					Game nouvPartie = new Game(nomPartie);
 					GameDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getGameName());
@@ -187,7 +187,7 @@ public class ControleurMemory {
 						}
 					}	
 					Connexion.fermer();
-					vueMemory.afficherSauvegardeOK();
+					vueMemory.backupTitle();
 					//TODO TEMPO
 					//TODO FERMER CONSOLE
 				}
@@ -195,10 +195,10 @@ public class ControleurMemory {
 			
 			
 			if(decomptePairesDeCartes == 0) {
-				vueMemory.afficherPlusDeCartes();
+				vueMemory.noMoreCardsTitle();
 				//TODO CLASSEMENT
 			}
-			vueMemory.afficherFinDeParte();
+			vueMemory.endOfGameTitle();
 			//TODO TEMPO
 			//TODO FERMER CONSOLE
 			
@@ -224,36 +224,36 @@ public class ControleurMemory {
 	/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
 
 	public void saisieDesJoueurs() {
-		vueMemory.afficherNouvellePartie();
+		vueMemory.newGameTitle();
 		int test;
 		int compteurJoueur = 0;				//Pour compter nombre de joueur
 		do {
 			/*Saisie Joueur*/
-			vueMemory.demanderNomJoueur();
-			String nom = vueMemory.recupString();
-			vueMemory.demanderPrenomJoueur();
-			String prenom = vueMemory.recupString();
-			vueMemory.demanderPseudoJoueur();
-			String pseudo = vueMemory.recupString();
+			vueMemory.askPlayerName();
+			String nom = vueMemory.getStringText();
+			vueMemory.askPlayerFirstName();
+			String prenom = vueMemory.getStringText();
+			vueMemory.askPlayerHandle();
+			String pseudo = vueMemory.getStringText();
 			/*Enregistrement joueur*/
-			vueMemory.enregistrerJoueur();
-			test = vueMemory.recupIntChoix(1,2);
+			vueMemory.askSavePlayer();
+			test = vueMemory.getChoice(1,2);
 					/*Si oui*/
 			if(test == 1) {
 				compteurJoueur+= 1;
 				Player j = new Player(nom, prenom, pseudo, compteurJoueur,0);
 				joueurs.add(j);
-				vueMemory.afficheJoueurEnregistre();
-				vueMemory.afficheListeJoueurs(joueurs);
+				vueMemory.playerSaveTitle();
+				vueMemory.getPlayersList(joueurs);
 			}else{	/*Si non*/
-				vueMemory.afficheJoueurNonEnregistre();
+				vueMemory.playerNotSaveTitle();
 			}
 			/*Autre joueur ?*/
 			if(joueurs.size() < NBR_JOUEURS ) {
-				vueMemory.demanderAjoutJoueur();
-				test = vueMemory.recupIntChoix(1,2);
+				vueMemory.askIfNewPlayer();
+				test = vueMemory.getChoice(1,2);
 			}else {
-				vueMemory.afficheJoueurMaxAtteint();
+				vueMemory.numberMaxPlayersTitle();
 				fairePause();
 				test = 2;
 			}
@@ -269,11 +269,11 @@ public class ControleurMemory {
 	public void initialiserPartie() {
 		paquet = new CardPack();								/*Cr�ation d'un paquet de cartes*/
 		/*System.out.println(PaquetCartes.cartes);*/
-		vueMemory.afficherTitreMemory();							/*Appel titre console*/
+		vueMemory.memoryTitle();							/*Appel titre console*/
 		String[] lesLignesDuPaquet = this.genererStringPaquet();
 		vueMemory.afficherPaquet(lesLignesDuPaquet);				/*Affichage Plateau de cartes*/
-		vueMemory.afficherMenuChoix();								/*Affichage menu principal*/
-		choix = vueMemory.recupIntChoix(1,3);							/*R�ception du choix du menu principal*/
+		vueMemory.choiceTitle();								/*Affichage menu principal*/
+		choix = vueMemory.getChoice(1,3);							/*R�ception du choix du menu principal*/
 	}
 	
 	/*M�thode pour afficher le paquet de cartes*/ 

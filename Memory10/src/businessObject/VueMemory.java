@@ -8,44 +8,41 @@ import jeu.cartes.Player;
 public class VueMemory {
 	private Scanner sc = new Scanner(System.in);
 		
-	/*Constructeur*/
 	public VueMemory() { 
 		super();
 	}
 
-	/*Pour affichage du jeu  de cartes*/
-	public void afficherPaquet(String[] plateau) {
-		for (String string : plateau) { System.out.println(string); }
+	public void afficherPaquet(String[] board) {
+		for (String string : board) { System.out.println(string); }
 	}
 
-	/*M�thodes pour affichage de textes*/
-	public void afficherTitreMemory() {
+	public void memoryTitle() {
 		System.out.println("*********************************************");
 		System.out.println("*                 JEU MEMORY                *");
 		System.out.println("*********************************************");
 	}
-	public void afficherSauvegardeOK() {
+	public void backupTitle() {
 		System.out.println("---------------------------------------------");
 		System.out.println("-            SAUVEGARDE REUSSIE             -");
 		System.out.println("---------------------------------------------");
 	}
-	public void afficherFinDeParte() {
+	public void endOfGameTitle() {
 		System.out.println("---------------------------------------------");
 		System.out.println("-                FIN DE PARTIE              -");
 		System.out.println("---------------------------------------------");
 	}
-	public void afficherNouvellePartie() {
+	public void newGameTitle() {
 		System.out.println("---------------------------------------------");
 		System.out.println("-              NOUVELLE PARTIE              -");
 		System.out.println("---------------------------------------------");
 	}
-	public void afficherChargerPartie() {
+	public void loadedGameTitle() {
 		System.out.println("---------------------------------------------");
 		System.out.println("-                CHARGER PARTIE             -");
 		System.out.println("---------------------------------------------");
 	}
-	public void afficherMenuChoix() {
-		afficheTrait();
+	public void choiceTitle() {
+		line();
 		System.out.println("");
 		System.out.println(" 1 : NOUVELLE PARTIE ");
 		System.out.println("");
@@ -53,103 +50,75 @@ public class VueMemory {
 		System.out.println("");
 		System.out.println(" 3 : QUITTER LE JEU  ");
 		System.out.println("");
-		afficheTrait();
+		line();
 		System.out.println(" Votre choix : ");
 	}
 	
-	public void afficherMenuContinuerOuSauvegarder() {
+	public void nextOrSaveTitle() {
 		System.out.println("-----------------------------------------------------------------------");
 		System.out.println("       TOUCHE 1 : CONTINUER / TOUCHE 2 : SAUVEGARDER ET QUITTER        ");
 		System.out.println("-----------------------------------------------------------------------");
 		System.out.println(" Choix : ? ");
 	}
 	
-	public void afficheTrait() { System.out.println("---------------------------------------------");}
-	public void demanderNomJoueur() { System.out.println("Entrez le nom du joueur : "); }
-	public void demanderPrenomJoueur() { System.out.println("Entrer le prenom du joueur : "); }
-	public void demanderPseudoJoueur() { System.out.println("Entrer le pseudo du joueur : "); }
-	public void enregistrerJoueur() { System.out.println("Enregistrer le joueur ? / OUI = 1 : NON = 2 ");}
-	public void demanderAjoutJoueur() { System.out.println("Voulez-vous rentrer un nouveau joueur ?  OUI = 1 / NON = 2 "); }
-	public void afficheJoueurEnregistre() { System.out.println("Joueur enregistr� ! "); }
-	public void afficheJoueurNonEnregistre() { System.out.println("Joueur non enregistr� !"); }
-	public void afficheJoueurMaxAtteint() { System.out.println("Nombre de joueurs maximal atteint ! "); }
-	public void afficherErreurSaisie() { System.out.println("Erreur de saisie , recommencez ! "); }
-	public void demanderCarte() { System.out.println("Carte : "); }
-	public void afficherDesole() { System.out.println("Vous n'avez pas trouvé de paire de cartes !"); }
-	public void affiherFelicitations() { System.out.println("Bravo, vous avez trouvé une paire de cartes !"); }
-	public void afficherCarteDejaChoisie() { System.out.println("Carte déjà choisie. Recommencez! "); }
-	public void afficherPlusDeCartes() { System.out.println("Plus de cartes à retourner!"); }
-	public void demanderCoupJoueur(int indiceJoueur, String pseudoJoueur, int pointsJoueur) { 
+	public void line() { System.out.println("---------------------------------------------");}
+	public void askPlayerName() { System.out.println("Entrez le nom du joueur : "); }
+	public void askPlayerFirstName() { System.out.println("Entrer le prenom du joueur : "); }
+	public void askPlayerHandle() { System.out.println("Entrer le pseudo du joueur : "); }
+	public void askSavePlayer() { System.out.println("Enregistrer le joueur ? / OUI = 1 : NON = 2 ");}
+	public void askIfNewPlayer() { System.out.println("Voulez-vous rentrer un nouveau joueur ?  OUI = 1 / NON = 2 "); }
+	public void playerSaveTitle() { System.out.println("Joueur enregistr� ! "); }
+	public void playerNotSaveTitle() { System.out.println("Joueur non enregistr� !"); }
+	public void numberMaxPlayersTitle() { System.out.println("Nombre de joueurs maximal atteint ! "); }
+	public void badSeazureTitle() { System.out.println("Erreur de saisie , recommencez ! "); }
+	public void askCardTitle() { System.out.println("Carte : "); }
+	public void noPairOfCardsTitle() { System.out.println("Vous n'avez pas trouvé de paire de cartes !"); }
+	public void pairOfCardsTitle() { System.out.println("Bravo, vous avez trouvé une paire de cartes !"); }
+	public void cardAlreadyChooseTitle() { System.out.println("Carte déjà choisie. Recommencez! "); }
+	public void noMoreCardsTitle() { System.out.println("Plus de cartes à retourner!"); }
+	public void askPlayerTitle(int indiceJoueur, String pseudoJoueur, int pointsJoueur) { 
 		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes à retourner (de 1 à 40) :");
 	}
-	public void donnerNomPartie() { System.out.println("Donner un nom à votre partie : "); }
-	public void afficherListeParties() { System.out.println("Liste des parties disponibles: "); }
-	public void afficherChoixPartie() { System.out.println("Choisir une partie: "); }
+	public void nameForGameTitle() { System.out.println("Donner un nom à votre partie : "); }
+	public void listOfGamesTitle() { System.out.println("Liste des parties disponibles: "); }
+	public void gameToChooseTitle() { System.out.println("Choisir une partie: "); }
 	
-	/*M�thode pour r�cup�rer INT choix en sp�cifiant l'�cart souhait� ( 1 � 2 / 1 � 3 / 1 � 40) pour le INT attendu*/
-	/*public int recupIntChoix(int ecart) {
-		int valRetour = 0;
-		boolean valide = false;
+	public int getChoice(int lowGap,int highGap) {
+		int returnValue = 0;
+		boolean bool = false;
 		do {
 			try {	
-				int choix = 0;
-				choix = sc.nextInt();
-				if(choix < 1 || choix > ecart) {
+				int choice = 0;
+				choice = sc.nextInt();
+				if(choice < lowGap || choice > highGap) {
 					System.out.println("Saisie incorrecte, recommencez!");
 					sc.nextLine();
 				}else {
 					System.out.println("Saisie correcte!");
-					valide = true;
-					valRetour = choix;
+					bool = true;
+					returnValue = choice;
 				}	
 			}catch(InputMismatchException e) { 
 				System.out.println("Saisie invalide, recommencez!");
 				sc.nextLine();
 			}
 		}
-		while (!valide);
-		return valRetour;
-	}*/
-	
-	public int recupIntChoix(int ecartBas,int ecartHaut) {
-		int valRetour = 0;
-		boolean valide = false;
-		do {
-			try {	
-				int choix = 0;
-				choix = sc.nextInt();
-				if(choix < ecartBas || choix > ecartHaut) {
-					System.out.println("Saisie incorrecte, recommencez!");
-					sc.nextLine();
-				}else {
-					System.out.println("Saisie correcte!");
-					valide = true;
-					valRetour = choix;
-				}	
-			}catch(InputMismatchException e) { 
-				System.out.println("Saisie invalide, recommencez!");
-				sc.nextLine();
-			}
-		}
-		while (!valide);
-		return valRetour;
+		while (!bool);
+		return returnValue;
 	}
 	
-	
-	/*M�thode pour r�cup�rer un STRING*/
-	public String recupString() {
-		String texte;
-		texte = sc.next();
-		return texte;
+	public String getStringText() {
+		String text;
+		text = sc.next();
+		return text;
 		
 	}
 
-	/*M�thode pour afficher la liste des joueurs*/
-	public String afficheListeJoueurs(List<Player> j) {
-		String texte = null;
+	public String getPlayersList(List<Player> j) {
+		String text = null;
 		for(int i = 0 ; i < j.size(); i++) {
-			texte+=j.get(i).toString();
+			text+=j.get(i).toString();
 		}
-		return texte;
+		return text;
 	}
 }

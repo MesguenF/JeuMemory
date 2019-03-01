@@ -39,7 +39,7 @@ public class MemoryConsoleView {
 	}
 	public void loadedGameTitle() {
 		System.out.println("---------------------------------------------");
-		System.out.println("-                CHARGER PARTIE             -");
+		System.out.println("-           CHARGEMENT PARTIE OK            -");
 		System.out.println("---------------------------------------------");
 	}
 	public void choiceTitle() {

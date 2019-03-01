@@ -24,10 +24,10 @@ public class MemoryController {
 	public MemoryConsoleView memoryView = new MemoryConsoleView(); 	// vu
 	public static List<Player> players = new ArrayList <Player>();	//Liste des joueurs
 	public int choice;
-	public int numPartie;	//Pour BD
-	public String nomPartie;
+	public int gameNumber;	//For Data Base
+	public String gameName;
 	public boolean saveGame = false;
-	public int main;
+	public int hand;
 				
 	public MemoryController(){
 		super();
@@ -42,35 +42,30 @@ public class MemoryController {
 			}	
 		Connexion.fermer();*/
 				
-		/*----------------------------------------SI CHARGER PARTIE-------------------------------------*/
+		/*----------------------------------------SI CHARGEMENT DE PARTIE-------------------------------------*/
 		if (choice == 2) {
-			
-			/*Lecture des parties de la table*/
+			/*Affichage des parties sauvegardées*/
 			memoryView.listOfGamesTitle();
-			ArrayList<Game> listeDesParties = GameDAO.getInstance().readAll();
-			int tailleListe = listeDesParties.size();
-			
+			ArrayList<Game> listOfGames = GameDAO.getInstance().readAll();
+						
 			/*Choix partie*/
 			//TODO TEST SI PAS DE PARTIE DANS BD
 			memoryView.askGameToChooseTitle();
-			int choixPartie = memoryView.getChoice((listeDesParties.get(0).getGameNumber()),(listeDesParties.get(tailleListe - 1).getGameNumber()));
-			System.out.println(choixPartie);
+			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
+						
 			/*Chargement de la partie*/
-			Game newPartie = GameDAO.getInstance().read(choixPartie);
+			Game newPartie = GameDAO.getInstance().read(gameChoice);
 			System.out.println(newPartie);
+			
 			/*Création de la distribution*/
 			CardPack newpaquet = DistributionDAO.readDistribution(newPartie);
 			
-			/*Création de la participation*/
+			/*Création de la participation*///TODO A CONTINUER
 			ParticipationDAO.readParticipation(newPartie);
 						
-			
-			System.out.println("CHARGEE PARTIE");
-			//ihmConsole.afficherChargerPartie();
-			//TODO restauration de partie
-			//ResultSet res = Connexion.executeQuery("SELECT *FROM JOUEUR");
-			//Connexion.fermer();
-		}
+			memoryView.loadedGameTitle();
+			System.out.println("CHARGEMENT PARTIE TERMINEE");
+			}
 		/*---------------------------------SI NOUVELLE PARTIE-------------------------------------*/
 		else if(choice == 1) {
 			/*GESTION DES JOUEURS*/
@@ -80,7 +75,7 @@ public class MemoryController {
 			int decomptePairesDeCartes = CardPack.NBR_CARDS / 2;				/*Pour decompte paires de cartes*/
 			do {	
 				int comptageJoueurs = 0;
-				main = comptageJoueurs + 1;
+				hand = comptageJoueurs + 1;
 				do {
 					int carte1 = 0;
 					int carte2 = 0;
@@ -92,7 +87,7 @@ public class MemoryController {
 					/*Pour affichage du paquet*/
 					String[] lesLignesDuPaquet = this.genererStringPaquet();			
 					memoryView.packDisplay(lesLignesDuPaquet);
-					System.out.println("Tour Joueur: " + main);
+					System.out.println("Tour Joueur: " + hand);
 					/*Pour le choix des cartes*/
 					//------------
 					do {
@@ -146,10 +141,10 @@ public class MemoryController {
 					/*Pour roulement des joueurs*/
 					if(comptageJoueurs == players.size()-1) {
 						comptageJoueurs = 0;
-						main = comptageJoueurs + 1;
+						hand = comptageJoueurs + 1;
 					}else{
 						comptageJoueurs+= 1;
-						main = comptageJoueurs + 1;
+						hand = comptageJoueurs + 1;
 					}
 				}while(comptageJoueurs != 0);
 				
@@ -162,8 +157,8 @@ public class MemoryController {
 					
 					//Création partie dans TABLE PARTIE BD FONCTIONNE
 					memoryView.askNameForGameTitle();
-					nomPartie = memoryView.getStringText();
-					Game nouvPartie = new Game(nomPartie);
+					gameName = memoryView.getStringText();
+					Game nouvPartie = new Game(gameName);
 					GameDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getGameName());
 					
@@ -173,7 +168,7 @@ public class MemoryController {
 						PlayerDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
-						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), main , nouvJoueur.getPlayerScore(), i + 1);
+						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand , nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
@@ -255,7 +250,7 @@ public class MemoryController {
 				test = memoryView.getChoice(1,2);
 			}else {
 				memoryView.numberMaxPlayersTitle();
-				fairePause();
+				breakTime();
 				test = 2;
 			}
 		}while(test == 1);
@@ -266,7 +261,6 @@ public class MemoryController {
 		new MemoryController();
 		}
 
-	/*M�thode pour initialiser la partie*/
 	public void initialiserPartie() {
 		pack = new CardPack();								/*Cr�ation d'un paquet de cartes*/
 		/*System.out.println(PaquetCartes.cartes);*/
@@ -277,7 +271,6 @@ public class MemoryController {
 		choice = memoryView.getChoice(1,3);							/*R�ception du choix du menu principal*/
 	}
 	
-	/*M�thode pour afficher le paquet de cartes*/ 
 	private String[] genererStringPaquet () {
 		final int NBR_LIGNES = CardPack.NBR_CARDS/5;
 		String[] retour = new String[NBR_LIGNES];
@@ -298,27 +291,17 @@ public class MemoryController {
 		return retour;
 	}
 	
-	/*M�thode pour afficher la liste des joueurs*/
-	public void afficheListeJoueurs() {
+	public void playersListDisplay() {
 		for(int i = 0 ; i < players.size(); i++) {
 			players.get(i).toString();
 		}
 	}
 	
-	/* M�thode tempo */
-	public void fairePause() {
-		long depart = new Date().getTime();
-		boolean fini = false;
-		while (!fini) {
-			fini = (new Date().getTime() - depart) > 3000;
+	public void breakTime() {
+		long start = new Date().getTime();
+		boolean end = false;
+		while (!end) {
+			end = (new Date().getTime() - start) > 3000;
 		}
 	}
-
-	/*public int getNumPartie() { return numPartie; }
-	public void setNumPartie(int numPartie) { this.numPartie = numPartie; }
-	public String getNomPartie() { return nomPartie; }
-	public void setNomPartie(String nomPartie) { this.nomPartie = nomPartie; }
-	public java.sql.Date getDatePartie() { return (java.sql.Date) datePartie; }
-	public void setDatePartie(Date datePartie) { this.datePartie = datePartie; }*/
-
 }

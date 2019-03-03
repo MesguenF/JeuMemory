@@ -1,5 +1,10 @@
 package dao;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +32,6 @@ public class GameDAO extends DAO<Game>{
 			try {
 				String requete = "INSERT INTO "+ TABLE +" (nomPartie) VALUES (?)";		
 				PreparedStatement pst = Connexion.getInstance().prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
-				System.out.println("la partie = " + game);
 				pst.setString(1, (game).getGameName());
 				pst.executeUpdate();
 				ResultSet rs = pst.getGeneratedKeys();
@@ -84,7 +88,7 @@ public class GameDAO extends DAO<Game>{
 			return gameBD;
 		}
 		
-		public ArrayList<Game> readAll() {
+		public ArrayList<Game> readAllGames() {
 			listOfSavedGames = new ArrayList<Game>();
 			Game gamesBD = null;
 			try {

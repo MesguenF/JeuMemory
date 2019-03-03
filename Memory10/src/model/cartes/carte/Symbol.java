@@ -1,5 +1,10 @@
 package model.cartes.carte;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 public enum Symbol {
 	ours, lion, girafe, zebre, cheval, gnou, singe, chevre, chien, chat;		
 	

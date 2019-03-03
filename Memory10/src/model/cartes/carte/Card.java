@@ -1,5 +1,10 @@
 package model.cartes.carte;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 public class Card {
 	
 	private static final String LEFT_FACE	="[---";
@@ -26,7 +31,7 @@ public class Card {
 	
 	/*Méthodes*/
 	public Symbol getSymbol() { return cardSymbol; }
-	public Symbol setSymbol(Symbol symbole) { return symbole; }
+	public void setSymbol(Symbol symb) { this.cardSymbol = symb; }
 	public void setVisible(boolean visible) { this.visibleBool = visible; }
 	public boolean isVisible() { return visibleBool; }
 	public int getCardNumber() { return cardNumber; }

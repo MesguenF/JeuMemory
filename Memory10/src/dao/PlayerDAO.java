@@ -1,5 +1,10 @@
 package dao;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,12 +45,12 @@ public class PlayerDAO extends DAO<Player>{
 			return succes;
 	}
 
-	public boolean delete(Player pl) {
+	public boolean delete(Player pl) {		
 		boolean succes = true;
 	try {
 		String requeteDelete = "DELETE FROM "+TABLE+" WHERE "+PRIMARY_KEY+" = ?";
 		PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteDelete, Statement.RETURN_GENERATED_KEYS);
-		pst.setInt(1, pl.getPlayerNumber());
+		/*pst.setInt(1, pl.getPlayerNumber());*/
 		pst.executeUpdate();
 	} catch (SQLException e) {
 		succes=false;

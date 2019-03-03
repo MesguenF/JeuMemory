@@ -1,9 +1,15 @@
 package dao;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import model.cartes.Game;
 
@@ -57,7 +63,8 @@ public class ParticipationDAO {
 		return succes;
 	}
 	//TODO TEST
-	public static int [] readParticipation(Game game) {
+	public static ArrayList<int[]> readParticipation(Game game) {
+		ArrayList<int[]> listOfPlayers= new ArrayList();
 		int [] tab = new int[4];
 		try {
 			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + game.getGameNumber();
@@ -70,15 +77,16 @@ public class ParticipationDAO {
 					tab[2] = rs.getInt("scoreJoueur");
 					tab[3] = rs.getInt("positionTour");
 					//A SUPPRIMER
-					System.out.println(tab[0]);
-					System.out.println(tab[1]);
-					System.out.println(tab[2]);
-					System.out.println(tab[3]);
+					System.out.println("idJoueur"+tab[0]);
+					System.out.println("main"+tab[1]);
+					System.out.println("scoreJoueur"+tab[2]);
+					System.out.println("positionTour"+tab[3]);
+					listOfPlayers.add(tab);
 				}while(rs.next()!= false);
 			}
 			} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return tab;
+		return listOfPlayers;
 	}
 }

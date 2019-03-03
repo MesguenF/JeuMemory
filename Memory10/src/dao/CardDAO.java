@@ -1,5 +1,10 @@
 package dao;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +17,7 @@ public class CardDAO extends DAO<Card>{
 	private static final String PRIMARY_KEY = "idCarte";
 	private static CardDAO instance = null;
 	//TODO A SUPPRIMER
-	private static ArrayList<Integer> listeIdCartes = new ArrayList<Integer>();	//Pour stocker indices des crates pour la distribution BD
+	private static ArrayList<Integer> listeIdCartes = new ArrayList<Integer>();	//Pour stocker indices des cartes pour la distribution BD
 	
 	public static 	CardDAO getInstance() {
 		if(instance == null) {

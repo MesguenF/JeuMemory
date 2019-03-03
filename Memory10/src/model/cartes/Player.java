@@ -1,6 +1,6 @@
 package model.cartes;
 /**
- * @author admin
+ * @author Mesquen Frédéric
  *
  */
 public class Player {
@@ -43,6 +43,10 @@ public class Player {
 		this.playerScore = ps;
 	}
 
+	
+	/**
+	 * @Getters and Setters
+	 */
 	public int getPlayerNumber() { return playerNumber; }
 	public void setPlayerNumber(int pn) { this.playerNumber = pn; }
 	public String getPlayerLastName() { return playerLastName; }

@@ -1,4 +1,8 @@
 package dao;
+/**
+ * @author Mesquen Frédéric
+ *
+ */
 
 /**
  * �tape 1 : le patron de conception DAO

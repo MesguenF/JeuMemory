@@ -29,10 +29,13 @@ public class MemoryController {
 	public boolean saveGame = false;
 	public int hand;
 				
+	
+	
 	public MemoryController(){
 		super();
-		
-		initialiserPartie();			/*Initialisation du paquet de cartes + Menu principal avec choix*/
+		memoryView.memoryTitle();	
+		memoryView.choiceTitle();								/*Affichage menu principal*/
+		choice = memoryView.getChoice(1,3);						/*R�ception du choix du menu principal*/
 		
 		/*//Si TABLE CRATE VIDE : Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
 		//TODO TEST SI TABLE VIDE
@@ -41,33 +44,36 @@ public class MemoryController {
 			CarteDAO.getInstance().create(nouvCarte);
 			}	
 		Connexion.fermer();*/
-				
-		/*----------------------------------------SI CHARGEMENT DE PARTIE-------------------------------------*/
+			
+		/**
+		 * GESTION CHARGEMENT D'UNE PARTIE.
+		 * On affiche la liste des parties dans la base de données.
+		 * On choisit une partie.
+		 * On récupére le numéro et le nom de la partie.
+		 */
 		if (choice == 2) {
-			/*Affichage des parties sauvegardées*/
 			memoryView.listOfGamesTitle();
-			ArrayList<Game> listOfGames = GameDAO.getInstance().readAll();
-						
-			/*Choix partie*/
+			ArrayList<Game> listOfGames = GameDAO.getInstance().readAllGames();
 			//TODO TEST SI PAS DE PARTIE DANS BD
 			memoryView.askGameToChooseTitle();
 			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
 						
-			/*Chargement de la partie*/
-			Game newPartie = GameDAO.getInstance().read(gameChoice);
-			System.out.println(newPartie);
+			Game newGame = GameDAO.getInstance().read(gameChoice);
+			System.out.println("La partie chargée est la suivante : " + newGame);
 			
 			/*Création de la distribution*/
-			CardPack newpaquet = DistributionDAO.readDistribution(newPartie);
+			CardPack loadPack = DistributionDAO.readDistribution(newGame);
 			
 			/*Création de la participation*///TODO A CONTINUER
-			ParticipationDAO.readParticipation(newPartie);
+			ArrayList<int[]> loadPlayers = ParticipationDAO.readParticipation(newGame);
 						
 			memoryView.loadedGameTitle();
-			System.out.println("CHARGEMENT PARTIE TERMINEE");
 			}
 		/*---------------------------------SI NOUVELLE PARTIE-------------------------------------*/
 		else if(choice == 1) {
+			createNewPack();			/*Initialisation du paquet de cartes + Menu principal avec choix*/
+			
+			
 			/*GESTION DES JOUEURS*/
 			saisieDesJoueurs();
 			
@@ -181,7 +187,8 @@ public class MemoryController {
 								DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getCardNumber(), j ,nouvCarte.visibleBool);
 							}
 						}
-					}	
+					}
+						
 					Connexion.fermer();
 					memoryView.backupTitle();
 					//TODO TEMPO
@@ -261,15 +268,11 @@ public class MemoryController {
 		new MemoryController();
 		}
 
-	public void initialiserPartie() {
+	public void createNewPack() {
 		pack = new CardPack();								/*Cr�ation d'un paquet de cartes*/
-		/*System.out.println(PaquetCartes.cartes);*/
-		memoryView.memoryTitle();							/*Appel titre console*/
-		String[] lesLignesDuPaquet = this.genererStringPaquet();
-		memoryView.packDisplay(lesLignesDuPaquet);				/*Affichage Plateau de cartes*/
-		memoryView.choiceTitle();								/*Affichage menu principal*/
-		choice = memoryView.getChoice(1,3);							/*R�ception du choix du menu principal*/
-	}
+		String[] linesPack = this.genererStringPaquet();
+		memoryView.packDisplay(linesPack);				/*Affichage Plateau de cartes*/
+		}
 	
 	private String[] genererStringPaquet () {
 		final int NBR_LIGNES = CardPack.NBR_CARDS/5;

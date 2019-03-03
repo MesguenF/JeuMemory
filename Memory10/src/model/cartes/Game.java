@@ -1,8 +1,13 @@
 package model.cartes;
 
+/**
+ * @author Mesquen Frédéric
+ *
+ */
+
 public class Game {
 	
-	public int gameNumber; //Pour BD
+	public int gameNumber; //For Data Base
 	public String gameName;
 		
 	/**

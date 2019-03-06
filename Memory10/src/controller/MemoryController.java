@@ -29,12 +29,14 @@ public class MemoryController {
 	public boolean saveGame = false;
 	public int hand;
 				
-	
 	public MemoryController(){
 		super();
+		/**
+		 * Démarrage avec titre et menu de choix.
+		 */
 		memoryView.memoryTitle();	
-		memoryView.choiceTitle();								/*Affichage menu principal*/
-		choice = memoryView.getChoice(1,3);						/*R�ception du choix du menu principal*/
+		memoryView.choiceTitle();								
+		choice = memoryView.getChoice(1,3);						
 		
 		/*//Si TABLE CRATE VIDE : Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
 		//TODO TEST SI TABLE VIDE
@@ -43,13 +45,29 @@ public class MemoryController {
 			CarteDAO.getInstance().create(nouvCarte);
 			}	
 		Connexion.fermer();*/
-			
+		/*******************************************
+		 * *GESTION CREATION D'UNE NOUVELLE PARTIE.*
+		 * *****************************************
+		 */
+		if(choice == 1) {
+			/**
+			 * On crée un nouveau paquet de cartes
+			 */
+			createNewPack();
+			/**
+			 * On rentre les nouveaux joueurs
+			 */
+			enterNewPlayers();
+		}
+		
 		/************************************
 		 * *GESTION CHARGEMENT D'UNE PARTIE.*
 		 * **********************************
 		 * On affiche la liste des parties dans la base de données.
 		 * On choisit une partie.
 		 * On récupére le numéro et le nom de la partie.
+		 * On récupére la distribution dans la BD.
+		 * On récupére la participation dans la BD.
 		 */
 		if (choice == 2) {
 			/**
@@ -97,26 +115,22 @@ public class MemoryController {
 							
 			}
 			memoryView.loadedGameTitle();
-			}
-		/*************************************
-		 * *GESTION CREATION NOUVELLE PARTIE.*
-		 * ***********************************
-		 * 
+		}
+		/**
+		 * On ferme le programme et la console.
 		 */
-		else if(choice == 1) {
-			/**
-			 * On crée un nouveau paquet de cartes
-			 */
-			createNewPack();
-			/**
-			 * On rentre les nouveaux joueurs
-			 */
-			enterNewPlayers();
+		if(choice == 3){
+			System.out.println("SORTIE PROGRAMME");
+			/*System.exit(1);*/
+			System.exit(1);
+			//TODO FERMER CONSOLE
+		}
 		
-			
-			
-			
-			/*GESTION DES CARTES*/							
+		/******************
+		 * *GESTION DU JEU*
+		 * ****************
+		 */
+		/*GESTION DES CARTES*/							
 			int decomptePairesDeCartes = CardPack.NBR_CARDS / 2;				/*Pour decompte paires de cartes*/
 			do {	
 				int comptageJoueurs = 0;
@@ -253,15 +267,11 @@ public class MemoryController {
 					indiceJoueurGagnant = joueurs.get(i).getIndiceJoueur();
 				}
 			}*/
-			
-		}else {
-			System.out.println("SORTIE PROGRAMME");
-			/*System.exit(1);*/
-			System.exit(1);
-			//TODO FERMER CONSOLE
-		}
 		sc.close();
-	}
+		}
+		
+		
+	
 
 	/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
 
@@ -307,15 +317,14 @@ public class MemoryController {
 		new MemoryController();
 		}
 
-	public void createNewPack() {
-		pack = new CardPack();								/*Cr�ation d'un paquet de cartes*/
+	public CardPack createNewPack() {
+		pack = new CardPack();								
 		String[] linesPack = this.genererStringPaquet();
-		memoryView.packDisplay(linesPack);				/*Affichage Plateau de cartes*/
+		memoryView.packDisplay(linesPack);
+		return pack;
 		}
 	
-	public 
-	
-	private String[] genererStringPaquet () {
+	public String[] genererStringPaquet () {
 		final int NBR_LIGNES = CardPack.NBR_CARDS/5;
 		String[] retour = new String[NBR_LIGNES];
 		int compteur = 0;

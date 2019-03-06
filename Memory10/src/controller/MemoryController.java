@@ -30,7 +30,6 @@ public class MemoryController {
 	public int hand;
 				
 	
-	
 	public MemoryController(){
 		super();
 		memoryView.memoryTitle();	
@@ -45,37 +44,77 @@ public class MemoryController {
 			}	
 		Connexion.fermer();*/
 			
-		/**
-		 * GESTION CHARGEMENT D'UNE PARTIE.
+		/************************************
+		 * *GESTION CHARGEMENT D'UNE PARTIE.*
+		 * **********************************
 		 * On affiche la liste des parties dans la base de données.
 		 * On choisit une partie.
 		 * On récupére le numéro et le nom de la partie.
 		 */
 		if (choice == 2) {
+			/**
+			 * On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE
+			 */
 			memoryView.listOfGamesTitle();
 			ArrayList<Game> listOfGames = GameDAO.getInstance().readAllGames();
+			System.out.println(listOfGames);
 			//TODO TEST SI PAS DE PARTIE DANS BD
+			
+			/**
+			 * On choisit une partie dans la liste 
+			 */
 			memoryView.askGameToChooseTitle();
 			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
-						
-			Game newGame = GameDAO.getInstance().read(gameChoice);
-			System.out.println("La partie chargée est la suivante : " + newGame);
 			
-			/*Création de la distribution*/
-			CardPack loadPack = DistributionDAO.readDistribution(newGame);
+			/**
+			 * On récupére la partie choisie dans la BD et on affiche ces caractèristiques:
+			 * idPartie
+			 * nomPartie
+			 */
+			Game gameLoaded = GameDAO.getInstance().read(gameChoice);
+			System.out.println("La partie chargée est la suivante : " + gameLoaded);
 			
-			/*Création de la participation*///TODO A CONTINUER
-			ArrayList<int[]> loadPlayers = ParticipationDAO.readParticipation(newGame);
-						
+			/**
+			 * On récupére la distibution dans la BD.
+			 * Cette distribution correspond à un paquet de cartes rangées en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION.
+			 */
+			CardPack loadPack = DistributionDAO.readDistribution(gameLoaded);
+			
+			/**
+			 * On récupére la participation dans la BD.
+			 * Cette distribution correspond à une liste de joueurs à partir de la table PARTICIPATION.
+			 * loadPlayers est une liste contenant des tableaux eux mêmes les caractéristiques pour chaque joueur:
+			 * idJoueur
+			 * main
+			 * scoreJoueur
+			 * positionTour
+			 */
+			ArrayList<int[]> loadPlayers = ParticipationDAO.readParticipation(gameLoaded);
+			System.out.println("Le nombre de joueurs pour cette partie est de : " + loadPlayers.size());
+			for(int i = 0; i<loadPlayers.size();i++) {
+				int[]tab = loadPlayers.get(i);
+				System.out.println("Joueur n° " + tab[0] +"/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
+							
+			}
 			memoryView.loadedGameTitle();
 			}
-		/*---------------------------------SI NOUVELLE PARTIE-------------------------------------*/
+		/*************************************
+		 * *GESTION CREATION NOUVELLE PARTIE.*
+		 * ***********************************
+		 * 
+		 */
 		else if(choice == 1) {
-			createNewPack();			/*Initialisation du paquet de cartes + Menu principal avec choix*/
+			/**
+			 * On crée un nouveau paquet de cartes
+			 */
+			createNewPack();
+			/**
+			 * On rentre les nouveaux joueurs
+			 */
+			enterNewPlayers();
+		
 			
 			
-			/*GESTION DES JOUEURS*/
-			saisieDesJoueurs();
 			
 			/*GESTION DES CARTES*/							
 			int decomptePairesDeCartes = CardPack.NBR_CARDS / 2;				/*Pour decompte paires de cartes*/
@@ -226,7 +265,7 @@ public class MemoryController {
 
 	/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
 
-	public void saisieDesJoueurs() {
+	public void enterNewPlayers() {
 		memoryView.newGameTitle();
 		int test;
 		int compteurJoueur = 0;				//Pour compter nombre de joueur
@@ -273,6 +312,8 @@ public class MemoryController {
 		String[] linesPack = this.genererStringPaquet();
 		memoryView.packDisplay(linesPack);				/*Affichage Plateau de cartes*/
 		}
+	
+	public 
 	
 	private String[] genererStringPaquet () {
 		final int NBR_LIGNES = CardPack.NBR_CARDS/5;

@@ -104,7 +104,7 @@ public class GameDAO extends DAO<Game>{
 				} catch (SQLException e) {
 				e.printStackTrace();
 				}
-				System.out.println(listOfSavedGames);
+				/*System.out.println(listOfSavedGames);*/
 			return listOfSavedGames;
 			}
 		}

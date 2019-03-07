@@ -27,17 +27,15 @@ public class MemoryController {
 	public int gameNumber;	//For Data Base
 	public String gameName;
 	public boolean saveGame = false;
-	public int hand;
+	public int decomptePairesDeCartes;
+	public int tourJoueur;
 				
 	public MemoryController(){
 		super();
-		/**
-		 * Démarrage avec titre et menu de choix.
-		 */
+		/** Démarrage avec titre du jeu et menu de choix. */
 		memoryView.memoryTitle();	
 		memoryView.choiceTitle();								
 		choice = memoryView.getChoice(1,3);						
-		
 		/*//Si TABLE CRATE VIDE : Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
 		//TODO TEST SI TABLE VIDE
 		for(int i = 0; i < 10; i++) {
@@ -47,61 +45,52 @@ public class MemoryController {
 		Connexion.fermer();*/
 		/*******************************************
 		 * *GESTION CREATION D'UNE NOUVELLE PARTIE.*
-		 * *****************************************
-		 */
-		if(choice == 1) {
-			/**
-			 * On crée un nouveau paquet de cartes
-			 */
-			createNewPack();
-			/**
-			 * On rentre les nouveaux joueurs
-			 */
+		 * ****************************************/
+		 if(choice == 1) {
+			/** On crée un nouveau paquet de cartes */
+			pack = new CardPack();
+			
+			/** On saisie les nouveaux joueurs */
 			enterNewPlayers();
+			
+			/** Compteur pour le nombre de paires de cartes visibles (taille paquet divisée par 2) */
+			decomptePairesDeCartes = CardPack.NBR_CARDS / 2; ;
+			
+			/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour un nouveau paquet */
+			tourJoueur=1;
 		}
-		
+		 
 		/************************************
 		 * *GESTION CHARGEMENT D'UNE PARTIE.*
-		 * **********************************
-		 * On affiche la liste des parties dans la base de données.
-		 * On choisit une partie.
-		 * On récupére le numéro et le nom de la partie.
-		 * On récupére la distribution dans la BD.
-		 * On récupére la participation dans la BD.
-		 */
-		if (choice == 2) {
-			/**
-			 * On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE
-			 */
+		 * *********************************/
+		 if (choice == 2) {
+			/** On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE */
 			memoryView.listOfGamesTitle();
 			ArrayList<Game> listOfGames = GameDAO.getInstance().readAllGames();
 			System.out.println(listOfGames);
 			//TODO TEST SI PAS DE PARTIE DANS BD
 			
-			/**
-			 * On choisit une partie dans la liste 
-			 */
+			/** On choisit une partie dans la liste */
 			memoryView.askGameToChooseTitle();
 			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
 			
-			/**
-			 * On récupére la partie choisie dans la BD et on affiche ces caractèristiques:
-			 * idPartie
-			 * nomPartie
-			 */
+			/** On récupére la partie choisie dans la BD et on affiche ces caractèristiques: */
 			Game gameLoaded = GameDAO.getInstance().read(gameChoice);
 			System.out.println("La partie chargée est la suivante : " + gameLoaded);
 			
-			/**
-			 * On récupére la distibution dans la BD.
-			 * Cette distribution correspond à un paquet de cartes rangées en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION.
-			 */
-			CardPack loadPack = DistributionDAO.readDistribution(gameLoaded);
+			/** On récupére la distibution dans la BD correspondant à un paquet de cartes rangées en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION. */
+			pack = DistributionDAO.readDistribution(gameLoaded);
+			
+			/** On parcourt le paquet chargé pour savoir combien de cartes sont visibles et remplir le compteur de paires de cartes. */
+			for(int i = 0; i< pack.size();i++) {
+				if(pack.getCard(i).isVisible()) { decomptePairesDeCartes += 1; }
+			}
+			decomptePairesDeCartes = decomptePairesDeCartes/2;
 			
 			/**
 			 * On récupére la participation dans la BD.
 			 * Cette distribution correspond à une liste de joueurs à partir de la table PARTICIPATION.
-			 * loadPlayers est une liste contenant des tableaux eux mêmes les caractéristiques pour chaque joueur:
+			 * loadPlayers est une liste contenant des tableaux contenant eux mêmes les caractéristiques pour chaque joueur:
 			 * idJoueur
 			 * main
 			 * scoreJoueur
@@ -112,100 +101,93 @@ public class MemoryController {
 			for(int i = 0; i<loadPlayers.size();i++) {
 				int[]tab = loadPlayers.get(i);
 				System.out.println("Joueur n° " + tab[0] +"/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
-							
+				tourJoueur = tab[1];				
 			}
+			System.out.println("C'est au joueur " + tourJoueur + " de jouer!");
 			memoryView.loadedGameTitle();
 		}
-		/**
-		 * On ferme le programme et la console.
-		 */
+		 
+		/***************************************
+		 * ON FERME LE PROGRAMME ET LA CONSOLE *
+		 ***************************************/
 		if(choice == 3){
 			System.out.println("SORTIE PROGRAMME");
-			/*System.exit(1);*/
-			System.exit(1);
 			//TODO FERMER CONSOLE
 		}
 		
 		/******************
-		 * *GESTION DU JEU*
-		 * ****************
-		 */
-		/*GESTION DES CARTES*/							
-			int decomptePairesDeCartes = CardPack.NBR_CARDS / 2;				/*Pour decompte paires de cartes*/
-			do {	
-				int comptageJoueurs = 0;
-				hand = comptageJoueurs + 1;
-				do {
-					int carte1 = 0;
-					int carte2 = 0;
-					boolean bool = false;	
-					
-					/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
-					memoryView.askPlayerTitle(players.get(comptageJoueurs).playerPosition, players.get(comptageJoueurs).playerHandle, players.get(comptageJoueurs).playerScore);
-
-					/*Pour affichage du paquet*/
-					String[] lesLignesDuPaquet = this.genererStringPaquet();			
-					memoryView.packDisplay(lesLignesDuPaquet);
-					System.out.println("Tour Joueur: " + hand);
-					/*Pour le choix des cartes*/
-					//------------
-					do {
-						bool = false;	
-						int cptCartes = 0;
-						for(int i = 0 ; i < 2 ; i++){
-							/*Pour carte 2*/
-							if(cptCartes == 1) {
-								//------------
-								do{
-									if(carte2 == carte1) { memoryView.cardAlreadyChooseTitle();}
-									memoryView.askCardTitle();
-									carte2 = memoryView.getChoice(1,CardPack.NBR_CARDS);
-								}while(carte2 == carte1);
-								//-----------
-								cptCartes+= 1;
-								pack.modifyCardVisibility(carte2 - 1, true);
-								lesLignesDuPaquet = this.genererStringPaquet();	
-								memoryView.packDisplay(lesLignesDuPaquet);
-							}
-							/*Pour carte 1*/
-							if(cptCartes == 0) {
+		 ***GESTION DU JEU*
+		 ******************/
+		 
+		do { /** DEBUT Faire Tant qu'il reste paires de cartes à trouver */	
+			
+			do {
+				int card1 = 0;
+				int card2 = 0;
+				boolean bool = false;	
+				/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
+				/*memoryView.askPlayerTitle(players.get(hand - 1).playerPosition, players.get(hand - 1).playerHandle, players.get(hand - 1).playerScore);*/
+				
+				/** Pour affichage du paquet de cartes */
+				String[] lesLignesDuPaquet = this.genererStringPaquet();			
+				memoryView.packDisplay(lesLignesDuPaquet);
+				System.out.println("Tour Joueur: " + tourJoueur);
+				
+				do { /**DEBUT Faire choix de carte**/
+					bool = false;	
+					int cptCartes = 0;
+					for(int i = 0 ; i < 2 ; i++){
+						/**Pour carte 2**/
+						if(cptCartes == 1) {
+							do{
+								if(card2 == card1) { memoryView.cardAlreadyChooseTitle();}
 								memoryView.askCardTitle();
-								carte1 = memoryView.getChoice(1,CardPack.NBR_CARDS);
-								cptCartes+= 1;
-								pack.modifyCardVisibility(carte1 - 1, true);
-								lesLignesDuPaquet = this.genererStringPaquet();	
-								memoryView.packDisplay(lesLignesDuPaquet);
-							}
+								card2 = memoryView.getChoice(1,CardPack.NBR_CARDS);
+							}while(card2 == card1);
+							//-----------
+							cptCartes+= 1;
+							pack.modifyCardVisibility(card2 - 1, true);
+							lesLignesDuPaquet = this.genererStringPaquet();	
+							memoryView.packDisplay(lesLignesDuPaquet);
 						}
-						/*Pour tester si paire de cartes identiques*/
-						System.out.println((CardPack.theCards.get(carte1-1).getSymbol()).equals((CardPack.theCards.get(carte2-1)).getSymbol()));
-						if((CardPack.theCards.get(carte1-1).getSymbol()).equals((CardPack.theCards.get(carte2-1)).getSymbol())) {
-							/*Si oui*/
-							bool = true;
-							decomptePairesDeCartes-= 1;
-							memoryView.pairOfCardsTitle();
-							players.get(comptageJoueurs).setPlayerScore();
-							
-						}else{
-							/*Si non*/
-							bool = false;
-							memoryView.noPairOfCardsTitle();
-							pack.modifyCardVisibility(carte1 - 1, false);
-							pack.modifyCardVisibility(carte2 - 1, false);
-							long start=System.nanoTime();
-							while((System.nanoTime()-start)<1000000000);
+						/**Pour carte 1**/
+						if(cptCartes == 0) {
+							memoryView.askCardTitle();
+							card1 = memoryView.getChoice(1,CardPack.NBR_CARDS);
+							cptCartes+= 1;
+							pack.modifyCardVisibility(card1 - 1, true);
+							lesLignesDuPaquet = this.genererStringPaquet();	
+							memoryView.packDisplay(lesLignesDuPaquet);
 						}
-					}while(bool == true);
-					//-----------
-					/*Pour roulement des joueurs*/
-					if(comptageJoueurs == players.size()-1) {
-						comptageJoueurs = 0;
-						hand = comptageJoueurs + 1;
-					}else{
-						comptageJoueurs+= 1;
-						hand = comptageJoueurs + 1;
 					}
-				}while(comptageJoueurs != 0);
+					/**Pour tester si paire de cartes identiques**/
+					System.out.println((CardPack.theCards.get(card1-1).getSymbol()).equals((CardPack.theCards.get(card2-1)).getSymbol()));
+					if((CardPack.theCards.get(card1-1).getSymbol()).equals((CardPack.theCards.get(card2-1)).getSymbol())) {
+						/**Si oui**/
+						bool = true;
+						decomptePairesDeCartes-= 1;
+						memoryView.pairOfCardsTitle();
+						players.get(tourJoueur - 1).setPlayerScore();
+					}else{
+						/**Si non**/
+						bool = false;
+						memoryView.noPairOfCardsTitle();
+						pack.modifyCardVisibility(card1 - 1, false);
+						pack.modifyCardVisibility(card2 - 1, false);
+						long start=System.nanoTime();
+						while((System.nanoTime()-start)<1000000000);
+					}
+				}while(bool == true); /**FIN Faire choix de carte**/
+				
+				/**Pour roulement des joueurs*/
+				if(tourJoueur == players.size()) {
+					tourJoueur = 0;
+					/*hand = tourJoueur + 1;*/
+				}else{
+					tourJoueur+= 1;
+					/*hand = tourJoueur + 1;*/
+				}
+				}while(tourJoueur != 0);
 				
 				
 				/*SAUVEGARDE PARTIE*/
@@ -227,7 +209,7 @@ public class MemoryController {
 						PlayerDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
-						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand , nouvJoueur.getPlayerScore(), i + 1);
+						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), tourJoueur, nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
@@ -247,7 +229,7 @@ public class MemoryController {
 					//TODO TEMPO
 					//TODO FERMER CONSOLE
 				}
-			}while(decomptePairesDeCartes != 0 && saveGame != true); 	//Fin de partie quand plus de paires de cartes 			
+			}while(decomptePairesDeCartes != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */		
 			
 			
 			if(decomptePairesDeCartes == 0) {
@@ -270,12 +252,12 @@ public class MemoryController {
 		sc.close();
 		}
 		
-		
-	
+	/**
+	 * Méthode pour créer de nouveaux joueurs	
+	 */
+		/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
 
-	/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
-
-	public void enterNewPlayers() {
+public void enterNewPlayers() {
 		memoryView.newGameTitle();
 		int test;
 		int compteurJoueur = 0;				//Pour compter nombre de joueur
@@ -317,13 +299,9 @@ public class MemoryController {
 		new MemoryController();
 		}
 
-	public CardPack createNewPack() {
-		pack = new CardPack();								
-		String[] linesPack = this.genererStringPaquet();
-		memoryView.packDisplay(linesPack);
-		return pack;
-		}
-	
+	/**
+	 *  Méthode retournant un affichage du paquet
+	 */
 	public String[] genererStringPaquet () {
 		final int NBR_LIGNES = CardPack.NBR_CARDS/5;
 		String[] retour = new String[NBR_LIGNES];

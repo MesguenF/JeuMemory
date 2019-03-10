@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -8,11 +12,21 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
    <children>
+      <SubScene height="400.0" layoutX="100.0" layoutY="91.0" width="600.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
+      <SubScene height="400.0" layoutX="110.0" layoutY="101.0" width="600.0">
+         <root>
+            <Region />
+         </root>
+      </SubScene>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="800.0">
         <menus>
           <Menu mnemonicParsing="false" text="Menu">
             <items>
-              <MenuItem mnemonicParsing="false" text="Nouvelle partie" />
+              <MenuItem fx:id="id1" mnemonicParsing="false" text="Nouvelle partie" />
                   <MenuItem mnemonicParsing="false" text="Charger Partie" />
                   <MenuItem mnemonicParsing="false" text="Quitter" />
             </items>

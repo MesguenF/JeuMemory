@@ -30,6 +30,7 @@ public class MemoryController {
 	public int numberOfPairsOfCardsVisible = CardPack.NBR_CARDS / 2;
 	public int hand;
 	public int cpt;
+	public int comptageJoueurs;
 				
 	public MemoryController(){
 		super();
@@ -48,14 +49,9 @@ public class MemoryController {
 		 * *GESTION CREATION D'UNE NOUVELLE PARTIE.*
 		 * ****************************************/
 		 if(choice == 1) {
-			/** On crée un nouveau paquet de cartes */
-			pack = new CardPack();
-			
-			/** On saisie les nouveaux joueurs */
-			enterNewPlayers();
-			
-			/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour un nouveau paquet */
-			hand=1;
+			pack = new CardPack();	/** On crée un nouveau paquet de cartes */
+			enterNewPlayers();		/** On saisie les nouveaux joueurs */
+			hand=1;					/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour un nouveau paquet */
 		}
 		/************************************
 		 * *GESTION CHARGEMENT D'UNE PARTIE.*
@@ -85,7 +81,6 @@ public class MemoryController {
 				}
 			}
 			numberOfPairsOfCardsVisible = numberOfPairsOfCardsVisible - (cpt/2);
-			
 			/**
 			 * On récupére la participation dans la BD.
 			 * Cette distribution correspond à une liste de joueurs à partir de la table PARTICIPATION.
@@ -123,6 +118,8 @@ public class MemoryController {
 				int card1 = 0;
 				int card2 = 0;
 				boolean bool = false;	/**Pour test si paires de cartes**/
+				comptageJoueurs = 0;
+				/*hand = comptageJoueurs + 1*/
 				
 				/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
 				/*memoryView.askPlayerTitle(players.get(hand - 1).playerPosition, players.get(hand - 1).playerHandle, players.get(hand - 1).playerScore);*/
@@ -179,45 +176,46 @@ public class MemoryController {
 				}while(bool == true); /**FIN Faire choix de carte**/
 				
 				/**Pour roulement des joueurs*/
-				if(hand == players.size()) {
-					hand = 0;
-					
+				if(comptageJoueurs == players.size()) {
+					/*hand = 0;*/
+					comptageJoueurs = 0;
+					hand = comptageJoueurs + 1;
 				}else{
-					hand+= 1;
-					
+					/*hand+= 1;*/
+					comptageJoueurs+= 1;
+					hand = comptageJoueurs + 1;
 				}
-				}while(hand != 0);
-				
-				
-				/*SAUVEGARDE PARTIE*/
+				}while(comptageJoueurs != 0);
+								
+				/**SAUVEGARDE PARTIE**/
 				memoryView.nextOrSaveTitle();	
 				int testSauvegarde = memoryView.getChoice(1,2);
 				if(testSauvegarde == 2) {
 					saveGame = true;
 					
-					//Création partie dans TABLE PARTIE BD FONCTIONNE
+					/**Création partie dans TABLE PARTIE BD FONCTIONNE**/
 					memoryView.askNameForGameTitle();
 					gameName = memoryView.getStringText();
 					Game nouvPartie = new Game(gameName);
 					GameDAO.getInstance().create(nouvPartie);
 					System.out.println(nouvPartie.getGameName());
 					
-					//Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE
+					/**Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE**/
 					for(int i  = 0; i < players.size(); i++) {
 						Player nouvJoueur = new Player(players.get(i).playerLastName,players.get(i).playerFirstName,players.get(i).playerHandle);
 						PlayerDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
-						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
+						/**Remplissage TABLE PARTICIPATION BD**/
 						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand, nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
-					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
+					/**Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)**/
 					for(int i = 0; i < 10; i++) {
 						Card nouvCarte = new Card(Symbol.getSymbol(i),false);
 						CardDAO.getInstance().create(nouvCarte);
 						for(int j = 0; j < CardPack.NBR_CARDS; j++){
 							if(nouvCarte.getOrdinal(nouvCarte.getSymbol()) == pack.getCard(j).getOrdinal(pack.getCard(j).getSymbol())){
-								//Remplissage TABLE DISTRIBUTION BD FONCTIONNE
+								/**Remplissage TABLE DISTRIBUTION BD**/
 								DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getCardNumber(), j ,nouvCarte.visibleBool);
 							}
 						}

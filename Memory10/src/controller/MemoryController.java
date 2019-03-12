@@ -29,8 +29,8 @@ public class MemoryController {
 	public boolean saveGame = false;
 	public int numberOfPairsOfCardsVisible = CardPack.NBR_CARDS / 2;
 	public int hand;
-	public int cpt;
-	public int comptageJoueurs;
+	public int cptCards;
+	public int cptPlayers;
 				
 	public MemoryController(){
 		super();
@@ -77,10 +77,10 @@ public class MemoryController {
 			/** On parcourt le paquet chargé pour savoir combien de cartes sont visibles et remplir le compteur de paires de cartes. */
 			for(int i = 0; i< pack.size();i++) {
 				if(pack.getCard(i).isVisible()) {
-					cpt+= 1;
+					cptCards+= 1;
 				}
 			}
-			numberOfPairsOfCardsVisible = numberOfPairsOfCardsVisible - (cpt/2);
+			numberOfPairsOfCardsVisible = numberOfPairsOfCardsVisible - (cptCards/2);
 			/**
 			 * On récupére la participation dans la BD.
 			 * Cette distribution correspond à une liste de joueurs à partir de la table PARTICIPATION.
@@ -118,7 +118,7 @@ public class MemoryController {
 				int card1 = 0;
 				int card2 = 0;
 				boolean bool = false;	/**Pour test si paires de cartes**/
-				comptageJoueurs = 0;
+				cptPlayers = 0;
 				/*hand = comptageJoueurs + 1*/
 				
 				/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
@@ -176,16 +176,16 @@ public class MemoryController {
 				}while(bool == true); /**FIN Faire choix de carte**/
 				
 				/**Pour roulement des joueurs*/
-				if(comptageJoueurs == players.size()) {
+				if(cptPlayers == players.size()) {
 					/*hand = 0;*/
-					comptageJoueurs = 0;
-					hand = comptageJoueurs + 1;
+					cptPlayers = 0;
+					hand = cptPlayers + 1;
 				}else{
 					/*hand+= 1;*/
-					comptageJoueurs+= 1;
-					hand = comptageJoueurs + 1;
+					cptPlayers+= 1;
+					hand = cptPlayers + 1;
 				}
-				}while(comptageJoueurs != 0);
+				}while(cptPlayers != 0);
 								
 				/**SAUVEGARDE PARTIE**/
 				memoryView.nextOrSaveTitle();	
@@ -252,7 +252,7 @@ public class MemoryController {
 	/**
 	 * Méthode pour créer de nouveaux joueurs	
 	 */
-public void enterNewPlayers() {
+	public void enterNewPlayers() {
 		memoryView.newGameTitle();
 		int test;
 		int playerNumber = 0;				

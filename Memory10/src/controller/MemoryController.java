@@ -27,8 +27,9 @@ public class MemoryController {
 	public int gameNumber;	//For Data Base
 	public String gameName;
 	public boolean saveGame = false;
-	public int decomptePairesDeCartes;
-	public int tourJoueur;
+	public int numberOfPairsOfCardsVisible = CardPack.NBR_CARDS / 2;
+	public int hand;
+	public int cpt;
 				
 	public MemoryController(){
 		super();
@@ -53,39 +54,37 @@ public class MemoryController {
 			/** On saisie les nouveaux joueurs */
 			enterNewPlayers();
 			
-			/** Compteur pour le nombre de paires de cartes visibles (taille paquet divisée par 2) */
-			decomptePairesDeCartes = CardPack.NBR_CARDS / 2; ;
-			
 			/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour un nouveau paquet */
-			tourJoueur=1;
+			hand=1;
 		}
-		 
 		/************************************
 		 * *GESTION CHARGEMENT D'UNE PARTIE.*
 		 * *********************************/
 		 if (choice == 2) {
-			/** On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE */
+			/**On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE*/
 			memoryView.listOfGamesTitle();
 			ArrayList<Game> listOfGames = GameDAO.getInstance().readAllGames();
 			System.out.println(listOfGames);
 			//TODO TEST SI PAS DE PARTIE DANS BD
 			
-			/** On choisit une partie dans la liste */
+			/**On demande la partie que l'on souhaite reprendre*/
 			memoryView.askGameToChooseTitle();
 			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
 			
-			/** On récupére la partie choisie dans la BD et on affiche ces caractèristiques: */
+			/**On récupére la partie choisie dans la BD et on affiche ces caractèristiques:*/
 			Game gameLoaded = GameDAO.getInstance().read(gameChoice);
 			System.out.println("La partie chargée est la suivante : " + gameLoaded);
 			
-			/** On récupére la distibution dans la BD correspondant à un paquet de cartes rangées en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION. */
+			/**On récupére la distibution dans la BD correspondant à un paquet de cartes rangées en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION. */
 			pack = DistributionDAO.readDistribution(gameLoaded);
 			
 			/** On parcourt le paquet chargé pour savoir combien de cartes sont visibles et remplir le compteur de paires de cartes. */
 			for(int i = 0; i< pack.size();i++) {
-				if(pack.getCard(i).isVisible()) { decomptePairesDeCartes += 1; }
+				if(pack.getCard(i).isVisible()) {
+					cpt+= 1;
+				}
 			}
-			decomptePairesDeCartes = decomptePairesDeCartes/2;
+			numberOfPairsOfCardsVisible = numberOfPairsOfCardsVisible - (cpt/2);
 			
 			/**
 			 * On récupére la participation dans la BD.
@@ -101,12 +100,11 @@ public class MemoryController {
 			for(int i = 0; i<loadPlayers.size();i++) {
 				int[]tab = loadPlayers.get(i);
 				System.out.println("Joueur n° " + tab[0] +"/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
-				tourJoueur = tab[1];				
+				hand = tab[1];
 			}
-			System.out.println("C'est au joueur " + tourJoueur + " de jouer!");
+			System.out.println("C'est au joueur " + hand + " de jouer!");
 			memoryView.loadedGameTitle();
 		}
-		 
 		/***************************************
 		 * ON FERME LE PROGRAMME ET LA CONSOLE *
 		 ***************************************/
@@ -124,14 +122,15 @@ public class MemoryController {
 			do {
 				int card1 = 0;
 				int card2 = 0;
-				boolean bool = false;	
+				boolean bool = false;	/**Pour test si paires de cartes**/
+				
 				/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
 				/*memoryView.askPlayerTitle(players.get(hand - 1).playerPosition, players.get(hand - 1).playerHandle, players.get(hand - 1).playerScore);*/
 				
 				/** Pour affichage du paquet de cartes */
 				String[] lesLignesDuPaquet = this.genererStringPaquet();			
 				memoryView.packDisplay(lesLignesDuPaquet);
-				System.out.println("Tour Joueur: " + tourJoueur);
+				System.out.println("Tour Joueur: " + hand);
 				
 				do { /**DEBUT Faire choix de carte**/
 					bool = false;	
@@ -165,9 +164,9 @@ public class MemoryController {
 					if((CardPack.theCards.get(card1-1).getSymbol()).equals((CardPack.theCards.get(card2-1)).getSymbol())) {
 						/**Si oui**/
 						bool = true;
-						decomptePairesDeCartes-= 1;
+						numberOfPairsOfCardsVisible-= 1;
 						memoryView.pairOfCardsTitle();
-						players.get(tourJoueur - 1).setPlayerScore();
+						players.get(hand - 1).setPlayerScore();
 					}else{
 						/**Si non**/
 						bool = false;
@@ -180,14 +179,14 @@ public class MemoryController {
 				}while(bool == true); /**FIN Faire choix de carte**/
 				
 				/**Pour roulement des joueurs*/
-				if(tourJoueur == players.size()) {
-					tourJoueur = 0;
-					/*hand = tourJoueur + 1;*/
+				if(hand == players.size()) {
+					hand = 0;
+					
 				}else{
-					tourJoueur+= 1;
-					/*hand = tourJoueur + 1;*/
+					hand+= 1;
+					
 				}
-				}while(tourJoueur != 0);
+				}while(hand != 0);
 				
 				
 				/*SAUVEGARDE PARTIE*/
@@ -209,7 +208,7 @@ public class MemoryController {
 						PlayerDAO.getInstance().create(nouvJoueur);
 						System.out.println(nouvJoueur);
 						//Remplissage TABLE PARTICIPATION BD FONCTIONNE
-						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), tourJoueur, nouvJoueur.getPlayerScore(), i + 1);
+						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand, nouvJoueur.getPlayerScore(), i + 1);
 					}
 					
 					//Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
@@ -229,10 +228,10 @@ public class MemoryController {
 					//TODO TEMPO
 					//TODO FERMER CONSOLE
 				}
-			}while(decomptePairesDeCartes != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */		
+			}while(numberOfPairsOfCardsVisible != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */		
 			
 			
-			if(decomptePairesDeCartes == 0) {
+			if(numberOfPairsOfCardsVisible == 0) {
 				memoryView.noMoreCardsTitle();
 				//TODO CLASSEMENT
 			}
@@ -255,34 +254,32 @@ public class MemoryController {
 	/**
 	 * Méthode pour créer de nouveaux joueurs	
 	 */
-		/*------------------------------------FIN CONSTRUCTEUR----------------------------------------*/
-
 public void enterNewPlayers() {
 		memoryView.newGameTitle();
 		int test;
-		int compteurJoueur = 0;				//Pour compter nombre de joueur
+		int playerNumber = 0;				
 		do {
-			/*Saisie Joueur*/
+			/**Saisie Joueur**/
 			memoryView.askPlayerName();
-			String nom = memoryView.getStringText();
+			String lastName = memoryView.getStringText();
 			memoryView.askPlayerFirstName();
-			String prenom = memoryView.getStringText();
+			String firstName = memoryView.getStringText();
 			memoryView.askPlayerHandle();
-			String pseudo = memoryView.getStringText();
-			/*Enregistrement joueur*/
+			String handle = memoryView.getStringText();
+			/**Enregistrement joueur**/
 			memoryView.askSavePlayer();
 			test = memoryView.getChoice(1,2);
-					/*Si oui*/
+					/**Si oui**/
 			if(test == 1) {
-				compteurJoueur+= 1;
-				Player j = new Player(nom, prenom, pseudo, compteurJoueur,0);
+				playerNumber+= 1;
+				Player j = new Player(lastName, firstName, handle, playerNumber,0);
 				players.add(j);
 				memoryView.playerSaveTitle();
 				memoryView.playersListDisplay(players);
-			}else{	/*Si non*/
+			}else{	/**Si non**/
 				memoryView.playerNotSaveTitle();
 			}
-			/*Autre joueur ?*/
+			/**Autre joueur ?**/
 			if(players.size() < NBR_PLAYERS ) {
 				memoryView.askIfNewPlayer();
 				test = memoryView.getChoice(1,2);
@@ -323,9 +320,7 @@ public void enterNewPlayers() {
 	}
 	
 	public void playersListDisplay() {
-		for(int i = 0 ; i < players.size(); i++) {
-			players.get(i).toString();
-		}
+		for(int i = 0 ; i < players.size(); i++) { players.get(i).toString(); }
 	}
 	
 	public void breakTime() {

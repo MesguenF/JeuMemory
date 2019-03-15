@@ -19,12 +19,12 @@ import view.MemoryConsoleView;
 
 public class MemoryController {
 	private static final int NBR_PLAYERS = 4;		
-	public static CardPack pack; 				//model
+	public static CardPack pack; 				/**Modèle*/
 	public Scanner sc = new Scanner(System.in);
-	public MemoryConsoleView memoryView = new MemoryConsoleView(); 	// vu
-	public static List<Player> players = new ArrayList <Player>();	//Liste des joueurs
+	public MemoryConsoleView memoryView = new MemoryConsoleView(); 	/**Vue*/
+	public static List<Player> players = new ArrayList <Player>();	/**Liste des joueurs*/
 	public int choice;
-	public int gameNumber;	//For Data Base
+	public int gameNumber;	/**Pour BD*/
 	public String gameName;
 	public boolean saveGame = false;
 	public int numberOfPairsOfCardsVisible = CardPack.NBR_CARDS / 2;
@@ -38,40 +38,38 @@ public class MemoryController {
 		memoryView.memoryTitle();	
 		memoryView.choiceTitle();								
 		choice = memoryView.getChoice(1,3);						
-		/*//Si TABLE CRATE VIDE : Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)
-		//TODO TEST SI TABLE VIDE
-		for(int i = 0; i < 10; i++) {
-			Carte nouvCarte = new Carte(Symbole.getSymbole(i),false);
-			CarteDAO.getInstance().create(nouvCarte);
-			}	
-		Connexion.fermer();*/
 		/*******************************************
 		 * *GESTION CREATION D'UNE NOUVELLE PARTIE.*
 		 * ****************************************/
 		 if(choice == 1) {
-			pack = new CardPack();	/** On crée un nouveau paquet de cartes */
-			enterNewPlayers();		/** On saisie les nouveaux joueurs */
-			hand=1;					/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour un nouveau paquet */
+			pack = new CardPack();			/** On crée un nouveau paquet de cartes */
+			enterNewPlayers();				/** On saisie les nouveaux joueurs */
+			cptPlayers = 1;              	/** Pour compter le nombre de joueurs */
+			hand=1;							/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour la nouvelle partie */
 		}
 		/************************************
 		 * *GESTION CHARGEMENT D'UNE PARTIE.*
 		 * *********************************/
 		 if (choice == 2) {
-			/**On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE*/
+			//TODO TEST SI PAS DE PARTIE DANS BD OU EXCEPTION TRY CATCH
+			 /**On récupére et affiche la liste des parties stockées dans la base de données dans la table PARTIE*/
+			ArrayList<Game> listOfGames;
 			memoryView.listOfGamesTitle();
-			ArrayList<Game> listOfGames = GameDAO.getInstance().readAllGames();
+			listOfGames = GameDAO.getInstance().readAllGames();
 			System.out.println(listOfGames);
-			//TODO TEST SI PAS DE PARTIE DANS BD
-			
+		
+			//TODO TEST SI PAS DE PARTIE DANS BD OU EXCEPTION TRY CATCH
 			/**On demande la partie que l'on souhaite reprendre*/
 			memoryView.askGameToChooseTitle();
 			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
 			
-			/**On récupére la partie choisie dans la BD et on affiche ces caractèristiques:*/
+			/**On récupére la partie choisie dans la BD et on affiche ces caractèristiques:*/		
 			Game gameLoaded = GameDAO.getInstance().read(gameChoice);
 			System.out.println("La partie chargée est la suivante : " + gameLoaded);
-			
-			/**On récupére la distibution dans la BD correspondant à un paquet de cartes rangées en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION. */
+				
+			/**On récupére la distibution dans la BD correspondant à un paquet de cartes rangées 
+			 * en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION.
+			 *  */
 			pack = DistributionDAO.readDistribution(gameLoaded);
 			
 			/** On parcourt le paquet chargé pour savoir combien de cartes sont visibles et remplir le compteur de paires de cartes. */
@@ -108,26 +106,22 @@ public class MemoryController {
 			//TODO FERMER CONSOLE
 		}
 		
-		/******************
-		 ***GESTION DU JEU*
-		 ******************/
-		 
+		/*****************************
+		 ***GESTION DE LA PARTIEU JEU*
+		 *****************************/
 		do { /** DEBUT Faire Tant qu'il reste paires de cartes à trouver */	
 			
 			do {
 				int card1 = 0;
 				int card2 = 0;
 				boolean bool = false;	/**Pour test si paires de cartes**/
-				cptPlayers = 0;
-				/*hand = comptageJoueurs + 1*/
-				
-				/*Affichage Demande coup joueur avec caract�ristiques du joueur*/
-				/*memoryView.askPlayerTitle(players.get(hand - 1).playerPosition, players.get(hand - 1).playerHandle, players.get(hand - 1).playerScore);*/
-				
-				/** Pour affichage du paquet de cartes */
+											
+				/**Pour affichage du paquet de cartes**/
 				String[] lesLignesDuPaquet = this.genererStringPaquet();			
 				memoryView.packDisplay(lesLignesDuPaquet);
-				System.out.println("Tour Joueur: " + hand);
+				
+				/**Affichage Demande coup joueur avec caract�ristiques du joueur**/
+				memoryView.askPlayerTitle(players.get(cptPlayers - 1).playerPosition, players.get(cptPlayers - 1).playerHandle, players.get(cptPlayers - 1).playerScore);
 				
 				do { /**DEBUT Faire choix de carte**/
 					bool = false;	
@@ -175,57 +169,21 @@ public class MemoryController {
 					}
 				}while(bool == true); /**FIN Faire choix de carte**/
 				
+				/**Demande besoin de sauvegarde*/
+				saveOrNotSaveTheGame();
+				
 				/**Pour roulement des joueurs*/
 				if(cptPlayers == players.size()) {
-					/*hand = 0;*/
-					cptPlayers = 0;
-					hand = cptPlayers + 1;
+					cptPlayers = 1;
 				}else{
-					/*hand+= 1;*/
 					cptPlayers+= 1;
-					hand = cptPlayers + 1;
 				}
-				}while(cptPlayers != 0);
-								
-				/**SAUVEGARDE PARTIE**/
-				memoryView.nextOrSaveTitle();	
-				int testSauvegarde = memoryView.getChoice(1,2);
-				if(testSauvegarde == 2) {
-					saveGame = true;
-					
-					/**Création partie dans TABLE PARTIE BD FONCTIONNE**/
-					memoryView.askNameForGameTitle();
-					gameName = memoryView.getStringText();
-					Game nouvPartie = new Game(gameName);
-					GameDAO.getInstance().create(nouvPartie);
-					System.out.println(nouvPartie.getGameName());
-					
-					/**Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE**/
-					for(int i  = 0; i < players.size(); i++) {
-						Player nouvJoueur = new Player(players.get(i).playerLastName,players.get(i).playerFirstName,players.get(i).playerHandle);
-						PlayerDAO.getInstance().create(nouvJoueur);
-						System.out.println(nouvJoueur);
-						/**Remplissage TABLE PARTICIPATION BD**/
-						ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand, nouvJoueur.getPlayerScore(), i + 1);
-					}
-					
-					/**Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)**/
-					for(int i = 0; i < 10; i++) {
-						Card nouvCarte = new Card(Symbol.getSymbol(i),false);
-						CardDAO.getInstance().create(nouvCarte);
-						for(int j = 0; j < CardPack.NBR_CARDS; j++){
-							if(nouvCarte.getOrdinal(nouvCarte.getSymbol()) == pack.getCard(j).getOrdinal(pack.getCard(j).getSymbol())){
-								/**Remplissage TABLE DISTRIBUTION BD**/
-								DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getCardNumber(), j ,nouvCarte.visibleBool);
-							}
-						}
-					}
-						
-					Connexion.fermer();
-					memoryView.backupTitle();
-					//TODO TEMPO
-					//TODO FERMER CONSOLE
-				}
+			}while(cptPlayers != 1);
+				//PLUS BESOIN//
+				/*/**Demande besoin de sauvegarde*//*
+				System.out.println("Fin d'un tour");
+				saveOrNotSaveTheGame();*/
+				
 			}while(numberOfPairsOfCardsVisible != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */		
 			
 			
@@ -248,6 +206,48 @@ public class MemoryController {
 			}*/
 		sc.close();
 		}
+
+	public void saveOrNotSaveTheGame() {
+		/**SAUVEGARDE PARTIE**/
+		memoryView.nextOrSaveTitle();	
+		int testSauvegarde = memoryView.getChoice(1,2);
+		if(testSauvegarde == 2) {
+			saveGame = true;
+			hand = cptPlayers;
+			/**Création partie dans TABLE PARTIE BD FONCTIONNE**/
+			memoryView.askNameForGameTitle();
+			gameName = memoryView.getStringText();
+			Game nouvPartie = new Game(gameName);
+			GameDAO.getInstance().create(nouvPartie);
+			System.out.println(nouvPartie.getGameName());
+			
+			/**Ajout des joueurs dans TABLE JOUEUR BD FONCTIONNE**/
+			for(int i  = 0; i < players.size(); i++) {
+				Player nouvJoueur = new Player(players.get(i).playerLastName,players.get(i).playerFirstName,players.get(i).playerHandle);
+				PlayerDAO.getInstance().create(nouvJoueur);
+				System.out.println(nouvJoueur);
+				/**Remplissage TABLE PARTICIPATION BD**/
+				ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand, nouvJoueur.getPlayerScore(), i + 1);
+			}
+			
+			/**Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)**/
+			for(int i = 0; i < 10; i++) {
+				Card nouvCarte = new Card(Symbol.getSymbol(i),false);
+				CardDAO.getInstance().create(nouvCarte);
+				for(int j = 0; j < CardPack.NBR_CARDS; j++){
+					if(nouvCarte.getOrdinal(nouvCarte.getSymbol()) == pack.getCard(j).getOrdinal(pack.getCard(j).getSymbol())){
+						/**Remplissage TABLE DISTRIBUTION BD**/
+						DistributionDAO.createDistribution(nouvPartie.getGameNumber(),nouvCarte.getCardNumber(), j ,nouvCarte.visibleBool);
+					}
+				}
+			}
+				
+			Connexion.fermer();
+			memoryView.backupTitle();
+			//TODO TEMPO
+			//TODO FERMER CONSOLE
+		}
+	}
 		
 	/**
 	 * Méthode pour créer de nouveaux joueurs	

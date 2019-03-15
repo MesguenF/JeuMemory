@@ -241,11 +241,9 @@ public class MemoryController {
 					}
 				}
 			}
-				
 			Connexion.fermer();
 			memoryView.backupTitle();
-			//TODO TEMPO
-			//TODO FERMER CONSOLE
+			//TODO FERMER CONSOLE????
 		}
 	}
 		

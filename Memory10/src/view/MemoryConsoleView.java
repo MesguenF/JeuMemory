@@ -55,9 +55,9 @@ public class MemoryConsoleView {
 	}
 	
 	public void nextOrSaveTitle() {
-		System.out.println("-----------------------------------------------------------------------");
-		System.out.println("       TOUCHE 1 : CONTINUER / TOUCHE 2 : SAUVEGARDER ET QUITTER        ");
-		System.out.println("-----------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------");
+		System.out.println("    TOUCHE 1 : CONTINUER / TOUCHE 2 : SAUVEGARDER    ");
+		System.out.println("-----------------------------------------------------");
 		System.out.println(" Choix : ? ");
 	}
 	
@@ -74,7 +74,7 @@ public class MemoryConsoleView {
 	public void askCardTitle() { System.out.println("Carte : "); }
 	public void noPairOfCardsTitle() { System.out.println("Vous n'avez pas trouvé de paire de cartes !"); }
 	public void pairOfCardsTitle() { System.out.println("Bravo, vous avez trouvé une paire de cartes !"); }
-	public void cardAlreadyChooseTitle() { System.out.println("Carte déjà choisie. Recommencez! "); }
+	public void cardAlreadyVisibleTitle() { System.out.println("Carte déjà visible. Recommencez! "); }
 	public void noMoreCardsTitle() { System.out.println("Plus de cartes à retourner!"); }
 	public void askPlayerTitle(int indiceJoueur, String pseudoJoueur, int pointsJoueur) { 
 		System.out.println("JOUEUR "+indiceJoueur+" / "+pseudoJoueur+" / Vous avez "+pointsJoueur+" point(s) : Veuillez choisir 2 cartes à retourner (de 1 à 40) :");

@@ -30,7 +30,7 @@ public class MemoryController {
 	public int numberOfPairsOfCardsVisible = CardPack.NBR_CARDS / 2;
 	public int hand;
 	public int cptCards;
-	public int cptPlayers;
+	public int numberOfPlayers;
 				
 	public MemoryController(){
 		super();
@@ -44,7 +44,7 @@ public class MemoryController {
 		 if(choice == 1) {
 			pack = new CardPack();			/** On crée un nouveau paquet de cartes */
 			enterNewPlayers();				/** On saisie les nouveaux joueurs */
-			cptPlayers = 1;              	/** Pour compter le nombre de joueurs */
+			numberOfPlayers = 1;              	/** Pour compter le nombre de joueurs */
 			hand=1;							/** Détermine le joueur ayant la main dans la partie. Ici le joueur 1 pour la nouvelle partie */
 		}
 		/************************************
@@ -121,7 +121,7 @@ public class MemoryController {
 				memoryView.packDisplay(lesLignesDuPaquet);
 				
 				/**Affichage Demande coup joueur avec caract�ristiques du joueur**/
-				memoryView.askPlayerTitle(players.get(cptPlayers - 1).playerPosition, players.get(cptPlayers - 1).playerHandle, players.get(cptPlayers - 1).playerScore);
+				memoryView.askPlayerTitle(players.get(hand - 1).playerPosition, players.get(hand - 1).playerHandle, players.get(hand - 1).playerScore);
 				
 				do { /**DEBUT Faire choix de carte**/
 					bool = false;	
@@ -130,10 +130,14 @@ public class MemoryController {
 						/**Pour carte 2**/
 						if(cptCartes == 1) {
 							do{
-								if(card2 == card1) { memoryView.cardAlreadyChooseTitle();}
+								card2 = 0;
 								memoryView.askCardTitle();
 								card2 = memoryView.getChoice(1,CardPack.NBR_CARDS);
-							}while(card2 == card1);
+								System.out.println(pack.getCard(card2 -1 ).isVisible());
+								if(pack.getCard(card2 - 1).isVisible()) {
+									memoryView.cardAlreadyVisibleTitle();
+								}
+							}while(pack.getCard(card2 - 1).isVisible());
 							//-----------
 							cptCartes+= 1;
 							pack.modifyCardVisibility(card2 - 1, true);
@@ -142,8 +146,15 @@ public class MemoryController {
 						}
 						/**Pour carte 1**/
 						if(cptCartes == 0) {
-							memoryView.askCardTitle();
-							card1 = memoryView.getChoice(1,CardPack.NBR_CARDS);
+							do{
+								card1 = 0;
+								memoryView.askCardTitle();
+								card1 = memoryView.getChoice(1,CardPack.NBR_CARDS);
+								System.out.println(pack.getCard(card1 - 1).isVisible());
+								if(pack.getCard(card1 - 1).isVisible()) {
+									memoryView.cardAlreadyVisibleTitle();
+								}
+							}while(pack.getCard(card1 - 1).isVisible());
 							cptCartes+= 1;
 							pack.modifyCardVisibility(card1 - 1, true);
 							lesLignesDuPaquet = this.genererStringPaquet();	
@@ -157,7 +168,7 @@ public class MemoryController {
 						bool = true;
 						numberOfPairsOfCardsVisible-= 1;
 						memoryView.pairOfCardsTitle();
-						players.get(hand - 1).setPlayerScore();
+						players.get(hand - 1).setPlayerScore();	/** +1 point pour le joueur*/
 					}else{
 						/**Si non**/
 						bool = false;
@@ -173,19 +184,19 @@ public class MemoryController {
 				saveOrNotSaveTheGame();
 				
 				/**Pour roulement des joueurs*/
-				if(cptPlayers == players.size()) {
-					cptPlayers = 1;
+				if(numberOfPlayers == players.size()) {
+					numberOfPlayers = 1;
+					hand = 1;
 				}else{
-					cptPlayers+= 1;
+					numberOfPlayers+= 1;
+					hand+= 1;
 				}
-			}while(cptPlayers != 1);
+			}while(numberOfPlayers != 1);
 				//PLUS BESOIN//
 				/*/**Demande besoin de sauvegarde*//*
 				System.out.println("Fin d'un tour");
 				saveOrNotSaveTheGame();*/
-				
 			}while(numberOfPairsOfCardsVisible != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */		
-			
 			
 			if(numberOfPairsOfCardsVisible == 0) {
 				memoryView.noMoreCardsTitle();
@@ -206,14 +217,16 @@ public class MemoryController {
 			}*/
 		sc.close();
 		}
-
+	/**
+	 * Pour sauvegarde d'une partie
+	 * */
+	
 	public void saveOrNotSaveTheGame() {
 		/**SAUVEGARDE PARTIE**/
 		memoryView.nextOrSaveTitle();	
 		int testSauvegarde = memoryView.getChoice(1,2);
 		if(testSauvegarde == 2) {
 			saveGame = true;
-			hand = cptPlayers;
 			/**Création partie dans TABLE PARTIE BD FONCTIONNE**/
 			memoryView.askNameForGameTitle();
 			gameName = memoryView.getStringText();

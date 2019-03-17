@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.*?>
@@ -9,19 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8"
+ xmlns:fx="http://javafx.com/fxml/1" fx:controller="MemoryGraphicalView">
    <children>
-      <SubScene height="400.0" layoutX="100.0" layoutY="91.0" width="600.0">
-        <root>
-          <Region />
-        </root>
-      </SubScene>
-      <SubScene height="400.0" layoutX="110.0" layoutY="101.0" width="600.0">
-         <root>
-            <Region />
-         </root>
-      </SubScene>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="800.0">
         <menus>
           <Menu mnemonicParsing="false" text="Menu">
@@ -31,17 +23,63 @@
                   <MenuItem mnemonicParsing="false" text="Quitter" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Paramètres">
-            <items>
-              <MenuItem mnemonicParsing="false" text="???" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="???" />
-            </items>
-          </Menu>
         </menus>
       </MenuBar>
+      <TextArea editable="false" layoutX="171.0" layoutY="528.0" prefHeight="49.0" prefWidth="458.0" text="JEU MEMORY POUR LE CLUB DES &quot;DYS&quot;">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DISAPPEAR" />
+         </cursor>
+      </TextArea>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="82.0" layoutY="34.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../Downloads/images/chat.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="200.0" layoutY="34.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../Downloads/images/cheval.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="127.0" fitWidth="100.0" layoutX="324.0" layoutY="31.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../Downloads/images/chevre.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="459.0" layoutY="34.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../Downloads/images/chien.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="598.0" layoutY="35.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../Downloads/images/chat.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Button layoutX="198.0" layoutY="222.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="100.0" text="1">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="MOVE" />
+         </cursor>
+      </Button>
    </children>
 </AnchorPane>

@@ -16,6 +16,7 @@ import model.cartes.Player;
 import model.cartes.carte.Card;
 import model.cartes.carte.Symbol;
 import view.MemoryConsoleView;
+import view.MemoryJavaFXViewController;
 
 public class MemoryController {
 	private static final int NBR_PLAYERS = 4;		
@@ -302,9 +303,16 @@ public class MemoryController {
 	
 	/* MAIN */
 	public static void main(String[] args){
+		
 		new MemoryController();
+		new MemoryJavaFXViewController();
+		
 		}
 
+	private static void launch(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
 	/**
 	 *  Méthode retournant un affichage du paquet
 	 */

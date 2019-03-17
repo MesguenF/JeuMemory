@@ -61,9 +61,9 @@
             <Image url="@../../images/Fond.png" />
          </image>
       </ImageView>
-      <TextField id="TextAreaForMessages" editable="false" layoutX="224.0" layoutY="53.0" prefHeight="43.0" prefWidth="405.0" promptText="Pour affichage des dialogues" style="-fx-background-color: lightseagreen; -fx-border-color: olivedrab;">
+      <TextField id="TextAreaForMessages" editable="false" layoutX="224.0" layoutY="62.0" prefHeight="43.0" prefWidth="405.0" promptText="Pour affichage des consignes" style="-fx-background-color: lightseagreen; -fx-border-color: olivedrab;">
          <font>
-            <Font size="24.0" />
+            <Font size="18.0" />
          </font>
          <cursor>
             <Cursor fx:constant="DISAPPEAR" />
@@ -73,25 +73,16 @@
          <font>
             <Font size="18.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
       </Button>
       <Button layoutX="21.0" layoutY="53.0" mnemonicParsing="false" text="CHARGER PARTIE">
          <font>
             <Font size="18.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
       </Button>
       <Button layoutX="744.0" layoutY="53.0" mnemonicParsing="false" text="QUITTER">
          <font>
             <Font size="18.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
       </Button>
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="3.0" layoutY="219.0" pickOnBounds="true">
          <cursor>
@@ -377,9 +368,6 @@
          <font>
             <Font size="18.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
       </Button>
    </children>
 </AnchorPane>

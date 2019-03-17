@@ -11,21 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8"
- xmlns:fx="http://javafx.com/fxml/1" fx:controller="MemoryGraphicalView">
+<AnchorPane cacheHint="QUALITY" depthTest="ENABLE" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MemoryGraphicalView">
    <children>
-      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="800.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="Menu">
-            <items>
-              <MenuItem fx:id="id1" mnemonicParsing="false" text="Nouvelle partie" />
-                  <MenuItem mnemonicParsing="false" text="Charger Partie" />
-                  <MenuItem mnemonicParsing="false" text="Quitter" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <TextArea editable="false" layoutX="171.0" layoutY="528.0" prefHeight="49.0" prefWidth="458.0" text="JEU MEMORY POUR LE CLUB DES &quot;DYS&quot;">
+      <TextArea id="FXTitleOfGame" editable="false" layoutX="172.0" prefHeight="49.0" prefWidth="458.0" style="-fx-background-color: cornflowerblue; -fx-border-color: olivedrab;" text="JEU MEMORY POUR LE CLUB DES &quot;DYS&quot;">
          <font>
             <Font size="24.0" />
          </font>
@@ -33,53 +21,68 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </TextArea>
-      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="82.0" layoutY="34.0" pickOnBounds="true">
-         <image>
-            <Image url="@../../../../Downloads/images/chat.png" />
-         </image>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="72.0" layoutY="145.0" pickOnBounds="true" style="-fx-blend-mode: red;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </ImageView>
-      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="200.0" layoutY="34.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../Downloads/images/cheval.png" />
+            <Image url="@../../images/Fond.png" />
          </image>
+      </ImageView>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="208.0" layoutY="145.0" pickOnBounds="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </ImageView>
-      <ImageView fitHeight="127.0" fitWidth="100.0" layoutX="324.0" layoutY="31.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../Downloads/images/chevre.png" />
+            <Image url="@../../images/Fond.png" />
          </image>
+      </ImageView>
+      <ImageView fitHeight="127.0" fitWidth="100.0" layoutX="340.0" layoutY="131.0" pickOnBounds="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </ImageView>
-      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="459.0" layoutY="34.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../Downloads/images/chien.png" />
+            <Image url="@../../images/Fond.png" />
          </image>
+      </ImageView>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="481.0" layoutY="122.0" pickOnBounds="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </ImageView>
-      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="598.0" layoutY="35.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../Downloads/images/chat.png" />
+            <Image url="@../../images/Fond.png" />
          </image>
+      </ImageView>
+      <ImageView fitHeight="120.0" fitWidth="100.0" layoutX="620.0" layoutY="145.0" pickOnBounds="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <image>
+            <Image url="@../../images/Fond.png" />
+         </image>
       </ImageView>
-      <Button layoutX="198.0" layoutY="222.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="100.0" text="1">
+      <TextField id="FXTextAreaForMessages" editable="false" layoutX="198.0" layoutY="61.0" prefHeight="43.0" prefWidth="405.0" promptText="Pour affichage des consignes" style="-fx-background-color: lightseagreen; -fx-border-color: olivedrab;">
          <font>
             <Font size="18.0" />
          </font>
          <cursor>
-            <Cursor fx:constant="MOVE" />
+            <Cursor fx:constant="DISAPPEAR" />
          </cursor>
+      </TextField>
+      <Button layoutX="14.0" layoutY="63.0" mnemonicParsing="false" text="NOUVELLE PARTIE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="613.0" layoutY="63.0" mnemonicParsing="false" text="CHARGER PARTIE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="692.0" layoutY="547.0" mnemonicParsing="false" text="QUITTER">
+         <font>
+            <Font size="18.0" />
+         </font>
       </Button>
    </children>
 </AnchorPane>

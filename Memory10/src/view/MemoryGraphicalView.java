@@ -1,6 +1,5 @@
 package view;
 import java.io.InputStream;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,10 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import javafx.fxml.FXML;
 
 	
 public class MemoryGraphicalView extends Application {
-	 
+	 	
 	    @Override
 	    public void start(Stage primaryStage) throws Exception {
 	 

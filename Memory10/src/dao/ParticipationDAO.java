@@ -68,6 +68,7 @@ public class ParticipationDAO {
 		int [] tab = new int[4];	/**tableau avec 4 int*/
 		try {
 			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + game.getGameNumber();
+			System.out.println("Game number dans CRUD" +  game.getGameNumber());
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {

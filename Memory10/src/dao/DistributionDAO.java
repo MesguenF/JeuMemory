@@ -75,17 +75,17 @@ public class DistributionDAO{
 					card.setCardNumber(rs1.getInt("idCarte"));
 					int cardPosition = (rs1.getInt("positionCarte"));
 					card.setVisible(rs1.getBoolean("visibleCarte"));
-					System.out.println("num carte : " + card.getCardNumber());
-					System.out.println("position carte : " + cardPosition);
+					/*System.out.println("num carte : " + card.getCardNumber());
+					System.out.println("position carte : " + cardPosition);*/
 										
 					String requeteRead2 = " SELECT symboleCarte FROM  CARTE  WHERE idCarte = " +  (rs1.getInt("idCarte"));
 					PreparedStatement pst2 = Connexion.getInstance().prepareStatement(requeteRead2, Statement.RETURN_GENERATED_KEYS);
 					ResultSet rs2 = pst2.executeQuery();
 					if(rs2.next()) {
 						//TODO VERIF SYMBOLE INT
-						System.out.println("symbole INT:" + rs2.getInt("symboleCarte"));
+						/*System.out.println("symbole INT:" + rs2.getInt("symboleCarte"));*/
 						card.setSymbol(Symbol.getSymbol(rs2.getInt("symboleCarte")));
-						System.out.println(card);
+						/*System.out.println(card);*/
 					}
 					paquet.setCard(cardPosition, card);
 				}while(rs1.next()!= false);
@@ -93,7 +93,7 @@ public class DistributionDAO{
 			} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(paquet);
+		/*System.out.println(paquet);*/
 		return paquet;
 	}
 }		

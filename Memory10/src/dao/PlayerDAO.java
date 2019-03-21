@@ -79,9 +79,9 @@ public class PlayerDAO extends DAO<Player>{
 	public Player read(int id) {
 		Player playerBD = null;
 		try {
-			String requeteRead = "SELECT FROM "+TABLE+" WHERE "+PRIMARY_KEY+" = ?";
+			String requeteRead = "SELECT nomJoueur,prenomJoueur,pseudoJoueur FROM "+TABLE+" WHERE idJoueur = " + id;
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1,id);	
+			/*pst.setInt(1,id);	*/
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
 				playerBD = new Player(rs.getString("nomJoueur")+rs.getString("prenomJoueur")+rs.getString("pseudoJoueur")); 

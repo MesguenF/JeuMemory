@@ -98,14 +98,16 @@ public class MemoryConsoleController {
 				System.out.println("Joueur n° " + tab[0] +"/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
 				hand = tab[1];
 				Player newPlayer = PlayerDAO.getInstance().read(tab[0]);
-				for(int j = 0; j<tab[2];j++) { newPlayer.setPlayerScore(); }
+				
+				for(int j = 0; j<tab[2];j++) { 
+					newPlayer.setPlayerScore();
+					}
 				newPlayer.setPlayerPosition(tab[3]);
 				players.add(newPlayer);
-				System.out.println("Voici la liste des joueurs : \n");
-				System.out.println(players);
 			}
 			System.out.println("C'est au joueur " + hand + " de jouer!");
-			
+			System.out.println("Voici la liste des joueurs : \n");
+			System.out.println(players);
 			memoryView.loadedGameTitle();
 			
 			

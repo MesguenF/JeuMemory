@@ -12,8 +12,7 @@ public class MemoryMainController {
 		System.out.println("Bienvenue dans votre jeu MEMORY!\n"); 
 		System.out.println("Veuillez choisir un mode de jeu :  \n");
 		System.out.println("Mode CONSOLE: Touche 1 / Mode GRAPHIQUE: Touche 2");
-		int testChoice = MemoryMainController.getChoice(1,2);
-		
+				
 		new MemoryConsoleController();
 		/*new MemoryJavaFXViewController();*/
 	}

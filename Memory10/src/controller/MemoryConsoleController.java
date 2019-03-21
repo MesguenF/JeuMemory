@@ -64,7 +64,9 @@ public class MemoryConsoleController {
 			memoryView.askGameToChooseTitle();
 			int gameChoice = memoryView.getChoice((listOfGames.get(0).getGameNumber()), (listOfGames.get((listOfGames.size()) - 1).getGameNumber()));
 			
-			/**On récupére la partie choisie dans la BD et on affiche ces caractèristiques:*/		
+			/**On récupére la partie choisie dans la BD et on affiche ces caractèristiques:
+			 * Nom partie
+			 * */		
 			Game gameLoaded = GameDAO.getInstance().read(gameChoice);
 			System.out.println("La partie chargée est la suivante : " + gameLoaded);
 				
@@ -95,9 +97,18 @@ public class MemoryConsoleController {
 				int[]tab = loadPlayers.get(i);
 				System.out.println("Joueur n° " + tab[0] +"/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
 				hand = tab[1];
+				Player newPlayer = PlayerDAO.getInstance().read(tab[0]);
+				for(int j = 0; j<tab[2];j++) { newPlayer.setPlayerScore(); }
+				newPlayer.setPlayerPosition(tab[3]);
+				players.add(newPlayer);
+				System.out.println("Voici la liste des joueurs : \n");
+				System.out.println(players);
 			}
 			System.out.println("C'est au joueur " + hand + " de jouer!");
+			
 			memoryView.loadedGameTitle();
+			
+			
 		}
 		/***************************************
 		 * ON FERME LE PROGRAMME ET LA CONSOLE *
@@ -123,6 +134,7 @@ public class MemoryConsoleController {
 				
 				/**Affichage Demande coup joueur avec caract�ristiques du joueur**/
 				memoryView.askPlayerTitle(players.get(hand - 1).playerPosition, players.get(hand - 1).playerHandle, players.get(hand - 1).playerScore);
+				
 				
 				do { /**DEBUT Faire choix de carte**/
 					bool = false;	
@@ -193,17 +205,14 @@ public class MemoryConsoleController {
 					hand+= 1;
 				}
 			}while(numberOfPlayers != 1);
-				//PLUS BESOIN//
-				/*/**Demande besoin de sauvegarde*//*
-				System.out.println("Fin d'un tour");
-				saveOrNotSaveTheGame();*/
-			}while(numberOfPairsOfCardsVisible != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */		
 			
-			if(numberOfPairsOfCardsVisible == 0) {
-				memoryView.noMoreCardsTitle();
-				//TODO CLASSEMENT
-			}
-			memoryView.endOfGameTitle();
+				
+		}while(numberOfPairsOfCardsVisible != 0 && saveGame != true); /** FIN Faire Tant qu'il reste paires de cartes à trouver */
+		if(numberOfPairsOfCardsVisible == 0) {
+			memoryView.noMoreCardsTitle();
+			//TODO CLASSEMENT
+		}
+		memoryView.endOfGameTitle();
 			//TODO TEMPO
 			//TODO FERMER CONSOLE
 			

@@ -39,8 +39,10 @@ public class Player {
 		this.playerLastName = pln;
 		this.playerFirstName = pfn;
 		this.playerHandle = ph;
-		this.playerPosition = pp;
-		this.playerScore = ps;
+		this.playerScore = pp;
+		this.playerPosition = ps;
+		
+		
 	}
 
 	

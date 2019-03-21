@@ -64,8 +64,8 @@ public class ParticipationDAO {
 	}
 	//TODO TEST
 	public static ArrayList<int[]> readParticipation(Game game) {
-		ArrayList<int[]> listOfPlayers= new ArrayList();
-		int [] tab = new int[4];
+		ArrayList<int[]> listOfPlayers= new ArrayList<int[]>();
+		int [] tab = new int[4];	/**tableau avec 4 int*/
 		try {
 			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + game.getGameNumber();
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
@@ -87,6 +87,6 @@ public class ParticipationDAO {
 			} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return listOfPlayers;
+		return listOfPlayers;	/**On retourne une arrayList de tableaux de Int - Chaque tableau correspond aux données d'un joueur*/
 	}
 }

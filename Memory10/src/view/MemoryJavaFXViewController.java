@@ -16,6 +16,7 @@ public class MemoryJavaFXViewController {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	Button button = new Button();
 	
 	public void handle(ActionEvent event) {

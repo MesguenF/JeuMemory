@@ -38,7 +38,7 @@ public class CardDAO extends DAO<Card>{
 					c.setCardNumber(rs.getInt(1)); 
 					//TODO A SUPPRIMER
 					listeIdCartes.add(c.getCardNumber());   /*Le 1 de getInt(1) indique la colonne de la table Carte*/
-					System.out.println(listeIdCartes);
+					/*System.out.println(listeIdCartes);*/
 				}
 			} catch (SQLException e) {
 				succes=false;

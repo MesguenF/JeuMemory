@@ -18,7 +18,7 @@ import model.cartes.carte.Symbol;
 import view.MemoryConsoleView;
 import view.MemoryJavaFXViewController;
 
-public class MemoryController {
+public class MemoryConsoleController {
 	private static final int NBR_PLAYERS = 4;		
 	public static CardPack pack; 				/**Modèle*/
 	public Scanner sc = new Scanner(System.in);
@@ -33,7 +33,7 @@ public class MemoryController {
 	public int cptCards;
 	public int numberOfPlayers;
 				
-	public MemoryController(){
+	public MemoryConsoleController(){
 		super();
 		/** Démarrage avec titre du jeu et menu de choix. */
 		memoryView.memoryTitle();	
@@ -241,7 +241,7 @@ public class MemoryController {
 				PlayerDAO.getInstance().create(nouvJoueur);
 				System.out.println(nouvJoueur);
 				/**Remplissage TABLE PARTICIPATION BD**/
-				ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand, nouvJoueur.getPlayerScore(), i + 1);
+				ParticipationDAO.createParticipation(nouvJoueur.getPlayerNumber(), nouvPartie.getGameNumber(), hand + 1, nouvJoueur.getPlayerScore(), i + 1);
 			}
 			
 			/**Stockage des cartes dans TABLE CARTE BD FONCTIONNE (10 cartes avec un symbole différent)**/
@@ -301,18 +301,7 @@ public class MemoryController {
 		}while(test == 1);
 	}
 	
-	/* MAIN */
-	public static void main(String[] args){
-		
-		new MemoryController();
-		new MemoryJavaFXViewController();
-		
-		}
-
-	private static void launch(String[] args) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	/**
 	 *  Méthode retournant un affichage du paquet
 	 */

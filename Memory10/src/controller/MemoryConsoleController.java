@@ -23,7 +23,7 @@ public class MemoryConsoleController {
 	public static CardPack pack; 				/**Modèle*/
 	public Scanner sc = new Scanner(System.in);
 	public MemoryConsoleView memoryView = new MemoryConsoleView(); 	/**Vue*/
-	public static List<Player> players = new ArrayList <Player>();	/**Liste des joueurs*/
+	public static ArrayList<Player> players = new ArrayList <Player>();	/**Liste des joueurs*/
 	public int choice;
 	public int gameNumber;	/**Pour BD*/
 	public String gameName;
@@ -68,7 +68,7 @@ public class MemoryConsoleController {
 			 * Nom partie
 			 * */		
 			Game gameLoaded = GameDAO.getInstance().read(gameChoice);
-			System.out.println("La partie chargée est la suivante : " + gameLoaded);
+			System.out.println(gameLoaded);
 				
 			/**On récupére la distibution dans la BD correspondant à un paquet de cartes rangées 
 			 * en fonction de leurs positions sauvegardées à partir de la table DISTRIBUTION.
@@ -93,11 +93,27 @@ public class MemoryConsoleController {
 			 */
 			ArrayList<int[]> loadPlayers = ParticipationDAO.readParticipation(gameLoaded);
 			System.out.println("Le nombre de joueurs pour cette partie est de : " + loadPlayers.size());
-			for(int i = 0; i<loadPlayers.size();i++) {
+			System.out.println(loadPlayers.get(0));
+			int[]tab1 = loadPlayers.get(0);
+			System.out.println(tab1[0]);
+			System.out.println(loadPlayers.get(1));
+			int[]tab2 = loadPlayers.get(1);
+			System.out.println(tab2[0]);
+			System.out.println(loadPlayers.get(2));
+			int[]tab3 = loadPlayers.get(2);
+			System.out.println(tab3[0]);
+			System.out.println(loadPlayers.get(3));
+			int[]tab4 = loadPlayers.get(3);
+			System.out.println(tab4[0]);
+			
+			//A REVOIR CAR PB AVEC NOM PRENOM PSEUDO
+			for(int i = 0; i <loadPlayers.size() ;i++) {
 				int[]tab = loadPlayers.get(i);
-				System.out.println("Joueur n° " + tab[0] +"/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
+				System.out.println("Joueur n° " + tab[0] + "/ main partie: " + tab[1] + "/ score dans partie: " + tab[2] + "/ position dans partie: " + tab[3]);
 				hand = tab[1];
 				Player newPlayer = PlayerDAO.getInstance().read(tab[0]);
+				
+				System.out.println(newPlayer);
 				
 				for(int j = 0; j<tab[2];j++) { 
 					newPlayer.setPlayerScore();

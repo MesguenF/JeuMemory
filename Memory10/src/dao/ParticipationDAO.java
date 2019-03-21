@@ -64,15 +64,16 @@ public class ParticipationDAO {
 	}
 	//TODO TEST
 	public static ArrayList<int[]> readParticipation(Game game) {
-		ArrayList<int[]> listOfPlayers= new ArrayList<int[]>();
-		int [] tab = new int[4];	/**tableau avec 4 int*/
+		ArrayList<int[]> listOfPlayers= new ArrayList();
+		/*int [] tab = new int[4];	*//**tableau avec 4 int*/
 		try {
 			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + game.getGameNumber();
-			System.out.println("Game number dans CRUD" +  game.getGameNumber());
 			PreparedStatement pst = Connexion.getInstance().prepareStatement(requeteRead, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
 				do {
+					int [] tab = new int[4];	/**tableau avec 4 int*/
+					/*int cpt = 0;*/
 					tab[0] = rs.getInt("idJoueur");
 					tab[1] = rs.getInt("main");
 					tab[2] = rs.getInt("scoreJoueur");
@@ -83,11 +84,14 @@ public class ParticipationDAO {
 					System.out.println("scoreJoueur"+tab[2]);
 					System.out.println("positionTour"+tab[3]);
 					listOfPlayers.add(tab);
+					System.out.println(listOfPlayers);
+					/*cpt+=1;*/
 				}while(rs.next()!= false);
 			}
 			} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println(listOfPlayers);
 		return listOfPlayers;	/**On retourne une arrayList de tableaux de Int - Chaque tableau correspond aux données d'un joueur*/
 	}
 }

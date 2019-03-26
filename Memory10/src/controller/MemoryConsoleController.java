@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 import dao.CardDAO;
 import dao.Connexion;
@@ -16,7 +15,6 @@ import model.cartes.Player;
 import model.cartes.carte.Card;
 import model.cartes.carte.Symbol;
 import view.MemoryConsoleView;
-import view.MemoryJavaFXViewController;
 
 public class MemoryConsoleController {
 	private static final int NBR_PLAYERS = 4;		

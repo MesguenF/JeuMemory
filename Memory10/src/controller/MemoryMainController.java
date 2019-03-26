@@ -31,7 +31,7 @@ public class MemoryMainController {
 			new MemoryConsoleController();
 		}
 		if(choice == 2) {
-			new MemoryGraphicController();
+			new MemoryJavaFXViewController();
 		}
 	}
 }

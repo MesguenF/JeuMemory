@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import model.cartes.Game;
 
 public class ParticipationDAO {
@@ -64,7 +63,7 @@ public class ParticipationDAO {
 	}
 	//TODO TEST
 	public static ArrayList<int[]> readParticipation(Game game) {
-		ArrayList<int[]> listOfPlayers= new ArrayList();
+		ArrayList<int[]> listOfPlayers= new ArrayList<int[]>();
 		/*int [] tab = new int[4];	*//**tableau avec 4 int*/
 		try {
 			String requeteRead = "SELECT idJoueur, main, scoreJoueur, positionTour FROM PARTICIPATION WHERE idPartie = " + game.getGameNumber();

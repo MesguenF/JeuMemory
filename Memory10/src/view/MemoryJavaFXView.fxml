@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root cacheHint="QUALITY" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" style="-fx-background-color: gray;" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MemoryJavaFXViewController">
+<fx:root cacheHint="QUALITY" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" style="-fx-background-color: gray;" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <TextArea id="TitleOfGame" editable="false" layoutX="197.0" prefHeight="49.0" prefWidth="458.0" style="-fx-background-color: cornflowerblue; -fx-border-color: olivedrab;" text="JEU MEMORY POUR LE CLUB DES &quot;DYS&quot;">
          <font>

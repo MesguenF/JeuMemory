@@ -3,9 +3,13 @@ package controller;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MemoryMainController {
+import javafx.application.Application;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class MemoryMainController  {
 	private static Scanner sc = new Scanner(System.in);
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.out.println("Bienvenue dans votre jeu MEMORY!\n"); 
 		System.out.println("Veuillez choisir un mode de jeu :  \n");
 		System.out.println("Mode CONSOLE: Touche 1 / Mode GRAPHIQUE: Touche 2");
@@ -31,9 +35,13 @@ public class MemoryMainController {
 			new MemoryConsoleController();
 		}
 		if(choice == 2) {
-			new MemoryJavaFXViewController();
+			System.out.println("Memory JavaFX!");
+			
+			
 		}
 	}
+	
+
 }
 
 
